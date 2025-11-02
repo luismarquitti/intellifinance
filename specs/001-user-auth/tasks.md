@@ -48,20 +48,20 @@
 **Independent Test**: A new user can register and is immediately logged in. The new user record appears in the database.
 
 ### Tests for User Story 1
-- [ ] T009 [P] [US1] Write integration test for registration in `backend/tests/auth.test.ts` (should fail initially)
-- [ ] T010 [P] [US1] Write unit tests for password hashing service in `backend/src/services/password.test.ts`
+- [X] T009 [P] [US1] Write integration test for registration in `backend/tests/auth.test.ts` (should fail initially)
+- [X] T010 [P] [US1] Write unit tests for password hashing service in `backend/src/services/password.test.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement password hashing service in `backend/src/services/password.ts`
-- [ ] T012 [US1] Implement JWT service in `backend/src/services/token.ts` to issue access and refresh tokens.
-- [ ] T013 [US1] Implement `register` mutation resolver in `backend/src/api/auth.ts`
-- [ ] T014 [P] [US1] Add backend validation for email format and password strength in `backend/src/api/auth.ts`
-- [ ] T015 [P] [US1] Add frontend validation for email format and password strength in `frontend/src/components/RegisterForm.tsx`
-- [ ] T016 [US1] Display clear error messages for registration failures in `frontend/src/pages/Register.tsx`
-- [ ] T017 [P] [US1] Create registration form component in `frontend/src/components/RegisterForm.tsx`
-- [ ] T018 [P] [US1] Create registration page in `frontend/src/pages/Register.tsx`
-- [ ] T019 [US1] Implement GraphQL mutation for registration in `frontend/src/services/auth.ts`
+- [X] T011 [US1] Implement password hashing service in `backend/src/services/password.ts`
+- [X] T012 [US1] Implement JWT service in `backend/src/services/token.ts` to issue access and refresh tokens.
+- [X] T013 [US1] Implement `register` mutation resolver in `backend/src/api/auth.ts`
+- [X] T014 [P] [US1] Add backend validation for email format and password strength in `backend/src/api/auth.ts`
+- [X] T015 [P] [US1] Add frontend validation for email format and password strength in `frontend/src/components/RegisterForm.tsx`
+- [X] T016 [US1] Display clear error messages for registration failures in `frontend/src/pages/Register.tsx`
+- [X] T017 [P] [US1] Create registration form component in `frontend/src/components/RegisterForm.tsx`
+- [X] T018 [P] [US1] Create registration page in `frontend/src/pages/Register.tsx`
+- [X] T019 [US1] Implement GraphQL mutation for registration in `frontend/src/services/auth.ts`
 
 ---
 
@@ -72,14 +72,14 @@
 **Independent Test**: An existing user can log in and receive a valid JWT.
 
 ### Tests for User Story 2
-- [ ] T020 [P] [US2] Write integration test for login in `backend/tests/auth.test.ts` (should fail initially)
+- [X] T020 [P] [US2] Write integration test for login in `backend/tests/auth.test.ts` (should fail initially)
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implement `login` mutation resolver in `backend/src/api/auth.ts`
-- [ ] T022 [P] [US2] Create login form component in `frontend/src/components/LoginForm.tsx`
-- [ ] T023 [P] [US2] Create login page in `frontend/src/pages/Login.tsx`
-- [ ] T024 [US2] Implement GraphQL mutation for login in `frontend/src/services/auth.ts`
+- [X] T021 [US2] Implement `login` mutation resolver in `backend/src/api/auth.ts`
+- [X] T022 [P] [US2] Create login form component in `frontend/src/components/LoginForm.tsx`
+- [X] T023 [P] [US2] Create login page in `frontend/src/pages/Login.tsx`
+- [X] T024 [US2] Implement GraphQL mutation for login in `frontend/src/services/auth.ts`
 
 ---
 
@@ -90,13 +90,13 @@
 **Independent Test**: A logged-in user can log out, and their refresh token is invalidated.
 
 ### Tests for User Story 3
-- [ ] T025 [P] [US3] Write integration test for logout in `backend/tests/auth.test.ts` (should fail initially)
+- [X] T025 [P] [US3] Write integration test for logout in `backend/tests/auth.test.ts` (should fail initially)
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implement `logout` mutation resolver in `backend/src/api/auth.ts` to invalidate the refresh token.
-- [ ] T027 [P] [US3] Create logout button component in `frontend/src/components/LogoutButton.tsx`
-- [ ] T028 [US3] Add logout functionality to the application's UI (e.g., in the header).
+- [X] T026 [US3] Implement `logout` mutation resolver in `backend/src/api/auth.ts` to invalidate the refresh token.
+- [X] T027 [P] [US3] Create logout button component in `frontend/src/components/LogoutButton.tsx`
+- [X] T028 [US3] Add logout functionality to the application's UI (e.g., in the header).
 
 ---
 
@@ -104,11 +104,11 @@
 
 **Purpose**: Improvements that affect multiple user stories.
 
-- [ ] T029 Implement `refreshToken` mutation in `backend/src/api/auth.ts`
-- [ ] T030 [P] Implement rate limiting on login and registration endpoints.
-- [ ] T031 [P] Add logging for all authentication events.
-- [ ] T032 [P] Implement session expiration warning on the frontend.
-- [ ] T033 [P] Update `README.md` with instructions on running the new authentication services.
+- [X] T029 Implement `refreshToken` mutation in `backend/src/api/auth.ts`
+- [X] T030 [P] Implement rate limiting on login and registration endpoints.
+- [X] T031 [P] Add logging for all authentication events.
+- [X] T032 [P] Implement session expiration warning on the frontend.
+- [X] T033 [P] Update `README.md` with instructions on running the new authentication services.
 - [ ] T034 Run `quickstart.md` validation against the implemented API.
 
 ---
