@@ -1,4 +1,4 @@
-# GEMINI.md - IntelliFinance Project
+﻿# GEMINI.md - IntelliFinance Project
 
 This document provides a comprehensive overview of the IntelliFinance project, its architecture, and development practices to be used as a context for AI-assisted development.
 
