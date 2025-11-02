@@ -1,0 +1,34 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MockedProvider } from '@apollo/client/testing';
+import { AccountListPage } from '../AccountListPage';
+import { GET_ACCOUNTS } from '../queries';
+
+const mocks = [
+  {
+    request: {
+      query: GET_ACCOUNTS,
+    },
+    result: {
+      data: {
+        accounts: [
+          { id: '1', name: 'Test Account 1', type: 'CHECKING', institution: 'Test Bank 1' },
+          { id: '2', name: 'Test Account 2', type: 'SAVINGS', institution: 'Test Bank 2' },
+        ],
+      },
+    },
+  },
+];
+
+describe('AccountListPage', () => {
+  it('should render a list of accounts', async () => {
+    render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <AccountListPage />
+      </MockedProvider>
+    );
+
+    expect(await screen.findByText('Test Account 1')).toBeInTheDocument();
+    expect(await screen.findByText('Test Account 2')).toBeInTheDocument();
+  });
+});
