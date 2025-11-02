@@ -1,0 +1,8 @@
+node_modules/
+backend/coverage/
+frontend/coverage/
+frontend/public/index.js
+frontend_dev.log
+http_server.log
+backend/.env
+backend_server.log

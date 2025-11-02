@@ -103,33 +103,33 @@ graph TD
 
 ## 🚀 Getting Started (Local Environment)
 Follow these steps to set up and run the project on your local machine.
-Prerequisites
+### Prerequisites
 You will need to have the following tools installed:
  * Git
  * Node.js (v18.x or higher)
  * Docker and Docker Compose (to run Postgres and Redis)
 
-## Installation
+### Installation
 
 1. Clone the repository:
-git clone [https://github.com/YOUR-USER/YOUR-REPO.git](https://github.com/YOUR-USER/YOUR-REPO.git)
+```bash
+git clone https://github.com/YOUR-USER/YOUR-REPO.git
 cd YOUR-REPO
+```
 
 2. Configure Environment Variables:
-Create a .env file in the root of the backend and worker folders. You can copy from .env.example:
+Create a `.env` file in the `backend` directory.
 
 ```bash
 cp backend/.env.example backend/.env
-cp worker/.env.example worker/.env
 ```
 
-Edit the .env files and fill in the variables, especially:
- * DATABASE_URL: (e.g., postgresql://user:password@localhost:5432/intellifinance)
- * REDIS_URL: (e.g., redis://localhost:6379)
- * OPENAI_API_KEY or GEMINI_API_KEY: (Your LLM API key)
+Edit the `backend/.env` file and fill in the following variables:
+ * `ACCESS_TOKEN_SECRET`: A long, random string for signing access tokens.
+ * `REFRESH_TOKEN_SECRET`: A long, random string for signing refresh tokens.
 
 3. Start Infra Services (Postgres & Redis):
-This command will use docker-compose.yml to start the database and Redis in containers.
+This command will use `docker-compose.yml` to start the database and Redis in containers.
 
 ```bash
 docker-compose up -d
@@ -142,28 +142,19 @@ Terminal 1 - Backend
 cd backend
 npm install
 npm run db:migrate  # Applies database migrations
-npm run dev         # Starts the server at http://localhost:4000
+npm start         # Starts the server at http://localhost:4000
 ```
 
-5. Install and Run the Worker (Agents):
-Terminal 2 - Worker
-
-```bash
-cd worker
-npm install
-npm run dev         # Starts the worker that listens to the queue
-```
-
-6. Install and Run the Frontend (React):
-Terminal 3 - Frontend
+5. Install and Run the Frontend (React):
+Terminal 2 - Frontend
 
 ```bash
 cd frontend
 npm install
-npm run dev         # Starts the React app at http://localhost:3000
+npm start         # Starts the React app at http://localhost:8000
 ```
 
-Done! The application will be accessible at http://localhost:3000.
+Done! The application will be accessible at http://localhost:8000. You can navigate to `/register` to create an account and `/login` to log in.
 
 ## 📁 Repository Structure
 The project is organized as a "monorepo" (or "multirepo") to separate concerns:
@@ -181,15 +172,9 @@ The project is organized as a "monorepo" (or "multirepo") to separate concerns:
 │   ├── src/
 │   ├── package.json
 │   └── .env.example
-│
-└── 📁 worker/               # AI Agents Microservice (BullMQ Worker)
-    ├── src/
-    ├── package.json
-    └── .env.example
 
 ## 🤝 Contributing
 Contributions are welcome! Please read our CONTRIBUTING.md (to be created) to learn how to open Pull Requests and report Issues.
 
 ## 📜 License
 This project is licensed under the MIT License. See the LICENSE file for more details.
-

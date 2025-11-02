@@ -1,0 +1,19 @@
+# GraphQL Schema for User Authentication
+
+type User {
+  id: ID!
+  email: String!
+}
+
+type AuthPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Mutation {
+  register(email: String!, password: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  logout: Boolean!
+  refreshToken(token: String!): AuthPayload!
+}
