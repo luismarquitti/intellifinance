@@ -23,10 +23,10 @@
 
 **Purpose**: Project initialization and basic structure for the feature.
 
-- [ ] T001 [P] Configure Jest for backend tests in `backend/jest.config.js`
-- [ ] T002 [P] Configure Jest and React Testing Library for frontend tests in `frontend/jest.config.js`
-- [ ] T003 [P] Add `bcrypt` and `jsonwebtoken` dependencies to `backend/package.json`
-- [ ] T004 [P] Add `@types/bcrypt` and `@types/jsonwebtoken` dev dependencies to `backend/package.json`
+- [X] T001 [P] Configure Jest for backend tests in `backend/jest.config.js`
+- [X] T002 [P] Configure Jest and React Testing Library for frontend tests in `frontend/jest.config.js`
+- [X] T003 [P] Add `bcrypt` and `jsonwebtoken` dependencies to `backend/package.json`
+- [X] T004 [P] Add `@types/bcrypt` and `@types/jsonwebtoken` dev dependencies to `backend/package.json`
 
 ---
 
@@ -34,10 +34,10 @@
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented.
 
-- [ ] T005 Create `User` model in `backend/src/models/user.ts` based on `data-model.md`
-- [ ] T006 Create `RefreshToken` model in `backend/src/models/refreshToken.ts` based on `data-model.md`
-- [ ] T007 [P] Create database migration for `users` and `refresh_tokens` tables in `backend/migrations/`
-- [ ] T008 Implement authentication middleware in `backend/src/middleware/auth.ts` to verify JWTs.
+- [X] T005 Create `User` model in `backend/src/models/user.ts` based on `data-model.md`
+- [X] T006 Create `RefreshToken` model in `backend/src/models/refreshToken.ts` based on `data-model.md`
+- [X] T007 [P] Create database migration for `users` and `refresh_tokens` tables in `backend/migrations/`
+- [X] T008 Implement authentication middleware in `backend/src/middleware/auth.ts` to verify JWTs.
 
 ---
 
