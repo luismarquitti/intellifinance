@@ -73,6 +73,22 @@ The project is set up as a monorepo with three main components: `frontend`, `bac
 
 *   **Code Style:** The project uses Prettier and ESLint for code formatting and linting. Refer to the `.prettierrc` and `.eslintrc` files in each sub-project for specific rules.
 *   **Version Control:** The project follows the GitFlow branching model. All new features should be developed in feature branches and merged into the `develop` branch via pull requests.
-*   **Testing:** (TODO: Add details about the testing strategy, frameworks, and commands once they are established.)
+*   **Testing:** The agent must differentiate between test types and use the correct commands.
+
+    ### 4.1. Unit Tests
+    *   **When:** To test pure functions, business logic, or isolated components that DO NOT depend on a running server.
+    *   **Command:** `npm test` (or `yarn test`)
+    *   **Restriction:** The agent **MUST NOT** start a server (e.g., `npm run dev`) to execute this command.
+
+    ### 4.2. End-to-End (E2E) Tests
+    *   **When:** To test the full API flow (backend) or user interaction (frontend) that **NEEDS** a running server for HTTP requests.
+    *   **Restriction:** The agent **MUST NEVER** run `npm run dev` or `npm run start` directly and wait. This is a blocking process and will cause the agent to fail.
+    *   **Command (Backend):** To test the backend server, the agent **MUST** use the script:
+        ```bash
+        npm run ci:test:e2e
+        ```
+        (This script will manage the server lifecycle, run tests, and shut down.)
+
+    *   **Command (Frontend):** (Similar, e.g., `npm run ci:test:e2e:frontend`)
 *   **Commit Messages:** Commit messages should follow the Conventional Commits specification.
 *   **API:** The backend exposes a GraphQL API. All data interactions should go through this API.
