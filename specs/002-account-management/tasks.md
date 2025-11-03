@@ -26,10 +26,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T001 Create a database migration for the `financial_accounts` table in `backend/migrations/`
-- [ ] T002 [P] Create the `FinancialAccount` model in `backend/src/models/financialAccount.ts`
-- [ ] T003 [P] Define the GraphQL schema for `FinancialAccount` in `backend/src/graphql/schemas/financialAccount.graphql`
-- [ ] T004 Create the GraphQL resolvers structure for `FinancialAccount` in `backend/src/graphql/resolvers/financialAccount.ts`
+- [X] T001 Create a database migration for the `financial_accounts` table in `backend/migrations/`
+- [X] T002 [P] Create the `FinancialAccount` model in `backend/src/models/financialAccount.ts`
+- [X] T003 [P] Define the GraphQL schema for `FinancialAccount` in `backend/src/graphql/schemas/financialAccount.graphql`
+- [X] T004 Create the GraphQL resolvers structure for `FinancialAccount` in `backend/src/graphql/resolvers/financialAccount.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin.
 
@@ -47,16 +47,16 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T005 [P] [US1] Write a test for the `createAccount` mutation in `backend/tests/graphql/mutations/createAccount.test.ts`
-- [ ] T006 [P] [US1] Write a test for the `CreateAccountForm` component in `frontend/src/components/CreateAccountForm.test.tsx`
+- [X] T005 [P] [US1] Write a test for the `createAccount` mutation in `backend/tests/graphql/mutations/createAccount.test.ts`
+- [X] T006 [P] [US1] Write a test for the `CreateAccountForm` component in `frontend/src/components/CreateAccountForm.test.tsx`
 
 ### Implementation for User Story 1
 
 > Do not begin these tasks until T005 and T006 are complete and failing as expected.
 
-- [ ] T007 [US1] Implement the `createAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
-- [ ] T008 [P] [US1] Create the `CreateAccountForm` component in `frontend/src/components/CreateAccountForm.tsx`
-- [ ] T009 [P] [US1] Create the `AddAccountPage` in `frontend/src/pages/AddAccountPage.tsx` to host the form.
+- [X] T007 [US1] Implement the `createAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
+- [X] T008 [P] [US1] Create the `CreateAccountForm` component in `frontend/src/components/CreateAccountForm.tsx`
+- [X] T009 [P] [US1] Create the `AddAccountPage` in `frontend/src/pages/AddAccountPage.tsx` to host the form.
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently.
 
