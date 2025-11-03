@@ -72,16 +72,16 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T010 [P] [US2] Write a test for the `accounts` query in `backend/tests/graphql/queries/accounts.test.ts`
-- [ ] T011 [P] [US2] Write a test for the `AccountListPage` component in `frontend/src/pages/AccountListPage.test.tsx`
+- [X] T010 [P] [US2] Write a test for the `accounts` query in `backend/tests/graphql/queries/accounts.test.ts`
+- [X] T011 [P] [US2] Write a test for the `AccountListPage` component in `frontend/src/pages/AccountListPage.test.tsx`
 
 ### Implementation for User Story 2
 
 > Do not begin these tasks until T010 and T011 are complete and failing as expected.
 
-- [ ] T012 [US2] Implement the `accounts` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
-- [ ] T013 [P] [US2] Create the `AccountListItem` component in `frontend/src/components/AccountListItem.tsx`
-- [ ] T014 [P] [US2] Create the `AccountListPage` component in `frontend/src/pages/AccountListPage.tsx` to display the list of accounts.
+- [X] T012 [US2] Implement the `accounts` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
+- [X] T013 [P] [US2] Create the `AccountListItem` component in `frontend/src/components/AccountListItem.tsx`
+- [X] T014 [P] [US2] Create the `AccountListPage` component in `frontend/src/pages/AccountListPage.tsx` to display the list of accounts.
 
 **Checkpoint**: User Stories 1 AND 2 should both work independently.
 

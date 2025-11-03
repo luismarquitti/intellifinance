@@ -1,4 +1,8 @@
 node_modules/
+dist/
+build/
+*.log
+.env*
 backend/coverage/
 frontend/coverage/
 frontend/public/index.js
@@ -6,3 +10,9 @@ frontend_dev.log
 http_server.log
 backend/.env
 backend_server.log
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

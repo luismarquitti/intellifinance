@@ -2,8 +2,7 @@ import { hashPassword, comparePassword } from '../services/password';
 import { generateAccessToken, generateRefreshToken, verifyToken } from '../services/token';
 import { User } from '../models/user';
 import { logger } from '../logger';
-
-const users: User[] = [];
+import pool from '../db';
 
 // This will be our placeholder for invalidated refresh tokens.
 const invalidatedRefreshTokens = new Set<string>();
@@ -22,19 +21,16 @@ export const authResolvers = {
       if (password.length < 8) {
         throw new Error('Password must be at least 8 characters long.');
       }
-      const existingUser = users.find(user => user.email === email);
-      if (existingUser) {
+      const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+      if (existingUser.rows.length > 0) {
         throw new Error('User with this email already exists.');
       }
       const hashedPassword = await hashPassword(password);
-      const newUser: User = {
-        id: String(users.length + 1),
-        email,
-        passwordHash: hashedPassword,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      users.push(newUser);
+      const newUserResult = await pool.query(
+        'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING *',
+        [email, hashedPassword]
+      );
+      const newUser: User = newUserResult.rows[0];
       logger.info(`User ${email} registered successfully.`);
       const accessToken = generateAccessToken(newUser.id);
       const refreshToken = generateRefreshToken(newUser.id);
@@ -45,11 +41,12 @@ export const authResolvers = {
       if (!email || !password) {
         throw new Error('Email and password are required.');
       }
-      const user = users.find(user => user.email === email);
+      const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+      const user = result.rows[0];
       if (!user) {
         throw new Error('Invalid credentials.');
       }
-      const isMatch = await comparePassword(password, user.passwordHash);
+      const isMatch = await comparePassword(password, user.password_hash);
       if (!isMatch) {
         throw new Error('Invalid credentials.');
       }
@@ -79,7 +76,8 @@ export const authResolvers = {
       if (!payload) {
         throw new Error('Invalid refresh token.');
       }
-      const user = users.find(user => user.id === payload.userId);
+      const result = await pool.query('SELECT * FROM users WHERE id = $1', [payload.userId]);
+      const user = result.rows[0];
       if (!user) {
         throw new Error('User not found.');
       }

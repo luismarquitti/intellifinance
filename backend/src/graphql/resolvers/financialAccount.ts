@@ -1,27 +1,20 @@
 import { FinancialAccount } from '../../models/financialAccount';
-import { randomUUID } from 'crypto';
-
-export const financialAccounts: FinancialAccount[] = [];
+import pool from '../../db';
 
 const financialAccountResolvers = {
   Query: {
-    accounts: async (): Promise<FinancialAccount[]> => {
-      return financialAccounts;
+    accounts: async (_: any, __: any, context: { userId: string }): Promise<FinancialAccount[]> => {
+      const result = await pool.query('SELECT * FROM financial_accounts WHERE user_id = $1', [context.userId]);
+      return result.rows;
     },
   },
   Mutation: {
-    createAccount: async (_: any, { name, type, institution }: { name: string; type: 'CHECKING' | 'SAVINGS' | 'CREDIT_CARD' | 'INVESTMENT' | 'LOAN' | 'MORTGAGE'; institution: string }): Promise<FinancialAccount> => {
-      const newAccount: FinancialAccount = {
-        id: randomUUID(),
-        userId: '1', // Placeholder for now
-        name,
-        type,
-        institution,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      financialAccounts.push(newAccount);
-      return newAccount;
+    createAccount: async (_: any, { name, type, institution }: { name: string; type: string; institution: string }, context: { userId: string }): Promise<FinancialAccount> => {
+      const newAccountResult = await pool.query(
+        'INSERT INTO financial_accounts (user_id, name, type, institution) VALUES ($1, $2, $3, $4) RETURNING *',
+        [context.userId, name, type, institution]
+      );
+      return newAccountResult.rows[0];
     },
     updateAccount: async (_: any, { id, name, type, institution }: { id: string; name?: string; type?: string; institution?: string }): Promise<FinancialAccount | null> => {
       // TODO: Implement database logic
