@@ -1,38 +1,27 @@
+// analysis-workspace/docusaurus.config.ts
+
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const config: Config = {
-  title: 'HP Dev Agent - Analysis Dashboard',
-  tagline: 'Multi-Persona AI Agent System for JIRA Issue Analysis & Implementation',
+  title: 'IntelliFinance AI',
+  tagline: 'Documentação e Memória Persistente do Agente',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
+  // Configuração para publicação no GitHub Pages
+  url: 'https://your-github-org.github.io', // TODO: Substitua 'your-github-org' pelo nome da sua organização/usuário no GitHub
+  baseUrl: '/intellifinance/', // O nome do seu repositório
+  organizationName: 'your-github-org', // TODO: Substitua pelo nome da sua organização/usuário
+  projectName: 'intellifinance', // O nome do seu repositório
+  trailingSlash: false,
 
-  // Set the production url of your site here
-  url: 'https://localhost',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'hp-dev-agent', // HP Dev Agent organization
-  projectName: 'analysis-workspace', // Analysis workspace
-
-  onBrokenLinks: 'warn', // Changed to warn to allow development flexibility
-
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: 'pt-BR',
+    locales: ['pt-BR'],
   },
 
   presets: [
@@ -40,11 +29,12 @@ const config: Config = {
       'classic',
       {
         docs: {
-          routeBasePath: '/', // Make docs the root path
           sidebarPath: './sidebars.ts',
-          // editUrl removed - no edit links needed
+          // Aponta para o diretório de documentação correto
+          path: 'docs',
+          routeBasePath: '/', // Serve os docs na raiz do site
         },
-        blog: false, // Disable blog functionality
+        blog: false, // Desabilitado, pois não é necessário
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -52,45 +42,31 @@ const config: Config = {
     ],
   ],
 
+  // Habilita o suporte para diagramas Mermaid
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
-    colorMode: {
-      respectPrefersColorScheme: true,
-    },
+    // TODO: Adicionar imagem do logo
+    // image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'HP Dev Agent',
+      title: 'IntelliFinance AI',
       logo: {
-        alt: 'HP Dev Agent Logo',
+        alt: 'IntelliFinance Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'issuesSidebar',
+          sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Issues',
+          label: 'Documentação',
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'documentationSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'developmentSidebar',
-          position: 'left',
-          label: 'Development',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'analyticsSidebar',
-          position: 'left',
-          label: 'Analytics',
-        },
-        {
-          type: 'search',
+          href: 'https://github.com/your-github-org/intellifinance', // TODO: Atualizar link
+          label: 'GitHub',
           position: 'right',
         },
       ],
@@ -99,33 +75,29 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Analysis Dashboard',
+          title: 'Documentação',
           items: [
             {
-              label: 'All Issues',
-              to: '/',
+              label: 'Desenvolvimento (Controle SDD)',
+              to: '/development/plan',
+            },
+            {
+              label: 'Agentes e Ferramentas',
+              to: '/agents-and-tools',
             },
           ],
         },
         {
-          title: 'HP Dev Agent',
+          title: 'Mais',
           items: [
             {
-              label: 'Constitution',
-              to: '/constitution',
-            },
-            {
-              label: 'Workflows',
-              to: '/workflows',
-            },
-            {
-              label: 'Architecture',
-              to: '/architecture',
+              label: 'GitHub',
+              href: 'https://github.com/your-github-org/intellifinance', // TODO: Atualizar link
             },
           ],
         },
       ],
-      copyright: `HP Dev Agent © ${new Date().getFullYear()} - Multi-Persona AI Agent System`,
+      copyright: `Copyright © ${new Date().getFullYear()} IntelliFinance Project. Construído com Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
