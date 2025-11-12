@@ -97,16 +97,16 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T015 [P] [US3] Write a test for the `updateAccount` mutation in `backend/tests/graphql/mutations/updateAccount.test.ts`
-- [ ] T016 [P] [US3] Write a test for the `EditAccountForm` component in `frontend/src/components/EditAccountForm.test.tsx`
+- [X] T015 [P] [US3] Write a test for the `updateAccount` mutation in `backend/tests/graphql/mutations/updateAccount.test.ts`
+- [X] T016 [P] [US3] Write a test for the `EditAccountForm` component in `frontend/src/components/EditAccountForm.test.tsx`
 
 ### Implementation for User Story 3
 
 > Do not begin these tasks until T015 and T016 are complete and failing as expected.
 
-- [ ] T017 [US3] Implement the `updateAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
-- [ ] T018 [P] [US3] Create the `EditAccountForm` component in `frontend/src/components/EditAccountForm.tsx`
-- [ ] T019 [P] [US3] Create the `EditAccountPage` in `frontend/src/pages/EditAccountPage.tsx` to host the form.
+- [X] T017 [US3] Implement the `updateAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
+- [X] T018 [P] [US3] Create the `EditAccountForm` component in `frontend/src/components/EditAccountForm.tsx`
+- [X] T019 [P] [US3] Create the `EditAccountPage` in `frontend/src/pages/EditAccountPage.tsx` to host the form.
 
 **Checkpoint**: User Stories 1, 2, AND 3 should all work independently.
 
@@ -122,16 +122,16 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T020 [P] [US4] Write a test for the `deleteAccount` mutation in `backend/tests/graphql/mutations/deleteAccount.test.ts`
-- [ ] T021 [P] [US4] Write a test for the delete confirmation dialog in `frontend/src/components/DeleteAccountDialog.test.tsx`
+- [X] T020 [P] [US4] Write a test for the `deleteAccount` mutation in `backend/tests/graphql/mutations/deleteAccount.test.ts`
+- [X] T021 [P] [US4] Write a test for the delete confirmation dialog in `frontend/src/components/DeleteAccountDialog.test.tsx`
 
 ### Implementation for User Story 4
 
 > Do not begin these tasks until T020 and T021 are complete and failing as expected.
 
-- [ ] T022 [US4] Implement the `deleteAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
-- [ ] T023 [P] [US4] Create the `DeleteAccountDialog` component in `frontend/src/components/DeleteAccountDialog.tsx`
-- [ ] T024 [US4] Integrate the delete dialog into the `AccountListPage`.
+- [X] T022 [US4] Implement the `deleteAccount` resolver in `backend/src/graphql/resolvers/financialAccount.ts`
+- [X] T023 [P] [US4] Create the `DeleteAccountDialog` component in `frontend/src/components/DeleteAccountDialog.tsx`
+- [X] T024 [US4] Integrate the delete dialog into the `AccountListPage`.
 
 **Checkpoint**: All user stories should now be independently functional.
 
@@ -146,10 +146,10 @@
 - [ ] T028 [P] Performance: Add tests to ensure API response time < 300ms for 95% of requests and frontend page load < 2s.
 - [ ] T029 [P] Security: Add tests to verify authorization and data access controls for all account operations.
 - [ ] T030 [P] UX Consistency: Review and refine UI/UX for visual and interaction consistency across all new components/pages.
-- [ ] T031 [P] Edge Cases: Write and run tests for edge cases as defined in spec.md (e.g., duplicate account names, invalid input, max accounts per user).
-	- [ ] T031 [P] Edge Cases: Write and run tests for all edge cases listed in spec.md, including but not limited to: duplicate account names, invalid input, max accounts per user, and any others specified.
+- [X] T031 [P] Edge Cases: Write and run tests for edge cases as defined in spec.md (e.g., duplicate account names, invalid input, max accounts per user).
+	- [X] T031 [P] Edge Cases: Write and run tests for all edge cases listed in spec.md, including but not limited to: duplicate account names, invalid input, max accounts per user, and any others specified.
 
-- [ ] T025 [P] Add loading and error states to all frontend components.
+- [X] T025 [P] Add loading and error states to all frontend components.
 - [ ] T026 [P] Review and refine the UI/UX of the entire feature.
 - [ ] T027 Run all API examples in quickstart.md and verify outputs match documented results without errors.
 
