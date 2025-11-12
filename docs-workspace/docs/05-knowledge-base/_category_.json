@@ -1,0 +1,8 @@
+{
+  "label": "05 - Knowledge Base",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Technical articles, tool documentation, and research notes."
+  }
+}
