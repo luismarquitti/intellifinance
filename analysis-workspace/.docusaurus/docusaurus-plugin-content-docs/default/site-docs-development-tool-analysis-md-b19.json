@@ -1,0 +1,36 @@
+{
+  "id": "development/tool-analysis",
+  "title": "Tool Integration Analysis",
+  "description": "Comprehensive analysis of MCP tools and integration requirements for Phase 8",
+  "source": "@site/docs/development/tool-analysis.md",
+  "sourceDirName": "development",
+  "slug": "/development/tool-analysis",
+  "permalink": "/development/tool-analysis",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 8,
+  "frontMatter": {
+    "sidebar_position": 8,
+    "title": "Tool Integration Analysis",
+    "description": "Comprehensive analysis of MCP tools and integration requirements for Phase 8",
+    "custom_metadata": {
+      "type": "analysis-document",
+      "category": "planning",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    "created": "2025-11-11T00:00:00.000Z",
+    "last_updated": "2025-11-11T00:00:00.000Z"
+  },
+  "sidebar": "developmentSidebar",
+  "previous": {
+    "title": "DevTools Integration Plan",
+    "permalink": "/development/dev_tools_integration"
+  },
+  "next": {
+    "title": "Phase 5 Summary",
+    "permalink": "/development/summaries/phase-5-summary"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "index",
+          "docs": [
+            {
+              "id": "analytics/index",
+              "path": "/analytics",
+              "sidebar": "analyticsSidebar"
+            },
+            {
+              "id": "development/changelog",
+              "path": "/development/changelog",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/code-state",
+              "path": "/development/code-state",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/dev_tools_integration",
+              "path": "/development/dev_tools_integration",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/index",
+              "path": "/development/",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/plan",
+              "path": "/development/plan",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/sdd-workflow",
+              "path": "/development/sdd-workflow",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/specs",
+              "path": "/development/specs",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/summaries/docusaurus-concepts",
+              "path": "/development/summaries/docusaurus-concepts",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/summaries/init-concepts",
+              "path": "/development/summaries/init-concepts",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/summaries/phase-5-summary",
+              "path": "/development/summaries/phase-5-summary",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/todo",
+              "path": "/development/todo",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "development/tool-analysis",
+              "path": "/development/tool-analysis",
+              "sidebar": "developmentSidebar"
+            },
+            {
+              "id": "documentation/index",
+              "path": "/documentation",
+              "sidebar": "documentationSidebar"
+            },
+            {
+              "id": "index",
+              "path": "/"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-47475/epic-comparison",
+              "path": "/jira-issues/HPXAPPS-47475/epic-comparison",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-47475/feature-flags-evidence",
+              "path": "/jira-issues/HPXAPPS-47475/feature-flags-evidence",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-47475/index",
+              "path": "/jira-issues/HPXAPPS-47475/",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-47475/issue-description",
+              "path": "/jira-issues/HPXAPPS-47475/issue-description",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-47475/quick-reference",
+              "path": "/jira-issues/HPXAPPS-47475/quick-reference",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/HPXAPPS-EXAMPLE/index",
+              "path": "/jira-issues/HPXAPPS-EXAMPLE/",
+              "sidebar": "issuesSidebar"
+            },
+            {
+              "id": "jira-issues/index",
+              "path": "/jira-issues",
+              "sidebar": "issuesSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "issuesSidebar": {
+              "link": {
+                "path": "/jira-issues",
+                "label": "JIRA Issues"
+              }
+            },
+            "documentationSidebar": {
+              "link": {
+                "path": "/documentation",
+                "label": "Documentation"
+              }
+            },
+            "developmentSidebar": {
+              "link": {
+                "path": "/development/",
+                "label": "Development"
+              }
+            },
+            "analyticsSidebar": {
+              "link": {
+                "path": "/analytics",
+                "label": "Analytics"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

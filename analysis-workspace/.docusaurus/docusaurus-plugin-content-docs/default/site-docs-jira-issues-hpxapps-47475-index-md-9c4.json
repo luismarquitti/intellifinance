@@ -1,0 +1,37 @@
+{
+  "id": "jira-issues/HPXAPPS-47475/index",
+  "title": "HPXAPPS-47475: Migration Flow Wrong Button",
+  "description": "Analysis of Windows migration flow showing wrong button - a LaunchDarkly rule evaluation issue",
+  "source": "@site/docs/jira-issues/HPXAPPS-47475/index.md",
+  "sourceDirName": "jira-issues/HPXAPPS-47475",
+  "slug": "/jira-issues/HPXAPPS-47475/",
+  "permalink": "/jira-issues/HPXAPPS-47475/",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "HPXAPPS-47475: Migration Flow Wrong Button",
+    "description": "Analysis of Windows migration flow showing wrong button - a LaunchDarkly rule evaluation issue",
+    "custom_metadata": {
+      "issue_id": "HPXAPPS-47475",
+      "classification": "bug",
+      "status": "completed",
+      "repository": "react-adddevice-mfe",
+      "analyst": "AI Agent (GitHub Copilot)",
+      "analysis_date": "2025-11-08",
+      "confidence_level": "high"
+    }
+  },
+  "sidebar": "issuesSidebar",
+  "previous": {
+    "title": "🎯 JIRA Issues Dashboard",
+    "permalink": "/jira-issues"
+  },
+  "next": {
+    "title": "Feature Flags Evidence",
+    "permalink": "/jira-issues/HPXAPPS-47475/feature-flags-evidence"
+  }
+}

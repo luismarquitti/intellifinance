@@ -1,0 +1,35 @@
+{
+  "id": "development/sdd-workflow",
+  "title": "SDD Workflow Guide",
+  "description": "Spec-Driven Development workflow adapted for HP Dev Agent development using existing agent personas",
+  "source": "@site/docs/development/sdd-workflow.md",
+  "sourceDirName": "development",
+  "slug": "/development/sdd-workflow",
+  "permalink": "/development/sdd-workflow",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 7,
+  "frontMatter": {
+    "sidebar_position": 7,
+    "title": "SDD Workflow Guide",
+    "description": "Spec-Driven Development workflow adapted for HP Dev Agent development using existing agent personas",
+    "custom_metadata": {
+      "type": "control-file",
+      "category": "workflow",
+      "status": "active"
+    },
+    "created": "2025-11-10T00:30:00.000Z",
+    "last_updated": "2025-11-10T00:30:00.000Z"
+  },
+  "sidebar": "developmentSidebar",
+  "previous": {
+    "title": "TODO - Quick Capture",
+    "permalink": "/development/todo"
+  },
+  "next": {
+    "title": "DevTools Integration Plan",
+    "permalink": "/development/dev_tools_integration"
+  }
+}

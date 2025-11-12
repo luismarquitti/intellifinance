@@ -78,6 +78,15 @@ This constitution defines the **inviolable rules** that ALL agent personas MUST 
   - Mark in-progress tasks with 🔄
   - Mark pending tasks with ⏸️
   - Include deliverables and success criteria
+
+### 1.6 GitHub Copilot Integration
+- **Primary Interface**: GitHub Copilot users should interact through `.github/copilot-instructions.md`
+- **Master Orchestrator**: Use `/master` command (`.github/prompts/master.prompt.md`) as the main entry point
+- **Spec-Kit Commands**: Copilot integrates with Spec-Kit workflow (`/specify`, `/plan`, `/implement`)
+- **Agent Routing**: The Master Orchestrator automatically routes to appropriate agent personas from `.ai/agents/`
+- **Constitutional Compliance**: All Copilot interactions MUST follow the same constitutional rules as direct agent invocations
+- **Prompt Files**: Specialized prompts in `.github/prompts/` bridge Copilot chat with agent system
+- **Documentation**: Complete usage guide in `.github/copilot-instructions.md` and `AGENTS.md`
   - Add timestamps for phase completion
 
 **Example Plan Entry**:

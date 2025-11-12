@@ -113,3 +113,276 @@ Este documento serve como um manifesto para todos os agentes de IA que operam ne
     -   Uma mensagem de commit formatada (Conventional Commits).
     -   Uma descrição de Pull Request abrangente.
     -   Um pacote de entrega final apresentado ao usuário para aprovação das operações Git.
+
+---
+
+## 🤝 GitHub Copilot Integration
+
+Este sistema de agentes está integrado com GitHub Copilot através do **Master Orchestrator** (`.github/prompts/master.prompt.md`) e prompts especializados.
+
+### Como Usar com GitHub Copilot
+
+**Ponto de Entrada Principal**: `/master`
+
+O Master Orchestrator analisa o estado do projeto e roteia automaticamente para o agente apropriado ou comando Spec-Kit.
+
+### Mapeamento: Agentes → Prompts
+
+#### 🎯 Orchestrator Agent (00)
+
+**GitHub Copilot Usage**:
+- **Comando**: `/master`
+- **Prompt**: `.github/prompts/master.prompt.md`
+- **Quando invocar**: Sempre como ponto inicial, ou quando incerto sobre próximos passos
+
+**Funcionalidade**:
+- Detecta contexto atual (branch, feature, fase)
+- Apresenta menu de ações disponíveis
+- Roteia para agentes especializados
+- Enforça constituição e approval gates
+
+**Exemplo**:
+```text
+/master
+
+→ Analisa estado do projeto
+→ Apresenta menu contextual
+→ Roteia para workflow apropriado
+```
+
+---
+
+#### 📋 TPM/PO Agent (01)
+
+**GitHub Copilot Usage**:
+- **Comando**: `/specify [feature description]`
+- **Prompt**: `.github/prompts/specify.prompt.md` + `002-spec-writer.prompt.md`
+- **Quando invocar**: Iniciar nova feature, criar especificação
+
+**Funcionalidade**:
+- Analisa requisitos em linguagem natural
+- Cria estrutura de feature em `specs/NNN-feature/`
+- Gera `spec.md` com user stories e critérios de aceitação
+- Inicializa checklists de qualidade
+
+**Exemplo**:
+```text
+/specify User authentication with email and password
+
+→ Cria branch 003-user-auth
+→ Gera specs/003-user-auth/spec.md
+→ Inicializa checklists/
+```
+
+**Invocação via Master**:
+```text
+"I need to analyze requirements for a new feature"
+→ Master roteia para TPM/PO Agent
+```
+
+---
+
+#### 🏛️ Architect Agent (02)
+
+**GitHub Copilot Usage**:
+- **Comando**: `/plan`
+- **Prompt**: `.github/prompts/plan.prompt.md` + `003-plan-generator.prompt.md`
+- **Quando invocar**: Após spec completo, para planejamento técnico
+
+**Funcionalidade**:
+- Lê `spec.md` da feature atual
+- Gera `plan.md` com decisões técnicas
+- Cria `data-model.md` com entidades e schemas
+- Define contratos de API em `contracts/`
+- Produz `tasks.md` com tarefas granulares
+
+**Exemplo**:
+```text
+/plan
+
+→ Lê specs/003-user-auth/spec.md
+→ Gera plan.md, data-model.md
+→ Cria contracts/api.yaml
+→ Produz tasks.md com 12 tarefas
+```
+
+**Invocação via Master**:
+```text
+"How should I architect the authentication system?"
+→ Master roteia para Architect Agent
+```
+
+---
+
+#### 🧪 QA/Tester Agent (04)
+
+**GitHub Copilot Usage**:
+- **Comando**: Invocado automaticamente pelo TDD Enforcer
+- **Prompt**: `.github/prompts/tdd-enforcer.prompt.md`
+- **Quando invocar**: Antes de qualquer implementação, para escrever testes
+
+**Funcionalidade**:
+- Valida que testes existem antes de implementação
+- Escreve especificações de teste (Red phase)
+- Valida cobertura >80%
+- Executa quality gates (lint, build, tests)
+
+**Exemplo**:
+```text
+"I want to implement user login"
+→ Master detecta falta de testes
+→ Roteia para TDD Enforcer
+→ QA Agent escreve testes falhando
+→ Developer Agent implementa código
+```
+
+**Invocação direta**:
+```text
+"Write tests for the authentication service"
+→ Master roteia para QA Agent
+→ Gera arquivos .test.ts com casos de teste
+```
+
+---
+
+#### 👨‍💻 Developer Agent (03)
+
+**GitHub Copilot Usage**:
+- **Comando**: `/implement`
+- **Prompt**: `.github/prompts/implement.prompt.md` + `004-start-implementation.prompt.md`
+- **Quando invocar**: Após testes escritos e falhando (TDD Red phase)
+
+**Funcionalidade**:
+- Valida que testes existem (via TDD Enforcer)
+- Lê `tasks.md` para lista de tarefas
+- Implementa código que faz testes passarem (Green phase)
+- Atualiza progresso em `tasks.md`
+
+**Exemplo**:
+```text
+/implement
+
+→ Valida testes existem e falham
+→ Lê specs/003-user-auth/tasks.md
+→ Implementa tarefas 1-12
+→ Marca tarefas como completas [x]
+```
+
+**Invocação via Master**:
+```text
+"Implement the login functionality"
+→ Master checa TDD compliance
+→ Se testes OK: roteia para Developer Agent
+→ Se testes faltando: roteia para QA Agent primeiro
+```
+
+---
+
+#### ✍️ Writer Agent (05)
+
+**GitHub Copilot Usage**:
+- **Comando**: Invocado manualmente após implementação
+- **Prompt**: `.github/prompts/009-changelog-updater.prompt.md`
+- **Quando invocar**: Feature completa, para documentação e git operations
+
+**Funcionalidade**:
+- Atualiza `CHANGELOG.md` com mudanças
+- Gera mensagem de commit (Conventional Commits)
+- Cria descrição de Pull Request
+- Executa git operations (somente com aprovação)
+
+**Exemplo**:
+```text
+"Generate commit message and update changelog"
+→ Master roteia para Writer Agent
+→ Gera commit message: "feat(auth): implement user authentication"
+→ Atualiza CHANGELOG.md
+→ Apresenta para aprovação ⏸️ STOP
+```
+
+**Invocação via Master**:
+```text
+"Document the authentication feature"
+→ Master roteia para Writer Agent
+```
+
+---
+
+### Utilitários Auxiliares
+
+Além dos agentes principais, existem prompts utilitários acessíveis via Master:
+
+| Utilitário | Arquivo | Comando/Invocação |
+|-----------|---------|-------------------|
+| **TDD Enforcer** | `tdd-enforcer.prompt.md` | Automático antes de `/implement` |
+| **Agent Router** | `agent-router.prompt.md` | Interno do Master |
+| **Alignment Checker** | `007-alignment-checker.prompt.md` | "Check alignment" via Master |
+| **State Analyzer** | `006-state-analyzer.prompt.md` | "Analyze project state" via Master |
+| **Sync Orchestrator** | `0000-sync-orchestrator.prompt.md` | "Run weekly sync" via Master |
+| **TODO Integrator** | `005-todo-integrator.prompt.md` | "Consolidate tasks" via Master |
+
+---
+
+### Fluxo Completo de Desenvolvimento
+
+**Cenário**: Desenvolver nova feature do zero
+
+```text
+1. Usuário: /master
+   → Master: "Pronto para nova feature! [A] Iniciar nova feature"
+
+2. Usuário: Escolhe [A]
+   → Master: "Use /specify para criar spec"
+
+3. Usuário: /specify "Payment processing with credit cards"
+   → TPM/PO Agent: Cria specs/003-payment/spec.md
+   → ⏸️ STOP: "Spec completo. Aprovar?"
+
+4. Usuário: Aprova
+   → Master: "Use /plan para design técnico"
+
+5. Usuário: /plan
+   → Architect Agent: Cria plan.md, data-model.md, contracts/
+   → ⏸️ STOP: "Plan completo. Aprovar?"
+
+6. Usuário: Aprova
+   → Master: "Use /implement para executar"
+
+7. Usuário: /implement
+   → TDD Enforcer: Verifica testes
+   → QA Agent: Escreve testes falhando (Red)
+   → ⏸️ STOP: "Testes prontos. Aprovar implementação?"
+
+8. Usuário: Aprova
+   → Developer Agent: Implementa código (Green)
+   → QA Agent: Valida cobertura >80%, gates OK (Refactor)
+   → ⏸️ STOP: "Implementação completa. Aprovar?"
+
+9. Usuário: Aprova
+   → Master: "Pronto para documentação. Invocar Writer?"
+
+10. Usuário: Sim
+    → Writer Agent: Atualiza CHANGELOG, gera commit msg, PR description
+    → ⏸️ STOP: "Autorizar git operations?"
+
+11. Usuário: Autoriza
+    → Writer Agent: git add, commit, push
+    → ✅ Feature completa!
+```
+
+---
+
+### Dicas de Uso
+
+1. **Sempre comece com `/master`** - Ele detecta o contexto e sugere a ação correta
+2. **Siga os approval gates** - Não tente pular fases
+3. **Respeite o TDD** - Testes sempre primeiro
+4. **Use linguagem natural** - O Master entende intenções
+5. **Confie no roteamento** - O sistema escolhe o agente correto
+
+**Regra de Ouro**: Quando em dúvida → `/master`
+
+---
+
+**Última atualização**: 2025-11-12  
+**Versão**: 2.0 (com GitHub Copilot Integration)

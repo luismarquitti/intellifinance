@@ -1,0 +1,36 @@
+{
+  "id": "development/code-state",
+  "title": "Code State Snapshot",
+  "description": "Current architecture and implementation status of HP Dev Agent system v1.4.0",
+  "source": "@site/docs/development/code-state.md",
+  "sourceDirName": "development",
+  "slug": "/development/code-state",
+  "permalink": "/development/code-state",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "Code State Snapshot",
+    "description": "Current architecture and implementation status of HP Dev Agent system v1.4.0",
+    "custom_metadata": {
+      "type": "control-file",
+      "category": "technical",
+      "status": "active",
+      "version": "1.4.0"
+    },
+    "created": "2025-11-10T00:00:00.000Z",
+    "last_updated": "2025-11-10T16:30:00.000Z"
+  },
+  "sidebar": "developmentSidebar",
+  "previous": {
+    "title": "Project Plan",
+    "permalink": "/development/plan"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/development/changelog"
+  }
+}

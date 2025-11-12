@@ -1,0 +1,38 @@
+{
+  "id": "development/changelog",
+  "title": "Changelog",
+  "description": "Immutable audit trail of all changes to HP Dev Agent system (v1.4.0 - Workflow & Analytics)",
+  "source": "@site/docs/development/changelog.md",
+  "sourceDirName": "development",
+  "slug": "/development/changelog",
+  "permalink": "/development/changelog",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4,
+    "title": "Changelog",
+    "description": "Immutable audit trail of all changes to HP Dev Agent system (v1.4.0 - Workflow & Analytics)",
+    "custom_metadata": {
+      "type": "control-file",
+      "category": "audit",
+      "status": "active",
+      "version": "1.4.0",
+      "latest_version": "1.4.0",
+      "entry_count": 12
+    },
+    "created": "2025-11-10T00:00:00.000Z",
+    "last_updated": "2025-11-10T16:30:00.000Z"
+  },
+  "sidebar": "developmentSidebar",
+  "previous": {
+    "title": "Code State Snapshot",
+    "permalink": "/development/code-state"
+  },
+  "next": {
+    "title": "Feature Specifications",
+    "permalink": "/development/specs"
+  }
+}
