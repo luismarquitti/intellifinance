@@ -1,0 +1,14 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "yarn workspaces foreach -p -v run start",
+    "build": "yarn workspaces foreach -p -v run build",
+    "test": "yarn workspaces foreach -p -v run test"
+  }
+}
