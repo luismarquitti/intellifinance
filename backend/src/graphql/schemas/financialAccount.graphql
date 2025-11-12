@@ -18,6 +18,7 @@ type FinancialAccount {
 
 type Query {
   accounts: [FinancialAccount!]!
+  account(id: ID!): FinancialAccount
 }
 
 type Mutation {
