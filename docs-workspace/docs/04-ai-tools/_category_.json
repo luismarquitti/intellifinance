@@ -1,0 +1,8 @@
+{
+  "label": "04 - AI Tools",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "AI agent system, GitHub Copilot integration, Gemini CLI, and constitution governing agent behavior."
+  }
+}
