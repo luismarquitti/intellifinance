@@ -1,7 +1,11 @@
 import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@as-integrations/express4';
 import rateLimit from 'express-rate-limit';
 import { authResolvers } from './api/auth';
+import { gql } from 'graphql-tag';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const typeDefs = gql`
   type Query {
@@ -41,10 +45,11 @@ async function startServer() {
 
   const server = new ApolloServer({ typeDefs, resolvers: authResolvers });
   await server.start();
-  server.applyMiddleware({ app });
+
+  app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server));
 
   app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+    console.log(`🚀 Server ready at http://localhost:4000/graphql`)
   );
 }
 

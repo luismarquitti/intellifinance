@@ -1,38 +1,50 @@
-## Copilot / AI agent instructions for IntelliFinance
+# Instruções para o GitHub Copilot no Projeto IntelliFinance
 
-Keep guidance short and code-focused. This repository is a small monorepo with three main services: `frontend/` (React), `backend/` (Node/Express + GraphQL), and `worker/` (BullMQ agents). Key infra: PostgreSQL (source of truth), PGVector (RAG/memory), Redis (BullMQ queue), and Docker Compose for local setup.
+Este documento define as diretrizes que o GitHub Copilot e outros agentes de IA devem seguir ao gerar ou modificar código neste repositório. O objetivo é manter a consistência, a qualidade e a aderência aos padrões do projeto.
 
-What to prioritize when editing or generating code
-- Preserve the async job pattern: the API enqueues Jobs in Redis (BullMQ) and returns a jobId; the `worker` consumes jobs and calls the API to persist results. See `Readme.md` top-level architecture section.
-- Environment variables live per-service: `backend/.env.example`, `worker/.env.example`, `frontend/.env.example`. When adding code that reads env vars, follow the existing keys and error modes (fail-fast if DB/Redis keys are missing).
-- Storage and memory: PGVector is used for RAG. Prefer small, explicit DB and vector ops in `worker` utilities rather than embedding heavy LLM calls directly in the API.
+## 1. Princípios Fundamentais
 
-Quick dev commands (use these examples in generated scripts or docs)
-- Start infra: `docker-compose up -d` (root)
-- Backend: `cd backend && npm install && npm run db:migrate && npm run dev`
-- Worker: `cd worker && npm install && npm run dev`
-- Frontend: `cd frontend && npm install && npm run dev`
+-   **Aderência ao TDD (Test-Driven Development):** **SEMPRE escreva testes primeiro.** Antes de implementar qualquer lógica de produção, deve haver um teste correspondente que falhe. Siga o ciclo "Vermelho-Verde-Refatorar". A cobertura de testes para novas funcionalidades deve ser **superior a 80%**.
 
-Where to look for patterns / examples
-- Job enqueue: search backend for BullMQ producer code and queue names (API handlers that create jobs).
-- Worker pipelines: open `worker/src` for orchestrator/agent patterns — job handling, tool invocations (PDF parsing, RAG retrieval), and GraphQL API calls.
-- DB & migrations: inspect `backend` package.json scripts and migration setup (used via `npm run db:migrate`).
+-   **Uso Obrigatório do `yarn`:** Este projeto usa `yarn` como gerenciador de pacotes. **NUNCA use `npm`**. Todos os comandos de instalação, execução de scripts e gerenciamento de dependências devem usar `yarn` (ex: `yarn install`, `yarn add`, `yarn test`).
 
-Integration notes and gotchas
-- Local dev assumes Postgres + Redis started by `docker-compose`; ensure `DATABASE_URL` and `REDIS_URL` are set from the `.env` files.
-- On Windows recommend Docker Desktop + WSL2 (see `Dev_Env.md`), especially when debugging worker + PGVector.
-- LLM keys: code must read `OPENAI_API_KEY` or `GEMINI_API_KEY` from envs; do not hard-code keys in generated code or examples.
+-   **Padrões de Código e Estilo:**
+    -   Siga rigorosamente os padrões de código existentes no arquivo que você está editando.
+    -   Use `camelCase` para nomes de variáveis e funções.
+    -   Use `PascalCase` para nomes de classes e componentes React.
+    -   Mantenha a consistência com o estilo de importação/exportação (módulos ES) e a formatação geral.
 
-Tests, linting and style
-- Use existing TypeScript/JS conventions in services. If you generate new files, keep TypeScript types and follow existing import styles (ES modules / common patterns shown in each package).
+-   **Proibição de Operações Git Destrutivas:** **NUNCA execute `git commit`, `git push` ou crie Pull Requests.** Essas ações são estritamente controladas e delegadas ao **Agente Escritor (`05_writer`)** sob aprovação explícita do usuário. Seu papel é gerar código e testes, não gerenciar o versionamento.
 
-If unsure where to change behavior
-- Trace the flow: frontend -> backend (enqueue) -> Redis -> worker (process) -> backend (persist). Modify the component closest to the change: e.g., change job shape in backend enqueue and mirror the change in worker job handler.
+## 2. Contexto da Arquitetura
 
-Add references to these files when changing behavior:
-- `Readme.md` (root) — overall architecture and commands
-- `backend/.env.example`, `worker/.env.example`, `frontend/.env.example`
-- `docker-compose.yml` (root)
+-   **Padrão de Job Assíncrono:** Lembre-se do fluxo principal: o `backend` (API) enfileira jobs no Redis (usando BullMQ), e o `worker` os processa.
+    -   Ao adicionar uma nova tarefa assíncrona, crie o produtor do job no `backend` e o consumidor correspondente no `worker`.
+    -   Para exemplos, procure por código de produtor BullMQ no `backend` e manipuladores de job no `worker`.
 
-When done: ask the human for context or a failing test/log if behavior is unclear.
+-   **Variáveis de Ambiente:** As configurações são por serviço (ex: `backend/.env.example`). Ao adicionar código que depende de novas variáveis, atualize o arquivo `.env.example` correspondente.
 
+-   **Banco de Dados e Migrações:** As migrações de esquema do PostgreSQL são gerenciadas no diretório `backend/migrations` e executadas com `yarn db:migrate`.
+
+## 3. Comandos Rápidos de Desenvolvimento
+
+Use estes comandos como referência em documentação ou scripts gerados:
+
+-   **Iniciar Infraestrutura:** `docker-compose up -d` (na raiz)
+-   **Backend:** `cd backend && yarn install && yarn db:migrate && yarn dev`
+-   **Worker:** `cd worker && yarn install && yarn dev`
+-   **Frontend:** `cd frontend && yarn install && yarn dev`
+-   **Testes Unitários:** `yarn test` (dentro do diretório do serviço)
+-   **Testes E2E (Backend):** `yarn ci:test:e2e` (requer que o servidor NÃO esteja rodando)
+
+## 4. Onde Encontrar Padrões
+
+-   **Enfileiramento de Jobs:** Pesquise no `backend` por `BullMQ` para ver como os jobs são criados e enfileirados.
+-   **Processamento de Jobs:** Abra `worker/src` para ver os padrões de orquestração e processamento de jobs.
+-   **Operações de Banco de Dados:** Inspecione os scripts em `backend/package.json` e as migrações existentes.
+
+## 5. Pontos de Atenção
+
+-   O desenvolvimento local assume que o PostgreSQL e o Redis estão em execução via `docker-compose`.
+-   Chaves de LLM (ex: `OPENAI_API_KEY`) devem ser lidas a partir de variáveis de ambiente, **nunca codificadas diretamente**.
+-   Se não tiver certeza sobre onde alterar um comportamento, trace o fluxo: `frontend` -> `backend` (enfileirar) -> `Redis` -> `worker` (processar) -> `backend` (persistir). Modifique o componente mais próximo da mudança.

@@ -109,7 +109,7 @@
 - [X] T031 [P] Add logging for all authentication events.
 - [X] T032 [P] Implement session expiration warning on the frontend.
 - [X] T033 [P] Update `README.md` with instructions on running the new authentication services.
-- [ ] T034 Run `quickstart.md` validation against the implemented API.
+- [X] T034 Run `quickstart.md` validation against the implemented API. (Could not be fully verified due to environment limitations)
 
 ---
 

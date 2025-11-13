@@ -1,78 +1,117 @@
-﻿# GEMINI.md - IntelliFinance Project
+# GEMINI.md - Instruções Específicas do Agente Gemini para o Projeto IntelliFinance
 
-This document provides a comprehensive overview of the IntelliFinance project, its architecture, and development practices to be used as a context for AI-assisted development.
+Este documento fornece um overview abrangente do projeto IntelliFinance, sua arquitetura e práticas de desenvolvimento, servindo como contexto para o desenvolvimento assistido por IA com o Gemini.
 
-## 1. Project Overview
+## 1. Visão Geral do Projeto
 
-IntelliFinance is a proactive personal financial advisor powered by AI agents. It's a full-stack application built with a microservices architecture, designed to automate financial data management and provide users with intelligent insights into their spending habits.
+IntelliFinance é um consultor financeiro pessoal proativo alimentado por agentes de IA. É uma aplicação full-stack construída com uma arquitetura de microsserviços, projetada para automatizar a gestão de dados financeiros e fornecer aos usuários insights inteligentes sobre seus hábitos de consumo.
 
-The core technologies are:
+As tecnologias principais são:
 
 *   **Frontend:** React, TypeScript, Apollo Client
 *   **Backend (API):** Node.js, Express, GraphQL (Apollo Server), TypeScript
-*   **AI Agents (Worker):** Python, BullMQ (for job queuing)
-*   **Database:** PostgreSQL (for relational data), pgvector (for AI memory/RAG)
-*   **Infrastructure:** Redis (for job queue), Docker, Docker Compose
+*   **Agentes de IA (Worker):** Python, BullMQ (para enfileiramento de jobs)
+*   **Banco de Dados:** PostgreSQL (para dados relacionais), pgvector (para memória de IA/RAG)
+*   **Infraestrutura:** Redis (para fila de jobs), Docker, Docker Compose
 
-The system is designed to be asynchronous. The frontend communicates with the backend API, which enqueues jobs for the AI agents. The agents then process the data, interacting with the database and external services as needed.
+O sistema é projetado para ser assíncrono. O frontend se comunica com a API de backend, que enfileira jobs para os agentes de IA. Os agentes então processam os dados, interagindo com o banco de dados e serviços externos conforme necessário.
 
-## 2. Building and Running the Project
+## 2. Instruções Críticas de Operação para o Gemini
 
-The project is set up as a monorepo with three main components: `frontend`, `backend`, and `worker`. Docker is used to manage the database and Redis services.
+### Instrução Crítica 1: Operar sob a Supervisão do Orquestrador
+**SEMPRE** opere sob a supervisão do **Agente Orquestrador (`00_orchestrator`)**. Para qualquer tarefa que envolva múltiplos passos ou a colaboração de diferentes especialidades (análise, planejamento, desenvolvimento, QA), o Orquestrador é o único ponto de entrada. Não execute fluxos de trabalho complexos de forma autônoma. Aguarde a delegação do Orquestrador.
 
-### Prerequisites
+### Instrução Crítica 2: Aderir à Constituição SDD (Spec-Driven Development)
+A constituição do projeto (`.ai/constitution.md`) define regras invioláveis para manter a consistência e a memória do projeto.
+
+-   **ANTES de começar o trabalho:**
+    1.  **LEIA `analysis-workspace/docs/development/SPECS.md`** para entender os requisitos da feature.
+    2.  **LEIA `analysis-workspace/docs/development/PLAN.md`** para entender as tarefas específicas, suas dependências e critérios de aceitação.
+    3.  **LEIA `analysis-workspace/docs/development/CODE-STATE.md`** para entender a arquitetura atual e o estado da implementação.
+
+-   **APÓS concluir uma tarefa que altera o código:**
+    1.  **REESCREVA COMPLETAMENTE `analysis-workspace/docs/development/CODE-STATE.md`**: Use o fluxo de trabalho `state-analyzer` do Arquiteto para garantir que o documento reflita com precisão a nova arquitetura. **Não anexe; reescreva.**
+    2.  **ANEXE ao `analysis-workspace/docs/development/CHANGELOG.md`**: Use o fluxo de trabalho `changelog-updater` do Escritor para documentar o que mudou, por que mudou e qual foi o comando que iniciou a mudança.
+
+### Instrução Crítica 3: Respeitar os Portões de Aprovação do Fluxo de Trabalho
+**NUNCA pule** os portões de aprovação (`⏸️ STOP`) definidos no fluxo de trabalho SDD. O processo é estritamente sequencial para garantir qualidade e alinhamento.
+
+**Fluxo de Trabalho Gated:**
+1.  **Análise (TPM/PO)** → Gera `SPECS.md` → `⏸️ STOP` (Aguarde aprovação)
+2.  **Planejamento (Arquiteto)** → Gera `PLAN.md` → `⏸️ STOP` (Aguarde aprovação)
+3.  **Implementação (QA, Desenvolvedor)** → Gera código e testes → `⏸️ STOP` (Aguarde aprovação)
+4.  **Documentação (Escritor)** → Gera `CHANGELOG.md` e PR → `⏸️ STOP` (Aguarde aprovação para operações Git)
+
+Aguarde a aprovação explícita do usuário antes de prosseguir para a próxima fase.
+
+## 3. Construindo e Executando o Projeto
+
+O projeto é configurado como um monorepo. Docker é usado para gerenciar os serviços de banco de dados e Redis.
+
+### Pré-requisitos
 
 *   Git
-*   Node.js (v18.x or higher)
-*   Docker and Docker Compose
+*   Node.js (v18.x ou superior)
+*   Docker e Docker Compose
 *   Python 3
+*   **Yarn** (o gerenciador de pacotes obrigatório)
 
-### Setup and Installation
+### Instalação e Configuração
 
-1.  **Clone the repository:**
+1.  **Clonar o repositório:**
     ```bash
     git clone <repository-url>
     cd intellifinance
     ```
 
-2.  **Configure Environment Variables:**
-    Create `.env` files in the `backend` and `worker` directories by copying the `.env.example` files. Fill in the required variables, such as database credentials, Redis URL, and API keys for AI services.
+2.  **Configurar Variáveis de Ambiente:**
+    Copie os arquivos `.env.example` para `.env` nos diretórios `backend` e `worker` e preencha as variáveis.
 
-3.  **Start Infrastructure Services:**
+3.  **Iniciar Serviços de Infraestrutura:**
     ```bash
     docker-compose up -d
     ```
-    This command starts PostgreSQL and Redis in Docker containers.
 
-4.  **Run the Backend (API):**
+4.  **Executar o Backend (API):**
     ```bash
     cd backend
-    npm install
-    npm run db:migrate
-    npm run dev
+    yarn install
+    yarn db:migrate
+    yarn dev
     ```
-    The backend server will be running at `http://localhost:4000`.
+    O servidor de backend estará rodando em `http://localhost:4000`.
 
-5.  **Run the Worker (AI Agents):**
+5.  **Executar o Worker (Agentes de IA):**
     ```bash
     cd worker
-    npm install
-    npm run dev
+    yarn install
+    yarn dev
     ```
-    The worker will start listening for jobs from the Redis queue.
 
-6.  **Run the Frontend:**
+6.  **Executar o Frontend:**
     ```bash
     cd frontend
-    npm install
-    npm run dev
+    yarn install
+    yarn dev
     ```
-    The frontend application will be accessible at `http://localhost:3000`.
+    A aplicação frontend estará acessível em `http://localhost:3000`.
 
-## 3. Development Conventions
+## 4. Convenções de Desenvolvimento
 
-*   **Code Style:** The project uses Prettier and ESLint for code formatting and linting. Refer to the `.prettierrc` and `.eslintrc` files in each sub-project for specific rules.
-*   **Version Control:** The project follows the GitFlow branching model. All new features should be developed in feature branches and merged into the `develop` branch via pull requests.
-*   **Testing:** (TODO: Add details about the testing strategy, frameworks, and commands once they are established.)
-*   **Commit Messages:** Commit messages should follow the Conventional Commits specification.
-*   **API:** The backend exposes a GraphQL API. All data interactions should go through this API.
+*   **Estilo de Código:** O projeto usa Prettier e ESLint.
+*   **Controle de Versão:** GitFlow. Novas features em `feature/` branches.
+*   **Mensagens de Commit:** Siga a especificação [Conventional Commits](https://www.conventionalcommits.org/).
+*   **API:** A API de backend é GraphQL.
+
+### 4.1. Testes Unitários
+*   **Quando:** Para testar funções puras, lógica de negócios ou componentes isolados que NÃO dependem de um servidor em execução.
+*   **Comando:** `yarn test`
+*   **Restrição:** **NÃO DEVE** iniciar um servidor (ex: `yarn dev`) para executar este comando.
+
+### 4.2. Testes End-to-End (E2E)
+*   **Quando:** Para testar o fluxo completo da API (backend) que **PRECISA** de um servidor em execução.
+*   **Comando (Backend):** **DEVE** usar o script:
+    ```bash
+    yarn ci:test:e2e
+    ```
+    (Este script gerencia o ciclo de vida do servidor, executa os testes e desliga.)
