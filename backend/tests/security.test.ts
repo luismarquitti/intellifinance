@@ -1,35 +1,43 @@
-import { ApolloServer, gql } from 'apollo-server-express';
-import { typeDefs } from '../../src/graphql/schemas';
-import resolvers from '../../src/graphql/resolvers';
-import pool from '../../src/db';
+import { ApolloServer } from '@apollo/server';
+import { gql } from 'graphql-tag';
+import { typeDefs } from '../src/graphql/schemas';
+import resolvers from '../src/graphql/resolvers';
+import pool from '../src/db';
 import { DocumentNode } from 'graphql';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    const user = { id: req.headers['x-user-id'] || '' };
-    return { user };
-  },
 });
 
 interface GraphQLResponse<T = any> {
-    data?: T;
-    errors?: any[];
+  body: {
+    kind: 'single';
+    singleResult: {
+      data?: T;
+      errors?: any[];
+    };
+  };
 }
 
-const executeOperation = async (operation: DocumentNode, variables: any = {}, userId?: string): Promise<GraphQLResponse> => {
-    return await server.executeOperation({
-        query: operation,
-        variables,
-    },
+const executeOperation = async (operation: DocumentNode, variables: any = {}, userId?: string): Promise<any> => {
+  const response = await server.executeOperation({
+    query: operation,
+    variables,
+  },
     {
-        contextValue: {
-            user: {
-                id: userId,
-            },
+      contextValue: {
+        user: {
+          id: userId,
         },
+      },
     });
+
+  // Helper to extract data from v4 response structure
+  if (response.body.kind === 'single') {
+    return response.body.singleResult;
+  }
+  return response.body;
 };
 
 describe('Security Tests for Account Management', () => {

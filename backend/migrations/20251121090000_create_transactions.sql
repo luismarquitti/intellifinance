@@ -1,0 +1,16 @@
+-- Up
+CREATE TABLE transactions (
+  id UUID PRIMARY KEY,
+  account_id UUID NOT NULL REFERENCES financial_accounts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  amount DECIMAL(12, 2) NOT NULL,
+  type VARCHAR(10) NOT NULL CHECK (type IN ('INCOME', 'EXPENSE')),
+  date DATE NOT NULL,
+  description TEXT,
+  category VARCHAR(50),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Down
+DROP TABLE transactions;

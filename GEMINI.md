@@ -44,6 +44,17 @@ A constituição do projeto (`.ai/constitution.md`) define regras invioláveis p
 
 Aguarde a aprovação explícita do usuário antes de prosseguir para a próxima fase.
 
+### Instrução Crítica 4: Master Orchestrator & Copilot Integration
+O projeto utiliza um sistema de "Master Orchestrator" para coordenar o trabalho com IA, originalmente desenhado para GitHub Copilot mas aplicável a qualquer agente.
+
+-   **Ponto de Entrada Principal:** `/master`
+-   **Comandos de Workflow:**
+    -   `/specify [feature]`: Iniciar especificação de nova feature.
+    -   `/plan`: Gerar plano técnico.
+    -   `/implement`: Iniciar implementação (TDD).
+
+Para detalhes operacionais completos, consulte **`.github/copilot-instructions.md`**. Este arquivo contém o guia definitivo sobre os prompts, personas e fluxos de trabalho que você deve respeitar.
+
 ## 3. Construindo e Executando o Projeto
 
 O projeto é configurado como um monorepo. Docker é usado para gerenciar os serviços de banco de dados e Redis.

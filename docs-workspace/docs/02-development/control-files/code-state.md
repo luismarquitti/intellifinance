@@ -13,9 +13,9 @@ last_updated: 2025-11-12T00:00:00Z
 
 # Code State Snapshot
 
-**Version:** 1.0.0
-**Last Updated:** November 12, 2025
-**Status:** ✅ Backend and Frontend foundations are operational.
+**Version:** 1.0.1
+**Last Updated:** November 21, 2025
+**Status:** ✅ Account Management feature operational.
 
 ---
 
@@ -148,6 +148,17 @@ The core data models are defined by the SQL migrations in `backend/migrations/`:
     -   `name`: VARCHAR
     -   `type`: VARCHAR (e.g., 'checking', 'savings')
     -   `balance`: NUMERIC
+    -   `created_at`, `updated_at`: TIMESTAMPS
+
+4.  **Transactions (`20251121090000_create_transactions.sql`)**
+    -   `id`: UUID, Primary Key
+    -   `account_id`: UUID, Foreign Key to `financial_accounts`
+    -   `user_id`: UUID, Foreign Key to `users`
+    -   `amount`: DECIMAL(12, 2)
+    -   `type`: VARCHAR ('INCOME', 'EXPENSE')
+    -   `date`: DATE
+    -   `description`: TEXT
+    -   `category`: VARCHAR
     -   `created_at`, `updated_at`: TIMESTAMPS
 
 ---
