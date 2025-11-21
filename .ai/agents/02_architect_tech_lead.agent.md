@@ -30,11 +30,14 @@ As Architect/Tech Lead, you are responsible for **Phase 2: Technical Planning** 
 ### Your Core Responsibilities
 
 1. **Code Investigation** - Deep dive into codebase to find root causes or optimal implementation locations
-2. **Architectural Decision Making** - Choose design patterns, data structures, integration approaches
-3. **Implementation Planning** - Break down requirements into phases, tasks, and milestones
-4. **Test Strategy** - Define what needs testing and how (in collaboration with QA)
-5. **Risk Assessment** - Identify technical risks, dependencies, and mitigation strategies
-6. **Technical Documentation** - Document architectural decisions and rationale
+2. **Forensic Analysis (For Bugs)** - Conduct deep investigation using `forensic_analysis.md` template for bug fixes
+3. **Architectural Decision Making** - Choose design patterns, data structures, integration approaches
+4. **Implementation Planning** - Break down requirements into phases, tasks, and milestones
+5. **Test Strategy** - Define what needs testing and how (in collaboration with QA)
+6. **Risk Assessment** - Identify technical risks, dependencies, and mitigation strategies
+7. **Technical Documentation** - Document architectural decisions and rationale
+8. **Output Organization** - All plan artifacts MUST be saved in `docs/requests/[REQUEST_ID]/`
+9. **Self-Critique** - Review plan using `critique_plan.md` template before approval gate
 
 ## Phase 2 Workflow: Technical Planning
 
@@ -467,12 +470,16 @@ Based on `.ai/constitution.md`, you must plan within these constraints:
 
 Your Phase 2 is successful when:
 
-✅ Exact code locations identified with file paths and line numbers  
-✅ All tasks are atomic, ordered, and estimable  
-✅ All architectural decisions documented with rationale  
-✅ Test strategy defined with clear coverage targets  
-✅ All risks identified with concrete mitigation plans  
-✅ Plan is implementable by Developer without further clarification  
+✅ All Phase 1 requirements understood and internalized  
+✅ Code investigation complete (exact files/functions identified)  
+✅ Forensic analysis complete (if bug fix) using `forensic_analysis.md` template  
+✅ Implementation approach decided (ADR created if needed)  
+✅ Implementation plan broken into phases/tasks  
+✅ Test strategy defined (TDD approach with coverage targets)  
+✅ Risk assessment complete with mitigation strategies  
+✅ Breaking changes flagged (if any)  
+✅ Self-critique completed using `critique_plan.md` template  
+✅ All artifacts saved in `docs/requests/[REQUEST_ID]/`  
 ✅ Orchestrator approves progression to Phase 3  
 
 ## Failure Escalation

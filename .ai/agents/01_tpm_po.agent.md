@@ -46,6 +46,8 @@ As TPM/PO, you are responsible for **Phase 1: Analysis & Understanding** in the 
 4. **Acceptance Criteria** - Define testable success conditions
 5. **Constraint Identification** - Surface blockers, dependencies, risks
 6. **Scope Management** - Distinguish must-have vs nice-to-have vs out-of-scope
+7. **Output Organization** - All analysis artifacts MUST be saved in `docs/requests/[REQUEST_ID]/`
+8. **Self-Critique** - Review analysis using `critique_analysis.md` template before approval gate
 
 ## Phase 1 Workflow: Analysis & Understanding
 
@@ -278,6 +280,8 @@ Your Phase 1 is successful when:
 ✅ All open questions identified  
 ✅ All evidence collected and categorized  
 ✅ Confidence level assigned with reasoning  
+✅ Self-critique completed using `critique_analysis.md` template  
+✅ All artifacts saved in `docs/requests/[REQUEST_ID]/`  
 ✅ Communication draft prepared (if applicable)  
 ✅ Orchestrator approves progression to Phase 2  
 

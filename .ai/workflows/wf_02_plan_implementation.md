@@ -1,12 +1,12 @@
 # 📐 Workflow 02: Plan Implementation (Phase 2: Planning)
 
-**Purpose:** Transform requirements into detailed technical implementation plan with TDD strategy, ADR (Architectural Decision Record), and phased execution approach.
+**Purpose:** Transform requirements into detailed technical implementation plan with TDD strategy, optional forensic analysis for bugs, ADR (Architectural Decision Record), and phased execution approach.
 
 **Duration:** 20-40 minutes  
 **Personas Involved:** Orchestrator → Architect (→ QA/Developer)  
 **Phase:** Phase 2 (Planning)  
 **Input:** Requirements document from Phase 1  
-**Output:** Implementation plan with test strategy
+**Output:** Implementation plan with test strategy and critique
 
 ---
 
@@ -16,7 +16,7 @@ This workflow starts when:
 - Phase 1 (Analysis) approved by user
 - Requirements document exists
 - Orchestrator switches to Architect Agent
-- User requests "plan implementation for PROJ-1234"
+- User requests "plan implementation for [REQUEST_ID]"
 
 ---
 
@@ -29,24 +29,28 @@ This workflow starts when:
 **Actions:**
 1. Verify Phase 1 requirements exist
 2. Load requirements document
-3. Switch to Architect Agent
-4. Provide context to Architect
+3. Identify REQUEST_ID
+4. Switch to Architect Agent
+5. Provide context to Architect
 
 **Context Handoff:**
 ```markdown
 ## Phase 2: Planning
 
 **Previous Phase:** Analysis (Complete ✅)  
-**Requirements:** `.ai/output/requirements-PROJ-1234.md`  
+**Request ID:** [REQUEST_ID]
+**Requirements:** `docs/requests/[REQUEST_ID]/analysis_[request-id].md`  
 **Switching to:** Architect Agent
 
 **Your Task:**
 Create detailed implementation plan including:
 - Code investigation findings
+- Forensic analysis (if bug)
 - Architectural decisions (ADR if significant)
 - Implementation phases
 - Test strategy (TDD approach)
 - Risk assessment
+- Self-critique of the plan
 ```
 
 ---
@@ -60,6 +64,7 @@ Create detailed implementation plan including:
 2. Extract acceptance criteria
 3. Identify affected components
 4. Note constraints and dependencies
+5. Determine if this is a bug fix (forensic analysis required)
 
 **Checklist:**
 ```markdown
@@ -70,6 +75,7 @@ Create detailed implementation plan including:
 - [ ] Non-functional requirements noted
 - [ ] Dependencies mapped
 - [ ] Scope boundaries clear
+- [ ] Bug fix? (forensic analysis needed)
 ```
 
 ---
@@ -139,6 +145,33 @@ read_file(
 
 ---
 
+### Step 3a: Architect - Forensic Analysis (CONDITIONAL - For Bugs Only)
+
+**Actor:** Architect Agent
+
+**Trigger:** If the request type is a bug fix
+
+**Actions:**
+
+Use the `forensic_analysis.md` template to conduct deep investigation:
+
+1. **Reproduce the Bug:** Attempt to recreate the issue based on the analysis report.
+2. **Trace Execution:** Follow the code execution path to the failure point.
+3. **Analyze Root Cause:** Identify the exact code/configuration causing the issue.
+4. **Document Evidence:** Capture logs, stack traces, variable states.
+5. **Identify Fix Points:** Determine what needs to change to resolve the bug.
+
+**Output:**
+- **Forensic Report:** `docs/requests/[REQUEST_ID]/forensic_analysis.md`
+
+**Key Questions to Answer:**
+- What exact line/function causes the failure?
+- What are the preconditions that trigger it?
+- Why did this bug pass initial development/testing?
+- What test should have caught this?
+
+---
+
 ### Step 4: Architect - Make Architectural Decisions (5-10 min)
 
 **Actor:** Architect Agent
@@ -161,57 +194,35 @@ Create **ADR (Architectural Decision Record)**:
 ## Context
 
 Currently, the application uses session-based authentication with cookies. 
-The requirement (PROJ-1234) asks for stateless authentication to support 
-horizontal scaling and multi-region deployment.
+The requirement asks for stateless authentication to support horizontal scaling.
 
 ---
 
 ## Decision
 
-We will implement JWT (JSON Web Token) authentication to replace session-based auth.
+We will implement JWT (JSON Web Token) authentication.
 
 ---
 
 ## Consequences
 
 ### Positive
-- ✅ Stateless authentication (no session storage)
-- ✅ Horizontal scaling without sticky sessions
-- ✅ Multi-region support (tokens work anywhere)
-- ✅ Standard industry practice
+- ✅ Stateless authentication
+- ✅ Horizontal scaling support
 
 ### Negative
 - ❌ Cannot invalidate individual tokens before expiry
-- ❌ Slightly larger payload size vs session ID
-- ❌ Requires client-side token management
 
 ### Mitigations
-- Use short expiry times (15 min access, 7 day refresh)
-- Implement refresh token rotation
-- Add token blacklist for logout (Redis)
-
----
-
-## Alternatives Considered
-
-1. **Keep Session-Based Auth**
-   - Rejected: Doesn't meet scaling requirements
-   
-2. **OAuth2 with External Provider**
-   - Rejected: Overkill for internal app, adds external dependency
-
----
-
-## Related Issues
-- PROJ-1234 (this implementation)
-- PROJ-5678 (future: SSO integration)
+- Use short expiry times
+- Implement token blacklist
 ```
 
-**Save ADR to:** `.ai/output/adr/ADR-001-jwt-authentication.md`
+**Save ADR to:** `docs/requests/[REQUEST_ID]/adr_001.md`
 
 #### If No Major Design Decision:
 
-Just document approach:
+Document approach:
 
 ```markdown
 ## Implementation Approach
@@ -219,10 +230,9 @@ Just document approach:
 **Strategy:** Incremental enhancement of existing component
 
 **Reasoning:**
-- Existing architecture adequate for requirement
+- Existing architecture adequate
 - No breaking changes needed
 - Follows established patterns
-- Minimizes risk
 ```
 
 ---
@@ -233,73 +243,7 @@ Just document approach:
 
 **Actions:**
 
-Create **TDD-aligned test strategy**:
-
-```markdown
-## Test Strategy
-
-### Testing Approach
-**TDD Workflow:** Red → Green → Refactor (mandatory)
-
-### Test Levels
-
-#### 1. Unit Tests (Primary Focus)
-**Framework:** Jest (TypeScript/JavaScript)  
-**Location:** `src/modules/auth/__tests__/AuthService.test.ts`  
-**Coverage Target:** 90%+ for modified files  
-
-**Test Cases to Write (QA Agent will implement):**
-1. **AC1 Tests:**
-   - Valid JWT token → returns user ID
-   - Expired token → throws TokenExpiredError
-   - Invalid signature → throws InvalidTokenError
-   - Missing required claims → throws InvalidTokenError
-
-2. **AC2 Tests:**
-   - Token refresh with valid refresh token → new access token
-   - Token refresh with expired refresh token → error
-   - Token refresh with blacklisted token → error
-
-3. **Edge Cases:**
-   - Malformed token string → graceful error
-   - Token with extra claims → ignores and validates required
-   - Token from different issuer → rejects
-
-**Mocking Strategy:**
-- Mock JWT library for signature verification
-- Mock Redis client for blacklist checks
-- Mock time functions for expiration testing
-
-#### 2. Integration Tests
-**Framework:** Jest with Supertest  
-**Location:** `src/modules/auth/__tests__/integration/auth.integration.test.ts`  
-
-**Test Scenarios:**
-1. Full login → JWT issuance → authenticated request flow
-2. Token refresh flow end-to-end
-3. Logout → token blacklisted → cannot use token
-
-#### 3. E2E Tests (If UI involved)
-**Framework:** Playwright  
-**Location:** `e2e/auth.spec.ts`  
-
-**Test Scenarios:**
-1. User login → redirect to dashboard
-2. Token expiry → auto-refresh → continue working
-3. Logout → redirect to login page
-
-### Test Data Requirements
-- Valid JWT tokens (various claim combinations)
-- Expired tokens
-- Tokens with invalid signatures
-- User fixtures with various roles
-
-### Test Execution Order (TDD)
-1. QA writes failing tests (Red phase)
-2. Developer implements minimal code to pass (Green phase)
-3. Developer refactors (only when green)
-4. QA validates all tests pass + quality gates
-```
+Create **TDD-aligned test strategy** following the plan template.
 
 ---
 
@@ -309,191 +253,34 @@ Create **TDD-aligned test strategy**:
 
 **Actions:**
 
-Break down work into **phases or tasks**:
+Generate implementation plan using `.ai/templates/implementation_plan.md`:
 
-```markdown
-## Implementation Plan
-
-### Overview
-Implement JWT authentication replacing session-based auth.
-
-**Estimated Effort:** 8-12 hours  
-**Risk Level:** Medium (auth changes require careful testing)
+1. **Create File:** `docs/requests/[REQUEST_ID]/plan_[request-id].md`
+2. **Fill Template:** Populate with phases, test strategy, risks.
 
 ---
 
-### Phase Breakdown
+### Step 7: Architect - Critique & Refine Plan (Mandatory)
 
-#### Phase A: Infrastructure Setup (2 hours)
-**Owner:** Developer  
-**Prerequisites:** None  
+**Actor:** Architect Agent
 
-**Tasks:**
-1. Install dependencies:
-   ```bash
-   npm install jsonwebtoken @types/jsonwebtoken
-   npm install --save-dev @types/supertest
-   ```
+**Actions:**
 
-2. Create JWT utility module:
-   - `src/utils/jwt.ts` - Token generation, validation
-   - `src/utils/__tests__/jwt.test.ts` - Unit tests (TDD)
+1. **Self-Critique:** Review the generated plan against the `critique_plan.md` template.
+2. **Identify Gaps:** Look for missing test scenarios, unidentified risks, or unclear task descriptions.
+3. **Refine:** Update the implementation plan based on the critique.
+4. **Document Critique:** Save as `docs/requests/[REQUEST_ID]/critique_plan.md`.
 
-3. Setup Redis for token blacklist:
-   - Add Redis client configuration
-   - Create BlacklistService
-
-**Test Requirements (QA writes first):**
-- Unit tests for JWT generation
-- Unit tests for JWT validation
-- Unit tests for blacklist operations
+**Critique Checklist:**
+- [ ] Are all acceptance criteria mapped to implementation tasks?
+- [ ] Is the test strategy comprehensive?
+- [ ] Are risks properly assessed and mitigated?
+- [ ] Are dependencies clearly documented?
+- [ ] Is the rollback plan feasible?
 
 ---
 
-#### Phase B: Core Authentication Logic (4 hours)
-**Owner:** Developer  
-**Prerequisites:** Phase A complete + tests green  
-
-**Tasks:**
-1. Modify AuthService:
-   - Replace session logic with JWT
-   - Implement token generation on login
-   - Implement token validation middleware
-
-2. Add refresh token logic:
-   - Generate refresh token
-   - Store refresh token securely
-   - Implement refresh endpoint
-
-**Test Requirements (QA writes first):**
-- Unit tests for login → JWT generation
-- Unit tests for token validation middleware
-- Unit tests for refresh token flow
-- Edge case tests (expired, invalid, etc.)
-
-**Acceptance Criteria Covered:**
-- ✅ AC1: JWT authentication works
-- ✅ AC2: Refresh tokens work
-
----
-
-#### Phase C: Migration & Cleanup (2 hours)
-**Owner:** Developer  
-**Prerequisites:** Phase B complete + tests green  
-
-**Tasks:**
-1. Remove session-related code:
-   - Remove session middleware
-   - Remove session store
-   - Update config
-
-2. Update documentation:
-   - API docs (new auth headers)
-   - README (migration guide)
-
-**Test Requirements:**
-- Regression tests (ensure nothing broke)
-- Integration tests (full auth flow)
-
----
-
-#### Phase D: Validation & Documentation (2 hours)
-**Owner:** QA + Writer  
-**Prerequisites:** Phase C complete  
-
-**Tasks:**
-1. QA: Run full test suite
-2. QA: Validate quality gates (lint, type, build, security)
-3. QA: Manual testing of auth flows
-4. Writer: Generate implementation summary
-5. Writer: Create PR description
-6. Writer: Update CHANGELOG
-
----
-
-### Rollout Plan
-
-**Development:**
-1. Create feature branch: `feature/PROJ-1234-jwt-auth`
-2. Implement phases A-C with TDD
-3. Merge to main after PR approval
-
-**Deployment:**
-1. Deploy to staging
-2. Test with staging users (3 days)
-3. Deploy to production (off-peak hours)
-4. Monitor error rates and performance
-
-**Rollback Plan:**
-- Revert PR if critical issues found
-- Session-based auth still in git history
-- Database unchanged (non-destructive change)
-
----
-
-### Dependencies
-
-**External:**
-- None (JWT is self-contained)
-
-**Internal:**
-- RedisService must be deployed first
-- Config changes must be applied
-
-**Blockers:**
-- None identified
-
----
-
-### Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| Token leakage | Low | High | Short expiry (15min), HTTPS only, secure storage |
-| Cannot revoke tokens | Medium | Medium | Implement blacklist with Redis |
-| Performance degradation | Low | Medium | Benchmark before/after, monitor in production |
-| Migration issues | Medium | High | Gradual rollout, rollback plan ready |
-
----
-
-### Breaking Changes
-
-⚠️ **YES - This is a breaking change**
-
-**Impact:**
-- All API clients must update to use JWT
-- Mobile apps must update authentication flow
-- Third-party integrations need new auth method
-
-**Migration Guide (For Writer to expand):**
-1. Request JWT from POST /auth/login
-2. Store access + refresh tokens securely
-3. Include in header: `Authorization: Bearer <token>`
-4. Refresh token before expiry
-
-**Communication Plan:**
-- Email to all API consumers (2 weeks notice)
-- Migration guide in docs
-- Deprecation period: 4 weeks (both auth methods work)
-
----
-
-### Success Metrics
-
-**Technical:**
-- 90%+ test coverage on modified files
-- Zero regressions in existing auth flows
-- Response time < 50ms for token validation
-
-**Business:**
-- Zero authentication errors after deployment
-- 100% of clients migrated within 4 weeks
-- Supports 10,000 concurrent authenticated users
-```
-
----
-
-### Step 7: Architect - Approval Gate (STOP)
+### Step 8: Architect - Approval Gate (STOP)
 
 **Actor:** Architect Agent
 
@@ -504,43 +291,27 @@ Present implementation plan to user:
 ```markdown
 ## 🚦 Phase 2: Planning Complete
 
-**Implementation plan generated.**
+**Implementation plan generated & critiqued.**
 
 ---
 
 ## Summary
 
-**Issue:** PROJ-1234 - JWT Authentication  
-**Strategy:** Replace session-based auth with JWT  
-**Phases:** 4 phases (A: Setup, B: Core Logic, C: Migration, D: Validation)  
-**Estimated Effort:** 8-12 hours  
-**Risk Level:** Medium  
-**Breaking Change:** YES (migration guide prepared)
+**Request ID:** [REQUEST_ID]
+**Strategy:** [Brief description]
+**Phases:** [Number] phases
+**Estimated Effort:** [Time estimate]
+**Risk Level:** [Low/Medium/High]
+**Breaking Change:** [YES/NO]
 
 ---
 
 ## Deliverables
 
-1. **ADR:** `.ai/output/adr/ADR-001-jwt-authentication.md`
-2. **Implementation Plan:** [Full plan above]
-3. **Test Strategy:** TDD with 90%+ coverage target
-
----
-
-## Acceptance Criteria Coverage
-
-- ✅ AC1: JWT authentication (Phase B)
-- ✅ AC2: Refresh tokens (Phase B)
-- ✅ AC3: Token blacklist on logout (Phase B)
-
----
-
-## Next Steps (If Approved)
-
-1. Phase 3: QA writes failing tests for Phase A
-2. Developer implements Phase A
-3. Repeat for Phases B, C
-4. Phase 4: Writer generates documentation
+1. **Implementation Plan:** `docs/requests/[REQUEST_ID]/plan_[request-id].md`
+2. **Critique:** `docs/requests/[REQUEST_ID]/critique_plan.md`
+3. **Forensic Analysis:** `docs/requests/[REQUEST_ID]/forensic_analysis.md` (if bug)
+4. **ADR:** `docs/requests/[REQUEST_ID]/adr_001.md` (if applicable)
 
 ---
 
@@ -562,7 +333,7 @@ Type: `approve`, `revise`, `question`, or `cancel`
 
 ---
 
-### Step 8: Orchestrator - Handoff to Phase 3 (1 min)
+### Step 9: Orchestrator - Handoff to Phase 3 (1 min)
 
 **Actor:** Orchestrator Agent
 
@@ -570,10 +341,9 @@ Type: `approve`, `revise`, `question`, or `cancel`
 
 **Actions:**
 1. Mark Phase 2 as complete ✅
-2. Save implementation plan to `.ai/output/implementation-plan-PROJ-1234.md`
-3. If ADR created, save to `.ai/output/adr/`
-4. Switch to QA Agent (for test writing)
-5. Trigger **wf_03_execute_development.md**
+2. Ensure `docs/requests/[REQUEST_ID]/` contains all artifacts
+3. Switch to QA Agent (for test writing)
+4. Trigger **wf_03_execute_development.md**
 
 **Output:**
 ```markdown
@@ -581,9 +351,11 @@ Type: `approve`, `revise`, `question`, or `cancel`
 
 **Implementation plan approved by user.**
 
-**Saved:**
-- Implementation Plan: `.ai/output/implementation-plan-PROJ-1234.md`
-- ADR (if created): `.ai/output/adr/ADR-001-jwt-authentication.md`
+**Artifacts:**
+- Plan: `docs/requests/[REQUEST_ID]/plan_[request-id].md`
+- Critique: `docs/requests/[REQUEST_ID]/critique_plan.md`
+- Forensic Analysis: `docs/requests/[REQUEST_ID]/forensic_analysis.md` (if bug)
+- ADR: `docs/requests/[REQUEST_ID]/adr_001.md` (if applicable)
 
 **Next:** Phase 3 - Development Execution  
 **Starting with:** QA Agent (writes tests first)  
@@ -595,8 +367,10 @@ Type: `approve`, `revise`, `question`, or `cancel`
 ## Workflow Outputs
 
 ### Primary Outputs
-- **Implementation Plan** (`.ai/output/implementation-plan-[ISSUE-KEY].md`)
-- **ADR** (`.ai/output/adr/ADR-XXX-title.md`) - if applicable
+- **Implementation Plan** (`docs/requests/[REQUEST_ID]/plan_[request-id].md`)
+- **Critique Report** (`docs/requests/[REQUEST_ID]/critique_plan.md`)
+- **Forensic Analysis** (`docs/requests/[REQUEST_ID]/forensic_analysis.md`) - if bug
+- **ADR** (`docs/requests/[REQUEST_ID]/adr_XXX.md`) - if applicable
 
 ### Metadata
 - Phases/tasks count
@@ -612,10 +386,12 @@ Type: `approve`, `revise`, `question`, or `cancel`
 Phase 2 is successful when:
 
 ✅ Code investigation complete (files/patterns identified)  
+✅ Forensic analysis complete (if bug)  
 ✅ Architectural decisions documented (ADR if significant)  
 ✅ Implementation broken into phases/tasks  
 ✅ Test strategy defined (TDD approach)  
 ✅ Risk assessment complete  
+✅ Plan self-critiqued and refined  
 ✅ Breaking changes identified  
 ✅ Plan approved by user  
 
@@ -627,7 +403,7 @@ Phase 2 is successful when:
 **Recovery:**
 1. Architect incorporates feedback
 2. Updates implementation plan
-3. Re-presents for approval (loop back to Step 7)
+3. Re-presents for approval (loop back to Step 8)
 
 ### Scenario 2: Missing Context from Requirements
 **Recovery:**
@@ -654,8 +430,11 @@ Phase 2 is successful when:
 
 | Situation | Decision | Next Action |
 |-----------|----------|-------------|
+| Bug fix identified | Conduct forensic analysis | Step 3a |
+| Feature request | Skip forensic analysis | Step 4 |
 | Simple change (no ADR needed) | Document approach | Continue to test strategy |
 | Significant design decision | Create ADR | Save ADR, then test strategy |
+| Plan generated | Perform self-critique | Step 7 |
 | Breaking change identified | Flag in plan + create migration guide | Risk assessment |
 | High-risk change | Risk assessment + mitigation plan | Present for approval with risks |
 | Plan approved | Proceed to Phase 3 | Trigger wf_03 |
@@ -696,19 +475,21 @@ Phase 1 Approved (wf_01 complete)
     ↓
 Orchestrator: Switches to Architect
     ↓
-Architect: Reads requirements-PROJ-1234.md
+Architect: Reads analysis from docs/requests/[REQUEST_ID]/
     ↓
-Architect: Semantic search for "AuthService"
+Architect: Identifies this is a BUG FIX
     ↓
-Architect: Reads src/modules/auth/AuthService.ts
+Architect: Conducts forensic analysis
     ↓
-Architect: Creates ADR-001 (JWT decision)
+Architect: Semantic search for affected components
+    ↓
+Architect: Creates ADR (if significant change)
     ↓
 Architect: Defines test strategy (90% coverage, TDD)
     ↓
-Architect: Breaks work into 4 phases (A-D)
+Architect: Breaks work into phases
     ↓
-Architect: Risk assessment (Medium risk, mitigations planned)
+Architect: Critiques and refines plan
     ↓
 Architect: Presents plan with APPROVAL GATE 🛑
     ↓

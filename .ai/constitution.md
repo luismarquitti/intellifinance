@@ -293,9 +293,9 @@ Before marking task complete, verify:
 ### 3.1 Four-Phase Protocol
 All multi-step operations MUST follow this sequence:
 
-1. **Phase 1: Analysis** → Generate analysis report → ⏸️ **STOP - Require Approval**
-2. **Phase 2: Planning** → Generate implementation plan → ⏸️ **STOP - Require Approval**
-3. **Phase 3: Implementation** → Execute changes + tests → ⏸️ **STOP - Require Approval**
+1. **Phase 1: Analysis** → Generate analysis report → **Self-Critique** (using `critique_analysis.md`) → ⏸️ **STOP - Require Approval**
+2. **Phase 2: Planning** → **Forensic Analysis (if bug)** → Generate implementation plan → **Self-Critique** (using `critique_plan.md`) → ⏸️ **STOP - Require Approval**
+3. **Phase 3: Implementation** → Execute changes + tests → **Self-Review** (using `code_review.md`) → ⏸️ **STOP - Require Approval**
 4. **Phase 4: Documentation** → Generate PR/commit messages → ⏸️ **STOP - Require Approval**
 
 ### 3.2 Approval Gate Rules
@@ -435,38 +435,57 @@ The agent system works with various architectural patterns:
 
 ---
 
-## 6. JIRA Integration & Issue Management
+## 6. Request & Issue Management
 
-### 6.1 Issue Folder Structure
-Every JIRA issue gets a dedicated folder:
+### 6.1 Request Folder Structure
+Every request (JIRA issue, GitHub issue, or ad-hoc request) gets a dedicated folder:
 ```
-jira-docs-site/docs/[JIRA-ID]/
-├── _category_.json          # Docusaurus category config
-├── index.md                 # Analysis report (main document)
-├── implementation_plan.md   # Phase 2 output
-├── qa_validation_report.md  # Phase 3 QA output
-├── pull_request.md          # Phase 4 PR description
-├── commit_message.txt       # Phase 4 commit message
-├── evidence/                # Screenshots, logs, attachments
+docs/requests/[REQUEST_ID]/
+├── analysis_[request-id].md    # Phase 1: Analysis report
+├── critique_analysis.md       # Phase 1: Self-critique
+├── forensic_analysis.md       # Phase 2: Forensic analysis (if bug)
+├── plan_[request-id].md        # Phase 2: Implementation plan
+├── critique_plan.md           # Phase 2: Self-critique
+├── adr_XXX.md                 # Phase 2: Architectural Decision Record (if applicable)
+├── code_review.md             # Phase 3: Self-review
+├── qa_validation_[request-id].md  # Phase 3: QA validation
+├── pull_request.md            # Phase 4: PR description
+├── commit_message.txt         # Phase 4: Commit message
+├── evidence/                  # Screenshots, logs, attachments
 │   └── *.png, *.log, *.json
-└── logs/                    # Agent execution logs
+└── logs/                      # Agent execution logs
     ├── phase1_triage.log
     ├── phase2_planning.log
     └── phase3_implementation.log
 ```
 
-### 6.2 Required Artifacts Per Issue
-- **Analysis Report** (`index.md`): Business + technical analysis
-- **Implementation Plan** (`implementation_plan.md`): Detailed task breakdown
-- **QA Report** (`qa_validation_report.md`): Test results + validation
+**REQUEST_ID Formats:**
+- **JIRA Issues**: Use JIRA key (e.g., `PROJ-1234`)
+- **GitHub Issues**: Use format `GH-REPO-123` (e.g., `GH-INTELLIFINANCE-42`)
+- **Ad-hoc Requests**: Use format `REQ-YYYYMMDD-XXXX` (e.g., `REQ-20251121-001`)
+
+### 6.2 Required Artifacts Per Request
+- **Analysis Report** (`analysis_[request-id].md`): Business + technical analysis with self-critique
+- **Implementation Plan** (`plan_[request-id].md`): Detailed task breakdown with self-critique
+- **Forensic Analysis** (`forensic_analysis.md`): Bug investigation (if applicable)
+- **Code Review** (`code_review.md`): Self-review before QA handoff
+- **QA Report** (`qa_validation_[request-id].md`): Test results + validation
 - **PR Description** (`pull_request.md`): Complete PR documentation
 - **Commit Message** (`commit_message.txt`): Conventional commit format
 
 ### 6.3 Evidence Preservation
-- ALL JIRA attachments → `evidence/` folder
+- ALL relevant attachments → `evidence/` folder
 - ALL relevant logs → `logs/` folder
 - ALL screenshots → `evidence/` folder
-- Traceability: Every artifact references source JIRA issue
+- Traceability: Every artifact references source REQUEST_ID
+
+### 6.4 JIRA Integration (Optional)
+If using Atlassian JIRA:
+- Use `atlassian-mcp` MCP server for JIRA operations
+- Fetch issue details with `mcp_atlassian-mcp_jira_get_detail`
+- Search issues with `mcp_atlassian-mcp_jira_search`
+- Add comments with `mcp_atlassian-mcp_jira_add_comment` (requires user approval)
+- **ALWAYS request user approval before any JIRA write operation**
 
 ---
 

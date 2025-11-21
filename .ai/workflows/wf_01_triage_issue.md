@@ -1,11 +1,11 @@
 # 🔍 Workflow 01: Triage Issue (Phase 1: Analysis)
 
-**Purpose:** Initial analysis of user request, problem, or JIRA issue. Extract requirements, identify constraints, and prepare for technical planning.
+**Purpose:** Initial analysis of user request, problem, or issue. Extract requirements, identify constraints, and prepare for technical planning.
 
 **Duration:** 10-30 minutes  
 **Personas Involved:** Orchestrator → TPM/PO (→ Architect)  
 **Phase:** Phase 1 (Analysis)  
-**Output:** Requirements document with acceptance criteria
+**Output:** Requirements document with acceptance criteria and critique
 
 ---
 
@@ -27,7 +27,7 @@ This workflow starts when:
 
 **Actions:**
 1. Recognize that task requires analysis (Phase 1)
-2. Check if JIRA issue key provided
+2. Generate a unique `REQUEST_ID` (e.g., `REQ-YYYYMMDD-XXXX`) if no external ID (like Jira) is provided.
 3. Verify `.ai/constitution.md` rules apply
 4. Switch to TPM/PO Agent
 
@@ -47,6 +47,7 @@ IF task type is:
 
 **Task:** [Description]
 **Type:** [Bug Fix / Feature / Enhancement / Investigation]
+**Request ID:** [REQUEST_ID]
 **Switching to:** TPM/PO Agent
 ```
 
@@ -88,17 +89,10 @@ mcp_atlassian-mcp_jira_search({
   jql: "project = HPXAPPS AND text ~ 'NullPointerException' ORDER BY created DESC",
   limit: 10
 })
-
-// Find issues in same component
-mcp_atlassian-mcp_jira_search({
-  jql: "project = HPXAPPS AND component = 'Web Dashboard' AND status != Closed",
-  limit: 15
-})
 ```
 
 **If MCP unavailable:**
 - Inform user: "atlassian-mcp not configured. Please provide JIRA issue details manually."
-- Reference setup guide: `.ai/setup/mcp-setup-guide.md`
 - Request manual data: issue summary, description, comments, current status
 
 #### 2.2: If User Description Provided
@@ -126,7 +120,7 @@ read_file(filePath: "path/to/component.ts", startLine: 1, endLine: 100)
 ```markdown
 ## Context Gathered
 
-**Issue:** [JIRA-KEY or description]
+**Request ID:** [REQUEST_ID]
 **Type:** [Bug / Feature / Enhancement]
 **Priority:** [High / Medium / Low]
 **Affected Component:** [Module/file path]
@@ -216,30 +210,6 @@ When they click the "Export Profile" button
 Then their profile data downloads as JSON  
 And the filename includes their user ID  
 And the response time is under 2 seconds  
-
-### AC2: [Error handling scenario]
-**Given** [error condition]  
-**When** [action attempted]  
-**Then** [graceful error handling]  
-
-**Example:**
-Given the export service is unavailable  
-When a user requests profile export  
-Then they see a "Service temporarily unavailable" message  
-And the error is logged with timestamp  
-And they can retry after 5 minutes  
-
-### AC3: [Edge case or constraint]
-**Given** [boundary condition]  
-**When** [action]  
-**Then** [expected behavior at boundary]  
-
-**Example:**
-Given a user has 10,000+ activity records  
-When they export their profile  
-Then the export completes within 10 seconds  
-And memory usage stays under 500MB  
-And the file size is under 10MB (compressed)  
 ```
 
 **Quality Checklist:**
@@ -258,84 +228,33 @@ And the file size is under 10MB (compressed)
 
 **Actions:**
 
-Generate comprehensive requirements document:
+Generate comprehensive requirements document using `.ai/templates/analysis_report.md`:
 
-```markdown
-# Requirements Document
-
-**Issue:** PROJ-1234  
-**Title:** [Issue title]  
-**Type:** [Bug Fix / Feature / Enhancement]  
-**Priority:** [High / Medium / Low]  
-**Created:** 2025-11-10  
-**Analyst:** TPM/PO Agent
+1. **Create File:** `docs/requests/[REQUEST_ID]/analysis_[request-id].md`
+2. **Fill Template:** Populate with gathered context, RCA, and acceptance criteria.
 
 ---
 
-## Problem Statement
+### Step 6: TPM/PO - Critique & Refine Analysis (Mandatory)
 
-[2-3 sentences describing the problem or opportunity]
+**Actor:** TPM/PO Agent
 
----
+**Actions:**
 
-## Root Cause Analysis (For Bugs)
+1. **Self-Critique:** Review the generated analysis report against the `critique_analysis.md` template.
+2. **Identify Gaps:** Look for missing edge cases, unclear requirements, or weak RCA.
+3. **Refine:** Update the analysis report based on the critique.
+4. **Document Critique:** Append the critique summary to the analysis report or save as `docs/requests/[REQUEST_ID]/critique_analysis.md`.
 
-[RCA from Step 3]
-
----
-
-## Feature Analysis (For Features)
-
-[Feature analysis from Step 3]
-
----
-
-## Acceptance Criteria
-
-[All AC from Step 4 in Given-When-Then format]
+**Critique Checklist:**
+- [ ] Is the problem clearly defined?
+- [ ] Are acceptance criteria testable?
+- [ ] Is the root cause supported by evidence?
+- [ ] Are risks and dependencies identified?
 
 ---
 
-## Constraints & Dependencies
-
-### Technical Constraints
-- [Constraint 1]
-- [Constraint 2]
-
-### Dependencies
-- [Dependency on other system/service]
-- [Dependency on other issue/ticket]
-
-### Non-Functional Requirements
-- **Performance:** [Response time, throughput]
-- **Security:** [Authentication, authorization, data protection]
-- **Accessibility:** [WCAG compliance if UI]
-- **Scalability:** [Concurrent users, data volume]
-
----
-
-## Out of Scope
-
-[Explicitly list what will NOT be addressed]
-
----
-
-## Open Questions
-
-- [ ] Question 1 needing clarification
-- [ ] Question 2 needing decision
-
----
-
-## Next Steps
-
-1. Review and approve these requirements
-2. Proceed to Phase 2: Architect creates implementation plan
-```
-
----
-
-### Step 6: TPM/PO - Approval Gate (STOP)
+### Step 7: TPM/PO - Approval Gate (STOP)
 
 **Actor:** TPM/PO Agent
 
@@ -346,21 +265,20 @@ Present requirements to user for approval:
 ```markdown
 ## 🚦 Phase 1: Analysis Complete
 
-**Requirements document generated.**
+**Requirements document generated & critiqued.**
 
 ### Summary
-- **Issue:** PROJ-1234
+- **Request ID:** [REQUEST_ID]
 - **Type:** Feature
 - **Acceptance Criteria:** 3 scenarios defined
-- **Constraints:** 2 technical constraints identified
-- **Open Questions:** 1 requiring your input
+- **Critique Result:** [Summary of self-critique]
 
 ---
 
 ## Deliverable
 
 **Requirements Document:**
-[Display full document from Step 5]
+[Link to `docs/requests/[REQUEST_ID]/analysis_[request-id].md`]
 
 ---
 
@@ -382,7 +300,7 @@ Type: `approve`, `revise`, `clarify`, or `cancel`
 
 ---
 
-### Step 7: Orchestrator - Handoff to Phase 2 (1 min)
+### Step 8: Orchestrator - Handoff to Phase 2 (1 min)
 
 **Actor:** Orchestrator Agent
 
@@ -390,13 +308,7 @@ Type: `approve`, `revise`, `clarify`, or `cancel`
 
 **Actions:**
 1. Mark Phase 1 as complete ✅
-1. Generate analysis report using `.ai/templates/analysis_report.md` template
-2. Save analysis report to `analysis-workspace/docs/[JIRA-ID]/index.md`
-3. Create `_category_.json` for Docusaurus sidebar configuration
-4. Ensure proper Docusaurus frontmatter is included
-5. Document all input sources from `.analysis-inputs/[JIRA-ID]/`
-
-**Output:**
+2. Ensure `docs/requests/[REQUEST_ID]/` contains all artifacts.
 3. Switch to Architect Agent
 4. Trigger **wf_02_plan_implementation.md**
 
@@ -406,11 +318,9 @@ Type: `approve`, `revise`, `clarify`, or `cancel`
 
 **Requirements approved by user.**
 
-**Saved:** `analysis-workspace/docs/[JIRA-ID]/index.md`
-**Category Config:** `analysis-workspace/docs/[JIRA-ID]/_category_.json`
-**Evidence Folder:** `analysis-workspace/docs/[JIRA-ID]/evidence/` (for screenshots, logs)
-
-**Input Sources Documented:** All materials from `.analysis-inputs/[JIRA-ID]/` cited in report
+**Artifacts:**
+- Analysis: `docs/requests/[REQUEST_ID]/analysis_[request-id].md`
+- Critique: `docs/requests/[REQUEST_ID]/critique_analysis.md`
 
 **Next:** Phase 2 - Implementation Planning  
 **Switching to:** Architect Agent  
@@ -423,16 +333,15 @@ Type: `approve`, `revise`, `clarify`, or `cancel`
 
 ### Primary Output
 
-- **Analysis Report** (`analysis-workspace/docs/[JIRA-ID]/index.md`)
+- **Analysis Report** (`docs/requests/[REQUEST_ID]/analysis_[request-id].md`)
   - Docusaurus frontmatter with custom_metadata
   - Issue summary and classification
   - Root cause analysis (if bug)
   - Solution approach
   - Evidence sources documented
   
-- **Category Configuration** (`analysis-workspace/docs/[JIRA-ID]/_category_.json`)
-  - Sidebar label and position
-  - Issue metadata for navigation
+- **Critique Report** (`docs/requests/[REQUEST_ID]/critique_analysis.md`)
+    - Self-assessment of the analysis quality
 
 ### Metadata
 - Task type identified
@@ -449,7 +358,7 @@ Phase 1 is successful when:
 ✅ Problem/feature clearly understood  
 ✅ Root cause identified (for bugs)  
 ✅ Acceptance criteria defined (Given-When-Then)  
-✅ Constraints and dependencies documented  
+✅ Analysis self-critiqued and refined  
 ✅ Requirements approved by user  
 ✅ No open questions blocking Phase 2  
 
@@ -461,7 +370,7 @@ Phase 1 is successful when:
 **Recovery:**
 1. TPM/PO incorporates feedback
 2. Updates requirements document
-3. Re-presents for approval (loop back to Step 6)
+3. Re-presents for approval (loop back to Step 7)
 
 ### Scenario 2: Open Questions Blocking Progress
 **Recovery:**
@@ -493,9 +402,10 @@ Phase 1 is successful when:
 | User description only | Extract requirements from description | Step 2.2 |
 | Bug reported | Perform RCA | Step 3 (Bug path) |
 | Feature requested | Perform feature analysis | Step 3 (Feature path) |
+| Analysis generated | Perform self-critique | Step 6 |
 | Requirements approved | Proceed to Phase 2 | Trigger wf_02 |
 | Revisions requested | Loop back to editing | Step 5 again |
-| Open questions exist | Wait for answers | Step 6 (wait) |
+| Open questions exist | Wait for answers | Step 7 (wait) |
 | Cancelled by user | Save draft, stop | End workflow |
 
 ---
@@ -543,6 +453,8 @@ TPM/PO: Performs RCA (it's a bug)
 TPM/PO: Defines 3 acceptance criteria (Given-When-Then)
     ↓
 TPM/PO: Generates requirements document
+    ↓
+TPM/PO: Critiques and refines analysis
     ↓
 TPM/PO: Presents to user with APPROVAL GATE 🛑
     ↓

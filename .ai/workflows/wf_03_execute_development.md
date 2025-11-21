@@ -531,7 +531,34 @@ npm test -- jwt.test.ts
 
 ---
 
+### Step 6a: Developer - Code Review & Cleanup (Mandatory)
+
+**Actor:** Developer Agent
+
+**Actions:**
+
+1. **Self-Review:** Use the `code_review.md` template to perform a thorough self-review.
+2. **Check Code Quality:** Assess readability, maintainability, and adherence to coding standards.
+3. **Identify Issues:** Look for TODOs, HACKs, unused code, or potential improvements.
+4. **Document Review:** Save review results to `docs/requests/[REQUEST_ID]/code_review.md`.
+
+**Code Review Checklist:**
+- [ ] Code follows project conventions and style guide
+- [ ] No TODOs or HACKs left unaddressed
+- [ ] Unused imports/variables removed
+- [ ] Function and variable names are clear and descriptive
+- [ ] Error handling is appropriate
+- [ ] No duplicated code (DRY principle)
+- [ ] Comments explain "why," not "what"
+- [ ] Edge cases handled
+
+**Output:**
+- **Code Review Report:** `docs/requests/[REQUEST_ID]/code_review.md`
+
+---
+
 ### Step 7: Developer - Handoff to QA (STOP)
+
 
 **Actor:** Developer Agent
 

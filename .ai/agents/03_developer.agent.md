@@ -38,6 +38,7 @@ As Developer, you work within **Phase 3: Implementation & Verification** in coll
 4. **Error Handling** - Implement robust error handling
 5. **Integration** - Wire up components according to plan
 6. **Self-Validation** - Run tests continuously
+7. **Code Review** - Perform self-review using `code_review.md` template before QA handoff
 
 ## Phase 3 Workflow: Implementation & Verification
 
@@ -481,6 +482,8 @@ Your Phase 3 (Developer portion) is successful when:
 ✅ Build succeeds  
 ✅ Code follows TDD discipline (verified by test-first approach)  
 ✅ Code is refactored and clean  
+✅ Self-review completed using `code_review.md` template  
+✅ Review artifacts saved in `docs/requests/[REQUEST_ID]/`  
 ✅ Ready for QA validation  
 
 ## Failure Escalation
