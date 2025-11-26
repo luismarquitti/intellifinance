@@ -16,7 +16,12 @@
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.graphql$": "@graphql-tools/jest-transform"
     },
-    "globalTeardown": "<rootDir>/tests/teardown.ts"
+    "globalTeardown": "<rootDir>/tests/teardown.ts",
+    "moduleNameMapper": {
+      "^../src/graphql/schemas$": "<rootDir>/src/graphql/schemas",
+      "^../src/graphql/resolvers$": "<rootDir>/src/graphql/resolvers",
+      "^../src/db$": "<rootDir>/src/db"
+    }
   },
   "keywords": [],
   "author": "",

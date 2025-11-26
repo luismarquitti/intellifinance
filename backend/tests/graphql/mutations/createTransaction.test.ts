@@ -1,11 +1,23 @@
-jest.mock('../../../src/db');
-
 import transactionResolvers from '../../../src/graphql/resolvers/transaction';
 import pool from '../../../src/db';
+
+jest.mock('../../../src/db', () => ({
+  connect: jest.fn(),
+}));
 
 const resolvers = transactionResolvers as any;
 
 describe('Transaction Resolvers', () => {
+    let mockClient: { query: jest.Mock, release: jest.Mock };
+
+    beforeEach(() => {
+        mockClient = {
+            query: jest.fn(),
+            release: jest.fn(),
+        };
+        (pool.connect as jest.Mock).mockResolvedValue(mockClient);
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -22,12 +34,6 @@ describe('Transaction Resolvers', () => {
         };
 
         it('should create a transaction and update account balance', async () => {
-            const mockClient = {
-                query: jest.fn(),
-                release: jest.fn(),
-            };
-            (pool.connect as jest.Mock).mockResolvedValue(mockClient);
-
             // Mock account check
             mockClient.query.mockResolvedValueOnce({
                 rows: [{ id: 'account-1', balance: 100.00 }],

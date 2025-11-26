@@ -20,16 +20,14 @@
     ],
     "modulePaths": [
       "<rootDir>/src"
-    ],
-    "moduleNameMapper": {
-      "^@mui/material/(.*)$": "<rootDir>/node_modules/@mui/material/$1"
-    }
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "yarn install",
+    "dev": "yarn workspace frontend dev & yarn workspace backend dev",
+    "test": "yarn workspace frontend test && yarn workspace backend test",
+    "build": "yarn workspace frontend build && yarn workspace backend build"
+  }
+}

@@ -5,7 +5,7 @@ import { Transaction } from '../../models/transaction';
 
 const resolvers: IResolvers = {
     Query: {
-        transactions: async (_, __, { user }) => {
+        transactions: async (_: any, __: any, { user }: { user: { id: string } }) => {
             if (!user) throw new AuthenticationError('Not authenticated');
             const res = await pool.query(
                 'SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC',
@@ -13,7 +13,7 @@ const resolvers: IResolvers = {
             );
             return res.rows;
         },
-        transaction: async (_, { id }, { user }) => {
+        transaction: async (_: any, { id }: { id: string }, { user }: { user: { id: string } }) => {
             if (!user) throw new AuthenticationError('Not authenticated');
             const res = await pool.query(
                 'SELECT * FROM transactions WHERE id = $1 AND user_id = $2',
@@ -23,7 +23,7 @@ const resolvers: IResolvers = {
         },
     },
     Mutation: {
-        createTransaction: async (_, { input }, { user }) => {
+        createTransaction: async (_: any, { input }: { input: any }, { user }: { user: { id: string } }) => {
             if (!user) throw new AuthenticationError('Not authenticated');
 
             const client = await pool.connect();
@@ -84,7 +84,7 @@ const resolvers: IResolvers = {
                 client.release();
             }
         },
-        updateTransaction: async (_, { id, input }, { user }) => {
+        updateTransaction: async (_: any, { id, input }: { id: string, input: any }, { user }: { user: { id: string } }) => {
             if (!user) throw new AuthenticationError('Not authenticated');
 
             const client = await pool.connect();
@@ -174,7 +174,7 @@ const resolvers: IResolvers = {
                 client.release();
             }
         },
-        deleteTransaction: async (_, { id }, { user }) => {
+        deleteTransaction: async (_: any, { id }: { id: string }, { user }: { user: { id: string } }) => {
             if (!user) throw new AuthenticationError('Not authenticated');
 
             const client = await pool.connect();
