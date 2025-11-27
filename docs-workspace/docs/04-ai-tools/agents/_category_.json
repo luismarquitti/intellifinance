@@ -1,8 +1,0 @@
-{
-  "label": "Agent Personas",
-  "position": 1,
-  "link": {
-    "type": "generated-index",
-    "description": "Six specialized agent personas: Orchestrator, TPM/PO, Architect, Developer, QA/Tester, and Writer."
-  }
-}
