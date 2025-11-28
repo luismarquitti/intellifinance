@@ -72,7 +72,7 @@ As a user, I want to see a summary of my financial status (Total Balance, Income
 - **FR-009**: Frontend MUST display a `TransactionList` with specific visual cues (Green for Income, Red for Expense).
 - **FR-010**: Frontend MUST provide a `FilterSection` for filtering by Account, Category, and Date.
 - **FR-011**: Frontend MUST display `SummaryCards` for "Total Balance", "Income", and "Expense".
-- **FR-012**: UI MUST be responsive (Mobile First) and use TailwindCSS.
+- **FR-012**: UI MUST use Material UI (MUI) and follow the Design System specifications.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -80,11 +80,57 @@ As a user, I want to see a summary of my financial status (Total Balance, Income
 - **Category**: Classifies transactions. Fields: `id`, `name`, `icon`, `color`, `type`, `userId`.
 - **Transaction**: A financial record. Fields: `id`, `amount`, `description`, `date`, `type`, `accountId`, `categoryId`.
 
+## 4. UI & Design Specifications (Material UI)
+
+### 1. Design Tokens (Theme Config)
+* **Palette:**
+    * `primary`: `#0D47A1` (Dark Blue - Trust).
+    * `error`: `#D32F2F` (Critical Red).
+    * `success`: `#2E7D32` (Revenue Green).
+    * `background.default`: `#F4F6F8` (Light Grey/Neutral).
+* **Typography:** Font `Roboto` (MUI Default). Titles in `h4`, text in `body1/body2`.
+* **Shape:** `borderRadius: 8px` globally.
+* **Component Overrides:**
+    * `MuiCard`: `elevation: 1` default.
+    * `MuiTextField`: `variant: "outlined"` default.
+
+### 2. Layout Structure (`AuthenticatedLayout`)
+* **AppBar:** Fixed position, `color="default"` (white/light grey background), `elevation={1}`.
+    * Must contain Page Title (Left) and User Avatar/Menu (Right).
+* **Main Content:** `Container` with `maxWidth="lg"` and vertical padding `py={4}`.
+* **Navigation:** Sidebar or Tabs for navigation between "Transactions", "Reports", etc.
+
+### 3. Screen: Transactions List (`/transactions`)
+Based on the visual references:
+* **Header Area:**
+    * Title: "Transactions" (`h4`, `color="primary"`).
+    * Action: Button "New Transaction" (`variant="contained"`, `color="primary"`).
+* **Summary Cards (Grid):**
+    * 3 Cards at the top: "Current Balance", "Income", "Expenses".
+    * Each card must have a representative Icon and the formatted value (Currency).
+* **Filters Area (Paper):**
+    * A `Paper` container with `p={2}` containing:
+        * `TextField` (Search) for description.
+        * `Select` for Category and Account.
+        * `DatePicker` for Month/Year.
+* **Data Grid (Table):**
+    * Use `MuiDataGrid` or `TableContainer` for listing.
+    * **Columns:** Date, Category (Chip/Badge), Description, Account, Amount.
+    * **Styling:** Input values in `success.main` (+), output in `error.main` (-).
+
+### 4. Implementation Tasks
+* **Dependencies**:
+    * `[WEB] Install @mui/material @emotion/react @emotion/styled @mui/icons-material`.
+* **Setup**:
+    * `[WEB] Setup MUI ThemeProvider with custom palette`.
+* **Components**:
+    * `[WEB] Create Reusable Components (SummaryCard, PageHeader)`.
+
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
 - **SC-001**: User can see a list of demo transactions seeded in the DB.
 - **SC-002**: User can filter by "Credit Card" and see only those transactions.
-- **SC-003**: UI matches the provided design guidelines (Responsive, TailwindCSS).
+- **SC-003**: UI matches the provided Material UI design guidelines.
 - **SC-004**: Backend API returns transactions within 200ms for standard page sizes.
