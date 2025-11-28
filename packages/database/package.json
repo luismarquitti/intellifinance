@@ -3,5 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "main": "index.ts",
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "prisma": "5.22.0"
+  }
 }
