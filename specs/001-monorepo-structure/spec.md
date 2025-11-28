@@ -5,6 +5,17 @@
 **Status**: Draft
 **Input**: User description: "FEATURE: Monorepo Structure & Project Foundation (Spec 00) Context: We are initializing the "IntelliFinance" project. We already have the "Meta-Layer" set up (Spec-Kit, GitHub Agents, Gemini Configs). Now we need to define the strict code architecture. Requirements: 1. Monorepo Pattern: Must use Yarn Workspaces. 2. Protected Directories: The following existing directories are CRITICAL and must be preserved/documented as part of the structure: - .gemini/ (Google AI Studio context) - .github/ (Copilot Agents & Prompts) - .specify/ (Spec-Kit templates & memory) - AGENTS.md (Unified AI Context - Root level) 3. New Directories (To Be Created): - apps/: For deployable services. - backend (Node/Express/GraphQL) - frontend (React/Vite) - worker (BullMQ/AI Consumer) - packages/: For shared internal libraries. - database (Prisma Schema) - types (Zod Schemas & TS Interfaces) - config (Shared ESLint/TSConfig) 4. Tooling Standards: - Docker Compose for orchestration (Postgres, Redis). - TypeScript Strict Mode everywhere. - Husky for Git Hooks. Goal: Generate specs/00-monorepo-structure.spec.md defining this hierarchy as the Single Source of Truth."
 
+## Clarifications
+
+### Session 2025-11-27
+- Q: Are developers allowed to create new directories at the root of the monorepo? ? A: No. All new source code must be located within the pps/ or packages/ directories to maintain a clean and predictable structure.
+- Q: The spec requires detecting circular dependencies. How should this be implemented? ? A: Use the eslint-plugin-import package to add a linting rule that fails during development and in the CI pipeline if a circular dependency is introduced.
+- Q: The spec requires certain directories (.gemini/, .github/, .specify/) to be "protected". What is the specific protection mechanism? ? A: Use a CODEOWNERS file to require review from designated owners before any changes can be merged.
+- Q: What functional areas or features are explicitly out-of-scope for the initial monorepo setup? ? A: User-facing business features
+- Q: What is the expected behavior when a required external service (e.g., Postgres, Redis) is unavailable during local development or in CI? ? A: Fail Fast: The dependent application (e.g., backend) should fail to start immediately with a clear error message.
+- Q: What is the strategy for centralized logging, metrics, and tracing across the monorepo applications? ? A: Not yet defined: This aspect will be decided during the implementation phase.
+- Q: What are the initial scalability assumptions for the backend and worker applications in terms of requests per second or concurrent jobs? ? A: Handle typical development load
+- Q: Are there any specific structural security patterns or considerations (e.g., separate network zones, data encryption) within the monorepo setup? ? A: Access control via CODEOWNERS. Application-level security defined separately.
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Developer Onboarding (Priority: P1)
@@ -37,7 +48,7 @@ As a developer, I want to import shared code (like types or database clients) fr
 
 ### Edge Cases
 
--   **Circular Dependencies:** What happens if `packages/a` depends on `packages/b` and `packages/b` depends on `packages/a`? The build system should detect and report this.
+-   **Circular Dependencies:** What happens if `packages/a` depends on `packages/b` and `packages/b` depends on `packages/a`? This will be detected as an error by a linting rule (`eslint-plugin-import`) during development and in the CI pipeline.
 -   **Environment Variables:** How are environment variables managed across different apps (`backend`, `frontend`, `worker`) for local development? A unified system (e.g., `.env` files) should be established.
 
 ## Requirements *(mandatory)*
@@ -54,6 +65,14 @@ As a developer, I want to import shared code (like types or database clients) fr
 -   **FR-008**: All TypeScript code MUST be compiled with `strict` mode enabled.
 -   **FR-009**: The repository MUST use pre-commit hooks to enforce code quality standards before commits are created.
 -   **FR-010**: The following directories and files MUST be present and protected at the repository root: `.gemini/`, `.github/`, `.specify/`, `AGENTS.md`.
+-   **FR-011**: A `CODEOWNERS` file MUST be used to require review from designated owners for any changes to the protected directories.
+-   **FR-012**: All new source code MUST be located within the `apps/` or `packages/` directories.
+-   **FR-013**: Applications MUST implement a "fail fast" mechanism, immediately terminating with a clear error message if a required external service (e.g., database, message queue) is unavailable at startup.
+
+### Out of Scope
+
+-   This specification is strictly focused on the foundational monorepo structure, tooling, and local development setup.
+-   Any user-facing business features (e.g., financial dashboards, user authentication logic) are explicitly out of scope for this phase.
 
 ### Key Entities
 
@@ -74,3 +93,6 @@ As a developer, I want to import shared code (like types or database clients) fr
 -   **SC-002**: 100% of pull requests must pass automated linting and type-checking before they can be merged.
 -   **SC-003**: When a change is made to a shared package (e.g., `packages/types`), the build process for all dependent applications (`apps/*`) is automatically triggered.
 -   **SC-004**: The project's dependency graph shows zero direct dependencies between applications in the `apps/` directory.
+-   **SC-005**: The local development environment (including `backend`, `frontend`, and `worker` applications) operates efficiently, allowing developers to perform daily tasks without significant performance bottlenecks.
+
+

@@ -1,0 +1,11 @@
+{
+  "name": "@intellifinance/backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@intellifinance/types": "*"
+  }
+}

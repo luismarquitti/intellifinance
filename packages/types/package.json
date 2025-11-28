@@ -1,0 +1,10 @@
+{
+  "name": "@intellifinance/types",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {},
+  "dependencies": {
+    "zod": "^3.0.0"
+  }
+}
