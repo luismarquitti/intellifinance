@@ -12,6 +12,21 @@ async function checkConnections() {
   // Usage of shared type
   console.log('UserSchema loaded:', UserSchema);
 
+  // CODE-ONLY: Example of how QueueService would be used.
+  // This would typically be integrated into a GraphQL resolver
+  // or another service.
+  /*
+  import { queueService } from './services/queue.service';
+
+  async function exampleJobProducer() {
+    console.log('Adding a test job to the queue...');
+    await queueService.addTestJob({ message: 'Hello from the backend!' });
+    console.log('Test job added.');
+  }
+
+  exampleJobProducer().catch(console.error);
+  */
+
   return true;
 }
 
