@@ -1,78 +1,82 @@
-# IntelliFinance Constitution
-<!-- 
-**Sync Impact Report**
-- **Version change**: 0.0.0 -> 1.0.0
-- **Added sections**:
-  - Core Principles
-  - Technology Stack
-  - Asynchronous Architecture
-  - Test-Driven Development (TDD)
-  - Code Standards
-  - Security
-  - Code Quality
-  - Testing Standards
-  - User Experience Consistency
-  - Performance Requirements
+<!--
+Sync Impact Report:
+- Version change: 0.0.0 → 1.0.0
+- New principles added:
+  - I. Spec-Driven Development (SDD)
+  - II. Strong Typing & Contracts
+  - III. Asynchronous Decoupling
+  - IV. Monorepo Boundaries
+  - V. Probabilistic Containment (AI Policy)
+- New sections added:
+  - Testing Strategy
   - Development Workflow
-  - Governance
-- **Templates requiring updates**:
+- Templates requiring updates:
   - ✅ .specify/templates/plan-template.md
   - ✅ .specify/templates/spec-template.md
   - ✅ .specify/templates/tasks-template.md
+- Follow-up TODOs: None
 -->
+# IntelliFinance Constitution
 
 ## Core Principles
 
-### I. Technology Stack (NON-NEGOTIABLE)
-The technology stack is non-negotiable to ensure consistency and maintainability across the project.
-- **Frontend:** React with TypeScript
-- **Backend:** Node.js with TypeScript, Express, and GraphQL (Apollo Server)
-- **Relational Database:** PostgreSQL (v15+)
-- **Vector Database:** PGVector
-- **Job Queue:** Redis with BullMQ
+### I. Spec-Driven Development (SDD)
+**"The Spec is the Single Source of Truth."**
+No code is written without a pre-existing, validated Markdown Specification (`.spec.md`). The code is merely a compilation artifact of the documentation.
+* **Workflow:** Draft Spec → Review Logic → Implement Code → Verify against Spec.
+* **Docs-First:** If the implementation diverges from the Spec, the implementation is wrong, or the Spec must be amended first.
 
-### II. Asynchronous Architecture
-All AI operations MUST be asynchronous to ensure the system remains responsive and scalable. This applies to data ingestion, processing, and any communication with AI models.
+### II. Strong Typing & Contracts
+**"Trust Nothing, Validate Everything."**
+The system relies on strict contracts between boundaries. `any` type is strictly forbidden.
+* **Validation:** All inputs (API, CLI, Environment) must be validated using **Zod** schemas at the entry point.
+* **Database:** Prisma Schema is the canonical definition of data structure.
+* **Sharing:** Types are defined in `packages/types` and consumed by both Backend, Frontend, and Workers to ensure consistency.
 
-### III. Test-Driven Development (TDD) (NON-NEGOTIABLE)
-TDD is mandatory for all new features and bug fixes. The Red-Green-Refactor cycle must be strictly enforced. All code must be accompanied by meaningful tests.
+### III. Asynchronous Decoupling
+**"Blocking is Failure."**
+Heavy processing, especially AI inference, must never block the user interface or the API event loop.
+* **Pattern:** API accepts request → Enqueues Job (BullMQ) → Returns ID immediately.
+* **Workers:** Dedicated microservices process jobs and update state in the database.
+* **State:** The frontend must handle asynchronous state (Polling/Websockets) gracefully.
 
-### IV. Code Standards
-All code MUST adhere to Prettier and ESLint standards to maintain a consistent and readable codebase. Automated checks will be enforced in the CI/CD pipeline.
+### IV. Monorepo Boundaries
+**"Modular by Design."**
+We utilize a Yarn Workspaces Monorepo to maintain code cohesion without coupling.
+* **Apps (`/apps`):** Deployable units (Backend, Frontend, Worker). Should contain minimal business logic.
+* **Packages (`/packages`):** Reusable logic, UI kits, Database clients, and configs.
+* **Constraint:** Apps cannot import from other apps. They must communicate via API or shared Packages.
 
-### V. Security
-Security is paramount. Agents MUST NOT have direct access to the database. All data access MUST go through the GraphQL API, which is responsible for authentication and authorization.
+### V. Probabilistic Containment (AI Policy)
+**"AI is a Tool, Not a Magician."**
+AI Agents are non-deterministic components wrapped in deterministic code.
+* **Structure:** AI outputs must be coerced into structured JSON (using Zod) before being used by the system.
+* **Fallbacks:** Every AI interaction must have a defined failure state or human-in-the-loop fallback.
+* **Cost:** Agents must be optimized for token usage; context windows should be lean.
 
-### VI. Code Quality
-Code should be well-documented, modular, and easy to understand. Avoid overly complex solutions and premature optimizations. Follow the SOLID principles.
+## Testing Strategy
 
-### VII. Testing Standards
-In addition to TDD, the following testing standards must be met:
-- Unit tests for all individual components.
-- Integration tests for interactions between components.
-- End-to-end tests for critical user flows.
-- A high level of test coverage is expected and will be measured.
-
-### VIII. User Experience Consistency
-The user interface should be consistent in its design and behavior. Follow established UI/UX patterns and component libraries.
-
-### IX. Performance Requirements
-The application must be performant. API responses should be fast, and the frontend should be responsive. Performance testing should be part of the development lifecycle.
+**"Quality is Built-In, Not Inspected."**
+* **Unit Tests (Vitest):** Mandatory for all Business Logic in `packages/`.
+* **Integration Tests:** Mandatory for API Endpoints (Happy & Unhappy paths).
+* **AI Mocking:** Tests involving LLMs must support a "Mock Mode" to run without incurring costs or latency during CI.
+* **Visual Regression:** Critical frontend flows must be covered by E2E tests (Playwright).
 
 ## Development Workflow
 
-All new features and bug fixes must go through the following workflow:
-1.  Create a new feature branch from `develop`.
-2.  Write tests and implement the feature following TDD.
-3.  Open a pull request to merge the feature branch into `develop`.
-4.  The pull request must be reviewed and approved by at least one other team member.
-5.  All CI/CD checks must pass.
-6.  Once merged, the feature will be deployed to a staging environment for further testing before being released to production.
+**"Clean History, Clear Intent."**
+* **Commits:** Must follow [Conventional Commits](https://www.conventionalcommits.org/) (feat, fix, chore, docs).
+* **Branching:** Feature branches (`feat/x`) merged into `main` via Pull Request.
+* **Review:** No PR is merged without passing CI (Lint + Test) and at least one approval.
+* **Agent Guidelines:** AI coding assistants must respect the `.github/copilot-instructions.md` and never hallucinate dependencies not present in `package.json`.
 
 ## Governance
 
-This constitution is the single source of truth for all development practices in the IntelliFinance project. All team members are expected to adhere to these principles.
+This Constitution supersedes all other project documentation. Amendments to these principles require a version bump and a "Migration Plan" for existing code.
 
-Amendments to this constitution require a formal proposal, a review by the team, and a migration plan if the changes are breaking. All pull requests must verify compliance with this constitution.
+**Governance Rules:**
+1.  **Complexity:** Any architectural deviation (e.g., adding a new database) requires a written RFC (Request for Comments).
+2.  **Deprecation:** Breaking changes to the API Contract must support the previous version for at least one release cycle.
+3.  **Compliance:** The "Architect Agent" is authorized to reject code that violates Principle I or II.
 
-**Version**: 1.0.0 | **Ratified**: 2025-11-02 | **Last Amended**: 2025-11-02
+**Version**: 1.0.0 | **Ratified**: 2025-11-27 | **Last Amended**: 2025-11-27

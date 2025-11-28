@@ -1,8 +1,0 @@
-{
-  "label": "01 - SWEBOK Documentation",
-  "position": 1,
-  "link": {
-    "type": "generated-index",
-    "description": "Software Engineering Body of Knowledge (SWEBOK) compliant technical documentation for IntelliFinance project."
-  }
-}

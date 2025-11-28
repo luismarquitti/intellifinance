@@ -1,8 +1,0 @@
-{
-  "label": "Control Files",
-  "position": 1,
-  "link": {
-    "type": "generated-index",
-    "description": "Core development control files: changelog, plan, specs, todo, code state."
-  }
-}

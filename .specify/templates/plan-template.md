@@ -31,15 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- **[ ] Technology Stack:** Does the plan adhere to the approved technology stack (React, Node.js, TypeScript, PostgreSQL, PGVector, Redis, BullMQ)?
-- **[ ] Asynchronous Architecture:** Are all AI operations designed to be asynchronous?
-- **[ ] Test-Driven Development (TDD):** Does the plan include tasks for writing tests before implementation?
-- **[ ] Code Standards:** Does the plan account for adherence to Prettier and ESLint standards?
-- **[ ] Security:** Does the plan ensure that agents do not have direct access to the database?
-- **[ ] Code Quality:** Does the plan promote well-documented, modular, and understandable code?
-- **[ ] Testing Standards:** Does the plan include unit, integration, and end-to-end tests?
-- **[ ] User Experience Consistency:** Does the plan respect established UI/UX patterns?
-- **[ ] Performance Requirements:** Does the plan consider performance implications?
+- **[ ] Principle I (SDD):** Does this feature have a `.spec.md` file?
+- **[ ] Principle II (Typing):** Are Zod schemas planned for all inputs?
+- **[ ] Principle III (Async):** Is blocking I/O correctly deferred to a worker?
+- **[ ] Principle IV (Monorepo):** Does the proposed structure respect app/package boundaries?
+- **[ ] Principle V (AI):** If AI is used, are there fallbacks and structured outputs?
+- **[ ] Testing Strategy:** Does the plan include unit, integration, and E2E tests as required?
+- **[ ] Dev Workflow:** Does the plan account for conventional commits and PR reviews?
 
 ## Project Structure
 

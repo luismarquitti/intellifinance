@@ -1,0 +1,1 @@
+"Read and strictly follow the guidelines defined in the root file AGENTS.md."
