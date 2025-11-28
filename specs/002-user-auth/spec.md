@@ -129,3 +129,11 @@ sequenceDiagram
         end
     end
 ```
+
+## Clarifications
+
+- **Token Storage**: MVP will use Client-Side Storage (LocalStorage) for tokens. The API returns tokens in the JSON body.
+- **Token Rotation**: No Refresh Token rotation for MVP. The same Refresh Token is valid for its full 7-day duration.
+- **Logout**: Client-Side only. "Logout" action clears LocalStorage; the API remains stateless.
+- **Password Policy**: Minimum 8 characters. No strict complexity requirements for MVP.
+- **Email Normalization**: All emails must be converted to lowercase before storage and comparison.
