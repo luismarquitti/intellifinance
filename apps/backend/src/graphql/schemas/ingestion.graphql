@@ -1,0 +1,41 @@
+scalar Upload
+scalar DateTime
+
+enum IngestionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+type IngestionJob {
+  id: ID!
+  status: IngestionStatus!
+  fileUrl: String!
+  createdAt: DateTime!
+  completedAt: DateTime
+  account: Account!
+}
+
+type Account {
+  id: ID!
+  bankName: String!
+  type: String!
+  transactions: [Transaction!]!
+}
+
+type Transaction {
+  id: ID!
+  date: DateTime!
+  amount: Float!
+  description: String!
+  category: String
+}
+
+extend type Mutation {
+  uploadStatement(file: Upload!, accountId: ID!): IngestionJob!
+}
+
+extend type Query {
+  ingestionJob(id: ID!): IngestionJob
+}

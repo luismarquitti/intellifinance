@@ -14,4 +14,48 @@ model User {
   fullName     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  accounts     Account[]
+}
+
+enum IngestionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Account {
+  id            String         @id @default(uuid())
+  userId        String
+  bankName      String
+  type          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  transactions  Transaction[]
+  ingestionJobs IngestionJob[]
+  user          User           @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+  id            String   @id @default(uuid())
+  accountId     String
+  date          DateTime
+  amount        Decimal
+  description   String
+  category      String?
+  sourceFileUrl String?
+  createdAt     DateTime @default(now())
+  account       Account  @relation(fields: [accountId], references: [id])
+}
+
+model IngestionJob {
+  id            String          @id @default(uuid())
+  accountId     String
+  status        IngestionStatus @default(PENDING)
+  fileUrl       String
+  resultSummary String?
+  errorDetails  Json?
+  createdAt     DateTime        @default(now())
+  completedAt   DateTime?
+  account       Account         @relation(fields: [accountId], references: [id])
 }
