@@ -9,7 +9,10 @@
     "@intellifinance/types": "*",
     "bcrypt": "^6.0.0",
     "graphql-shield": "^7.6.5",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "bullmq": "^5.7.9",
+    "ioredis": "^5.4.1",
+    "@intellifinance/jobs": "workspace:*"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
