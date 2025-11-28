@@ -5,6 +5,8 @@ import {
   QueueName,
   TEST_JOB,
   TestJobData,
+  INGEST_PDF_JOB,
+  IngestionJobData
 } from '@intellifinance/jobs';
 
 const redisUrl = process.env.REDIS_URL;
@@ -18,13 +20,16 @@ const connection = new IORedis(redisUrl, {
 });
 
 const mainQueue = new Queue(QueueName.MAIN, { connection });
+const ingestionQueue = new Queue(QueueName.INGESTION, { connection });
 
 export class QueueService {
   public async addTestJob(data: TestJobData): Promise<void> {
     await mainQueue.add(TEST_JOB, data);
   }
 
-  // Add other job types here
+  public async addIngestionJob(data: IngestionJobData): Promise<void> {
+    await ingestionQueue.add(INGEST_PDF_JOB, data);
+  }
 }
 
 export const queueService = new QueueService();

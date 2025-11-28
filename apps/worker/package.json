@@ -13,12 +13,18 @@
   "license": "ISC",
   "dependencies": {
     "@intellifinance/jobs": "workspace:*",
+    "@intellifinance/database": "workspace:*",
+    "@intellifinance/types": "workspace:*",
     "bullmq": "^5.7.9",
     "dotenv": "^16.4.5",
-    "ioredis": "^5.4.1"
+    "ioredis": "^5.4.1",
+    "pdf-parse": "^1.1.1",
+    "langchain": "^0.3.2",
+    "@langchain/openai": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "@types/pdf-parse": "^1.1.4"
   }
 }
