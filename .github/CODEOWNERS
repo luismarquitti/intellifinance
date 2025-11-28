@@ -1,0 +1,5 @@
+* @owner
+apps/backend/ @backend-team
+apps/frontend/ @frontend-team
+apps/worker/ @backend-team
+packages/ @platform-team

@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check Protected Directories
+      run: |
+        if [ ! -d ".gemini" ]; then echo ".gemini missing"; exit 1; fi
+        if [ ! -d ".github" ]; then echo ".github missing"; exit 1; fi
+        if [ ! -d ".specify" ]; then echo ".specify missing"; exit 1; fi
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build
+      run: yarn workspaces run build
