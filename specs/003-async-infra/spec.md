@@ -37,11 +37,11 @@ This specification outlines the requirements for establishing a robust asynchron
 
 ## 3. Acceptance Criteria
 
-*   [ ] A new `packages/jobs` directory exists with a valid `package.json` and `tsconfig.json`.
-*   [ ] The `packages/jobs` package exports queue names and a Zod schema for `TEST_JOB`.
-*   [ ] A new `apps/worker` directory exists with a runnable entrypoint (`src/index.ts`).
-*   [ ] The worker application successfully connects to Redis using the `REDIS_URL` environment variable.
-*   [ ] The worker application can process the `TEST_JOB`.
-*   [ ] The `apps/backend` application is updated with a `QueueService`.
-*   [ ] The `QueueService` can successfully add a `TEST_JOB` to the queue.
-*   [ ] There are no circular dependencies between `apps/backend`, `apps/worker`, and `packages/jobs`. `apps/backend` and `apps/worker` must only import from `packages/jobs`.
+*   [x] A new `packages/jobs` directory exists with a valid `package.json` and `tsconfig.json`.
+*   [x] The `packages/jobs` package exports queue names and a Zod schema for `TEST_JOB`.
+*   [x] A new `apps/worker` directory exists with a runnable entrypoint (`src/index.ts`).
+*   [x] The worker application successfully connects to Redis using the `REDIS_URL` environment variable.
+*   [x] The worker application can process the `TEST_JOB`.
+*   [x] The `apps/backend` application is updated with a `QueueService`.
+*   [x] The `QueueService` can successfully add a `TEST_JOB` to the queue.
+*   [x] There are no circular dependencies between `apps/backend`, `apps/worker`, and `packages/jobs`. `apps/backend` and `apps/worker` must only import from `packages/jobs`.
