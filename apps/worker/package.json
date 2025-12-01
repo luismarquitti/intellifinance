@@ -12,9 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@intellifinance/jobs": "workspace:*",
-    "@intellifinance/database": "workspace:*",
-    "@intellifinance/types": "workspace:*",
+    "@intellifinance/jobs": "*",
+    "@intellifinance/database": "*",
+    "@intellifinance/types": "*",
     "bullmq": "^5.7.9",
     "dotenv": "^16.4.5",
     "ioredis": "^5.4.1",
