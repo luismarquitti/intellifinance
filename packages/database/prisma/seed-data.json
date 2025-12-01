@@ -1,0 +1,191 @@
+[
+  {
+    "Data": "30.10.2025",
+    "Descrição": "Wipro Technologies",
+    "Categoria": "Salário",
+    "Valor": 2481,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "30.10.2025",
+    "Descrição": "PAY MINI",
+    "Categoria": "Mercado",
+    "Valor": -23.08,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "31.10.2025",
+    "Descrição": "PAY RjcCo",
+    "Categoria": "Mercado",
+    "Valor": -3.65,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "01.11.2025",
+    "Descrição": "PAY PREVI",
+    "Categoria": "Outros",
+    "Valor": -150,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "02.11.2025",
+    "Descrição": "PAY MINI",
+    "Categoria": "Mercado",
+    "Valor": -21.77,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "03.11.2025",
+    "Descrição": "Eluma Alves dos Santos",
+    "Categoria": "Salário",
+    "Valor": 5000,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "03.11.2025",
+    "Descrição": "Luis Paulo Angelini Marquitti",
+    "Categoria": "Dívidas e empréstimos",
+    "Valor": -4659,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "03.11.2025",
+    "Descrição": "Eluma Alves dos Santos",
+    "Categoria": "Outros",
+    "Valor": -500,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "04.11.2025",
+    "Descrição": "PAY PANIF",
+    "Categoria": "Outros",
+    "Valor": -40.79,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "04.11.2025",
+    "Descrição": "PAY MINI",
+    "Categoria": "Mercado",
+    "Valor": -16.78,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "04.11.2025",
+    "Descrição": "PAY BE HA",
+    "Categoria": "Mercado",
+    "Valor": -25.9,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "05.11.2025",
+    "Descrição": "Condominio Residencial Athenas",
+    "Categoria": "Condomínio ",
+    "Valor": -1086.15,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "05.11.2025",
+    "Descrição": "Escola Montessori de Campinas LTDA",
+    "Categoria": "Educação",
+    "Valor": -3260,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "05.11.2025",
+    "Descrição": "IOF",
+    "Categoria": "Impostos e Taxas",
+    "Valor": -118.75,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "05.11.2025",
+    "Descrição": "Condominio Residencial Athenas",
+    "Categoria": "Condomínio ",
+    "Valor": -85.37,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "05.11.2025",
+    "Descrição": "PAY MINI",
+    "Categoria": "Mercado",
+    "Valor": -4.19,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "06.11.2025",
+    "Descrição": "Companhia de Gas de Sao Paulo Comgas",
+    "Categoria": "Gás ",
+    "Valor": -263.88,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "07.11.2025",
+    "Descrição": "CREDITO CONSIGNADO",
+    "Categoria": "Empréstimos",
+    "Valor": 40000,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "07.11.2025",
+    "Descrição": "Eluma Alves dos Santos",
+    "Categoria": "Outros",
+    "Valor": -1000,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "08.11.2025",
+    "Descrição": "PAY RjcCo",
+    "Categoria": "Mercado",
+    "Valor": -13.26,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "09.11.2025",
+    "Descrição": "PAY RjcCo",
+    "Categoria": "Mercado",
+    "Valor": -15.45,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "09.11.2025",
+    "Descrição": "PAY BE HA",
+    "Categoria": "Mercado",
+    "Valor": -19.9,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "09.11.2025",
+    "Descrição": "PAY BOOME",
+    "Categoria": "Compras",
+    "Valor": -29.7,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "09.11.2025",
+    "Descrição": "Ifood Pizza",
+    "Categoria": "Alimentação",
+    "Valor": -28.89,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "11.11.2025",
+    "Descrição": "Municipio de Sertaozinho",
+    "Categoria": "IPTU",
+    "Valor": -230.47,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "11.11.2025",
+    "Descrição": "Vivo",
+    "Categoria": "Telefone e Internet",
+    "Valor": -80,
+    "Situação": "Pago"
+  },
+  {
+    "Data": "12.11.2025",
+    "Descrição": "PAY BE HA",
+    "Categoria": "Mercado",
+    "Valor": -41,
+    "Situação": "Pago"
+  }
+]
