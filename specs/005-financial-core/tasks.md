@@ -33,7 +33,7 @@
 - [x] T015 [US1] Create `TransactionList` container component in `apps/frontend/src/components/financial/TransactionList.tsx`
 - [x] T016 [US1] Create `FloatingActionButton` component in `apps/frontend/src/components/common/FloatingActionButton.tsx` (or inline)
 - [x] T017 [US1] Create `TransactionsPage` in `apps/frontend/src/pages/TransactionsPage.tsx`
-- [ ] T018 [US1] Integrate `transactions` query in `TransactionsPage` and pass data to list
+- [x] T018 [US1] Integrate `transactions` query in `TransactionsPage` and pass data to list
 
 ## Phase 4: User Story 2 - Filter Transactions (P2)
 
@@ -43,21 +43,21 @@
 - [x] T019 [US2] Update `transactions` resolver to handle `filter` arguments in `apps/backend/src/modules/financial/resolvers.ts`
 - [x] T020 [US2] Create `FilterSection` component in `apps/frontend/src/components/financial/FilterSection.tsx`
 - [x] T021 [US2] Create `ActiveFilters` component in `apps/frontend/src/components/financial/ActiveFilters.tsx`
-- [ ] T022 [US2] Integrate filter state and query refetching in `TransactionsPage.tsx`
+- [x] T022 [US2] Integrate filter state and query refetching in `TransactionsPage.tsx`
 
 ## Phase 5: User Story 3 - View Financial Summary (P2)
 
 **Goal**: Users see financial summary cards.
 **Independent Test**: Verify cards show correct totals.
 
-- [ ] T023 [US3] Implement logic to calculate/fetch summary data (Balance, Income, Expense) in `apps/backend/src/modules/financial/services.ts`
+- [x] T023 [US3] Implement logic to calculate/fetch summary data (Balance, Income, Expense) in `apps/backend/src/modules/financial/services.ts`
 - [x] T024 [US3] Create `SummaryCards` component in `apps/frontend/src/components/financial/SummaryCards.tsx`
-- [ ] T025 [US3] Integrate summary data into `TransactionsPage.tsx`
+- [x] T025 [US3] Integrate summary data into `TransactionsPage.tsx`
 
 ## Phase 6: Polish
 
-- [ ] T026 Verify responsive layout (Mobile/Desktop) for Table and Filters
-- [ ] T027 Ensure all colors match strict design tokens (Success Green, Error Red)
+- [x] T026 Verify responsive layout (Mobile/Desktop) for Table and Filters
+- [x] T027 Ensure all colors match strict design tokens (Success Green, Error Red)
 
 ## Dependencies
 

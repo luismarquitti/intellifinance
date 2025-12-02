@@ -26,6 +26,14 @@ export const resolvers: IResolvers = {
         args.offset
       );
     },
+    financialSummary: async (
+      _,
+      args: { filter?: TransactionFilter },
+      context
+    ) => {
+      const userId = "e210ddbc-c165-4f1c-93d7-799bb47173be";
+      return financialService.getFinancialSummary(userId, args.filter);
+    },
   },
   Mutation: {
     createTransaction: async (

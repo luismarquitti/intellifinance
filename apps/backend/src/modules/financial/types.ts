@@ -59,6 +59,12 @@ export const typeDefs = gql`
     type: TransactionType
   }
 
+  type FinancialSummary {
+    balance: Float!
+    income: Float!
+    expense: Float!
+  }
+
   extend type Query {
     accounts: [Account!]!
     categories: [Category!]!
@@ -67,6 +73,7 @@ export const typeDefs = gql`
       limit: Int
       offset: Int
     ): [Transaction!]!
+    financialSummary(filter: TransactionFilter): FinancialSummary!
   }
 
   input CreateTransactionInput {

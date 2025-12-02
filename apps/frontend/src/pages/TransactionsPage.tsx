@@ -1,33 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Fab } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Typography, Box, Fab, CircularProgress, Alert } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useQuery } from '@apollo/client';
 import SummaryCards from '../components/financial/SummaryCards';
 import FilterSection from '../components/financial/FilterSection';
 import TransactionTable from '../components/financial/TransactionTable';
-
-// Mock Data for MVP (until GraphQL integration)
-const MOCK_TRANSACTIONS = [
-  {
-    id: '1',
-    date: '2025-10-30',
-    description: 'Salário Mensal',
-    amount: 5000,
-    type: 'INCOME' as const,
-    status: 'COMPLETED' as const,
-    category: { name: 'Salário', color: '#4CAF50', icon: 'attach_money' },
-    account: { name: 'Conta Principal' },
-  },
-  {
-    id: '2',
-    date: '2025-10-28',
-    description: 'Supermercado',
-    amount: 450.50,
-    type: 'EXPENSE' as const,
-    status: 'COMPLETED' as const,
-    category: { name: 'Mercado', color: '#FF9800', icon: 'shopping_cart' },
-    account: { name: 'Conta Principal' },
-  },
-];
+import { GET_TRANSACTIONS, GET_SUMMARY, GET_ACCOUNTS } from '../graphql/queries';
 
 const TransactionsPage: React.FC = () => {
   const [filters, setFilters] = useState({
@@ -40,6 +18,31 @@ const TransactionsPage: React.FC = () => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
+  // Prepare filter object for GraphQL
+  const apiFilter = {
+    accountId: filters.accountId || undefined,
+    startDate: filters.startDate || undefined,
+    endDate: filters.endDate || undefined,
+  };
+
+  const { data: transactionsData, loading: loadingTransactions, error: errorTransactions } = useQuery(GET_TRANSACTIONS, {
+    variables: { filter: apiFilter, limit: 50, offset: 0 },
+  });
+
+  const { data: summaryData, loading: loadingSummary } = useQuery(GET_SUMMARY, {
+    variables: { filter: apiFilter },
+  });
+
+  const { data: accountsData } = useQuery(GET_ACCOUNTS);
+
+  if (errorTransactions) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Alert severity="error">Error loading transactions: {errorTransactions.message}</Alert>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
@@ -48,21 +51,35 @@ const TransactionsPage: React.FC = () => {
         </Typography>
       </Box>
 
-      <SummaryCards balance={4549.50} income={5000} expense={450.50} />
+      {loadingSummary ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}><CircularProgress /></Box>
+      ) : (
+        <SummaryCards 
+          balance={summaryData?.financialSummary?.balance || 0} 
+          income={summaryData?.financialSummary?.income || 0} 
+          expense={summaryData?.financialSummary?.expense || 0} 
+        />
+      )}
 
       <FilterSection
         startDate={filters.startDate}
         endDate={filters.endDate}
         accountId={filters.accountId}
         onFilterChange={handleFilterChange}
+        // TODO: Pass accounts list to FilterSection if we enhance it to be dynamic
       />
 
-      <TransactionTable transactions={MOCK_TRANSACTIONS} />
+      {loadingTransactions ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress /></Box>
+      ) : (
+        <TransactionTable transactions={transactionsData?.transactions || []} />
+      )}
 
       <Fab
         color="primary"
         aria-label="add"
         sx={{ position: 'fixed', bottom: 32, right: 32 }}
+        onClick={() => console.log('Add transaction clicked')}
       >
         <AddIcon />
       </Fab>
