@@ -11,3 +11,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: MVP Initial Setup and Transactions Feature**
 *Link: [./tracks/mvp_transactions_20260206/](./tracks/mvp_transactions_20260206/)*
+
+---
+
+- [ ] **Track: Comprehensive Project Documentation & Documentation Agent**
+*Link: [./tracks/project_documentation_20260206/](./tracks/project_documentation_20260206/)*

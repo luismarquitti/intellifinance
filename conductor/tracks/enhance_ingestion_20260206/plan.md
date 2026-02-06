@@ -32,7 +32,7 @@ This phase focuses on implementing the logic to parse and validate data from CSV
 
 This phase integrates the new adapter with the existing BullMQ worker to process ingestions asynchronously.
 
-- [ ] **Task:** Update the Ingestion Processor.
+- [~] **Task:** Update the Ingestion Processor.
     - [ ] **Task:** Write Tests for the updated Ingestion Processor.
         - [ ] In `apps/worker/tests/integration/ingestion.processor.test.ts`, add tests to verify that the processor correctly uses the `CsvDataSourceAdapter` to process a job.
     - [ ] **Task:** Update `ingestion.processor.ts`.

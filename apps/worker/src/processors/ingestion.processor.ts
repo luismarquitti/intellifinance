@@ -3,6 +3,7 @@ import { IngestionJobData } from '@intellifinance/jobs';
 import { pdfService } from '../services/pdf.service';
 import { llmService } from '../services/llm.service';
 import { prisma, IngestionStatus } from '@intellifinance/database';
+import { IDataSourceAdapter } from '../../../../packages/types/src/ingestion';
 
 const logger = {
   info: (msg: string, meta?: any) => console.log(JSON.stringify({ level: 'info', msg, timestamp: new Date().toISOString(), ...meta })),
@@ -10,8 +11,8 @@ const logger = {
   warn: (msg: string, meta?: any) => console.warn(JSON.stringify({ level: 'warn', msg, timestamp: new Date().toISOString(), ...meta })),
 };
 
-export const ingestionProcessor = async (job: Job<IngestionJobData>) => {
-  const { jobId, fileUrl, accountId } = job.data;
+export const ingestionProcessor = async (job: Job<IngestionJobData & { adapter?: IDataSourceAdapter }>) => {
+  const { jobId, fileUrl, accountId, adapter } = job.data;
 
   logger.info('Starting ingestion job', { jobId, fileUrl });
 
@@ -22,13 +23,20 @@ export const ingestionProcessor = async (job: Job<IngestionJobData>) => {
   });
 
   try {
-    // 1. Extract Text
-    const text = await pdfService.extractText(fileUrl);
-    logger.info('PDF Text extracted', { jobId, textLength: text.length });
+    let transactions;
+    if (adapter) {
+        transactions = await adapter.getTransactions();
+        logger.info('Transactions extracted via adapter', { jobId, transactionCount: transactions.length });
+    } else {
+        // 1. Extract Text
+        const text = await pdfService.extractText(fileUrl);
+        logger.info('PDF Text extracted', { jobId, textLength: text.length });
 
-    // 2. LLM Extraction
-    const transactions = await llmService.extractTransactions(text);
-    logger.info('LLM Extraction complete', { jobId, transactionCount: transactions.length });
+        // 2. LLM Extraction
+        transactions = await llmService.extractTransactions(text);
+        logger.info('LLM Extraction complete', { jobId, transactionCount: transactions.length });
+    }
+
 
     // 3. Save to DB
     await prisma.$transaction(async (tx) => {

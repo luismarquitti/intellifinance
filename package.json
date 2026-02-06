@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@langchain/core": "^1.1.19",
     "@types/papaparse": "^5.5.2",
     "papaparse": "^5.5.3"
   }
