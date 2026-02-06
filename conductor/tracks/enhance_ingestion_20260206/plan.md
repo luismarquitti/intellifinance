@@ -6,7 +6,7 @@ This plan outlines the steps to implement a robust and scalable data ingestion p
 
 ---
 
-## Phase 1: Core Data Models and Interfaces [checkpoint: 8bb7807]
+## Phase 1: Core Data Models and Interfaces [checkpoint: 1d1a586]
 
 This phase focuses on establishing the foundational data structures and contracts for the ingestion system.
 
