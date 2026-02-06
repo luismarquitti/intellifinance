@@ -13,6 +13,14 @@ export const CreateTransactionSchema = z.object({
   categoryId: z.string().uuid(),
 });
 
+export const TransactionSchema = CreateTransactionSchema.extend({
+  id: z.string().uuid(),
+  currency: z.string().min(3).max(3),
+  category: z.string().optional(),
+  createdAt: z.string().datetime({ offset: true }),
+  updatedAt: z.string().datetime({ offset: true }),
+});
+
 export const TransactionFilterSchema = z.object({
   accountId: z.string().uuid().optional(),
   categoryId: z.string().uuid().optional(),
@@ -22,4 +30,5 @@ export const TransactionFilterSchema = z.object({
 });
 
 export type CreateTransactionInput = z.infer<typeof CreateTransactionSchema>;
+export type Transaction = z.infer<typeof TransactionSchema>;
 export type TransactionFilter = z.infer<typeof TransactionFilterSchema>;
