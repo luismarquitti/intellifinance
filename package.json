@@ -8,17 +8,30 @@
   "scripts": {
     "lint": "eslint .",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-typescript": "^7.28.5",
+    "@types/jest": "^30.0.0",
+    "eslint": "^8.0.0",
     "husky": "^8.0.0",
+    "jest": "^30.2.0",
     "lint-staged": "^13.0.0",
     "prettier": "^2.0.0",
-    "eslint": "^8.0.0"
+    "ts-jest": "^29.4.6"
   },
   "lint-staged": {
     "*.{js,ts,json,md}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.19",
+    "@types/papaparse": "^5.5.2",
+    "@types/uuid": "^11.0.0",
+    "papaparse": "^5.5.3",
+    "uuid": "^13.0.0"
   }
 }

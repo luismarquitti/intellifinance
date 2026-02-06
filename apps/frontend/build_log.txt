@@ -1,0 +1,13 @@
+
+> @intellifinance/frontend@0.0.0 build
+> vite build
+
+'vite' is not recognized as an internal or external command,
+operable program or batch file.
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path C:\devWorkspace\intellifinance\apps\frontend
+npm error workspace @intellifinance/frontend@0.0.0
+npm error location C:\devWorkspace\intellifinance\apps\frontend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vite build

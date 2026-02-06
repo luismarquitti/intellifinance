@@ -1,0 +1,8 @@
+{
+  "track_id": "project_documentation_20260206",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-06T00:00:00Z",
+  "updated_at": "2026-02-06T00:00:00Z",
+  "description": "Comprehensive project documentation available via GitHub Pages, following SEWBOK, with API/Swagger docs, and a documentation agent definition."
+}

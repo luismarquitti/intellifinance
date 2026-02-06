@@ -32,10 +32,10 @@ type Transaction {
   category: String
 }
 
-extend type Mutation {
+type Mutation {
   uploadStatement(file: Upload!, accountId: ID!): IngestionJob!
 }
 
-extend type Query {
+type Query {
   ingestionJob(id: ID!): IngestionJob
 }

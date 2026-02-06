@@ -8,7 +8,7 @@ Built with a modern tech stack including **TypeScript**, **Node.js**, **React**,
 
 ## 🚀 Features
 
-- **Monorepo Architecture**: Structured using NPM workspaces for efficient code sharing and dependency management.
+- **Monorepo Architecture**: Structured using Yarn Workspaces for efficient code sharing and dependency management.
 - **Robust Authentication**: Secure user authentication system with dual-token strategy (Access & Refresh tokens).
 - **Asynchronous Processing**: Scalable background job processing using **BullMQ** and **Redis**.
 - **Type Safety**: End-to-end type safety with **TypeScript** and shared **Zod** schemas.
@@ -49,24 +49,46 @@ intellifinance/
 
 Ensure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Node.js](https://nodejs.org/) (v20 or higher)
 - [Docker](https://www.docker.com/) & Docker Compose
-- [NPM](https://www.npmjs.com/)
+- [Yarn](https://yarnpkg.com/)
 
 ### Installation
 
-1.  **Clone the repository**:
+1. **Clone the repository**:
+
+    ```bash
+    git clone <repository-url>
+    cd intellifinance
     ```bash
     git clone <repository-url>
     cd intellifinance
     ```
 
-2.  **Install dependencies**:
+2. **Quick Setup**:
+
+    - **Windows (PowerShell)**:
+
+        ```powershell
+        .\setup.ps1
+        ```
+
+    - **WSL / Linux / Mac**:
+
+        ```bash
+        chmod +x setup.sh
+        ./setup.sh
+        ```
+
+    *Alternatively, follow the manual steps below:*
+
+3. **Install dependencies**:
+
     ```bash
-    npm install
+    yarn install
     ```
 
-3.  **Environment Setup**:
+4. **Environment Setup**:
     Create `.env` files in the respective `apps/` directories if needed (refer to `spec` files for configuration details).
 
 ### Running the Application
@@ -78,10 +100,11 @@ docker-compose up --build
 ```
 
 This will start:
+
 - **PostgreSQL** (Database)
 - **Redis** (Message Broker)
-- **Backend API** (http://localhost:3000)
-- **Frontend** (http://localhost:5173)
+- **Backend API** (<http://localhost:3000>)
+- **Frontend** (<http://localhost:5173>)
 - **Worker** (Background process)
 
 > [!NOTE]
@@ -104,10 +127,10 @@ Maintain code quality using the configured scripts:
 
 ```bash
 # Run linting
-npm run lint
+yarn lint
 
 # Format code
-npm run format
+yarn format
 ```
 
 ## 📚 Documentation
