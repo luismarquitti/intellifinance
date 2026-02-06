@@ -23,13 +23,9 @@ This phase focuses on establishing the foundational data structures and contract
 
 This phase focuses on implementing the logic to parse and validate data from CSV files.
 
-- [~] **Task:** Implement the `CsvDataSourceAdapter`.
-    - [ ] **Task:** Write Tests for `CsvDataSourceAdapter`.
-        - [ ] Create a new test file in the `worker` app (`apps/worker/tests/unit/csv-adapter.test.ts`).
-        - [ ] Write unit tests that cover parsing valid CSV data, handling malformed data, and mapping columns correctly.
-    - [ ] **Task:** Implement `CsvDataSourceAdapter`.
-        - [ ] Create `apps/worker/src/lib/adapters/csv.adapter.ts`.
-        - [ ] Implement the `CsvDataSourceAdapter` class, conforming to the `IDataSourceAdapter` interface. Use a library like `papaparse` for robust CSV parsing.
+- [x] **Task:** Implement the `CsvDataSourceAdapter`. [53afbc4]
+    - [x] **Task:** Write Tests for `CsvDataSourceAdapter`.
+    - [x] **Task:** Implement `CsvDataSourceAdapter`.
 - [ ] **Task:** Conductor - User Manual Verification 'CSV Adapter Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Asynchronous Ingestion Processor [checkpoint: ]
