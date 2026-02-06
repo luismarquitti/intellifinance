@@ -19,7 +19,7 @@ This phase focuses on establishing the foundational data structures and contract
     - [ ] **Task:** Create a `test` script in the root `package.json` that runs all tests in the monorepo.
 - [ ] **Task:** Conductor - User Manual Verification 'Core Data Models and Interfaces' (Protocol in workflow.md)
 
-## Phase 2: CSV Adapter Implementation [checkpoint: ]
+## Phase 2: CSV Adapter Implementation [checkpoint: 55cf1b2]
 
 This phase focuses on implementing the logic to parse and validate data from CSV files.
 
