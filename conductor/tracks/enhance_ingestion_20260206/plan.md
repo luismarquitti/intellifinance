@@ -12,7 +12,7 @@ This phase focuses on establishing the foundational data structures and contract
 
 - [x] **Task:** Define the canonical `Transaction` model and related types. [66a2d94]
     - [ ] In `packages/types/src/financial.ts`, define a Zod schema and TypeScript type for a `Transaction`. This model will be the single source of truth for transaction data throughout the application. It should include fields like `id`, `date`, `description`, `amount`, `currency`, `category`, etc.
-- [ ] **Task:** Define the `IDataSourceAdapter` interface.
+- [x] **Task:** Define the `IDataSourceAdapter` interface. [38ab768]
     - [ ] In a new file `packages/types/src/ingestion.ts`, define a TypeScript interface named `IDataSourceAdapter` that specifies the contract for all data source adapters. It should include a method like `getTransactions(): Promise<Transaction[]>`.
 - [ ] **Task:** Conductor - User Manual Verification 'Core Data Models and Interfaces' (Protocol in workflow.md)
 
