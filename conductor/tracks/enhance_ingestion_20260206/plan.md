@@ -32,12 +32,9 @@ This phase focuses on implementing the logic to parse and validate data from CSV
 
 This phase integrates the new adapter with the existing BullMQ worker to process ingestions asynchronously.
 
-- [~] **Task:** Update the Ingestion Processor.
-    - [ ] **Task:** Write Tests for the updated Ingestion Processor.
-        - [ ] In `apps/worker/tests/integration/ingestion.processor.test.ts`, add tests to verify that the processor correctly uses the `CsvDataSourceAdapter` to process a job.
-    - [ ] **Task:** Update `ingestion.processor.ts`.
-        - [ ] In `apps/worker/src/processors/ingestion.processor.ts`, modify the job handler to instantiate and use the `CsvDataSourceAdapter`.
-        - [ ] The processor should receive a file path or data buffer in the job payload, pass it to the adapter, and then process the returned transactions (e.g., save them to the database).
+- [x] **Task:** Update the Ingestion Processor. [c60f5a0]
+    - [x] **Task:** Write Tests for the updated Ingestion Processor.
+    - [x] **Task:** Update `ingestion.processor.ts`.
 - [ ] **Task:** Conductor - User Manual Verification 'Asynchronous Ingestion Processor' (Protocol in workflow.md)
 
 ## Phase 4: API Integration [checkpoint: ]
