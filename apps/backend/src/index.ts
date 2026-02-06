@@ -12,7 +12,7 @@ import { join } from 'path';
 
 import { context } from './graphql/context';
 import { resolvers as authResolvers } from './graphql/resolvers/auth.resolver';
-import { ingestionResolvers } from './graphql/resolvers/ingestion.resolver';
+import { ingestionResolvers } from './graphql/resolvers/ingestion';
 
 // Helper to load schemas
 const loadSchema = (name: string) => {
@@ -32,13 +32,11 @@ const typeDefs = [
 const resolvers = {
   Query: {
     ...authResolvers.Query,
-    ...ingestionResolvers.Query,
   },
   Mutation: {
     ...authResolvers.Mutation,
     ...ingestionResolvers.Mutation,
   },
-  Transaction: ingestionResolvers.Transaction
 };
 
 const PORT = process.env.PORT || 3000;
