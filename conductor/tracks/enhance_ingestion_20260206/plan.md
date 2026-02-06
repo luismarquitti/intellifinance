@@ -41,10 +41,7 @@ This phase integrates the new adapter with the existing BullMQ worker to process
 
 This phase exposes the ingestion functionality through a secure GraphQL mutation.
 
-- [~] **Task:** Create the GraphQL mutation for data ingestion.
-    - [ ] **Task:** Write Tests for the ingestion mutation.
-        - [ ] In `apps/backend/tests/integration/ingestion.test.ts`, write an integration test that simulates a file upload and verifies that a job is correctly added to the BullMQ queue.
-    - [ ] **Task:** Implement the ingestion mutation.
-        - [ ] In `apps/backend/src/modules/financial/`, define a new GraphQL mutation for file upload.
-        - [ ] The resolver for this mutation will handle the file upload (e.g., using `graphql-upload`), save the file temporarily, and then dispatch a job to the ingestion queue with the file path.
+- [x] **Task:** Create the GraphQL mutation for data ingestion. [50b955f]
+    - [x] **Task:** Write Tests for the ingestion mutation.
+    - [x] **Task:** Implement the ingestion mutation.
 - [ ] **Task:** Conductor - User Manual Verification 'API Integration' (Protocol in workflow.md)
