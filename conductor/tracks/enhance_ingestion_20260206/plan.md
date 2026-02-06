@@ -37,7 +37,7 @@ This phase integrates the new adapter with the existing BullMQ worker to process
     - [x] **Task:** Update `ingestion.processor.ts`.
 - [ ] **Task:** Conductor - User Manual Verification 'Asynchronous Ingestion Processor' (Protocol in workflow.md)
 
-## Phase 4: API Integration [checkpoint: ]
+## Phase 4: API Integration [checkpoint: 8396e91]
 
 This phase exposes the ingestion functionality through a secure GraphQL mutation.
 
