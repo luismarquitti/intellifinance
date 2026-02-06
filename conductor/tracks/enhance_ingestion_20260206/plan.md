@@ -13,7 +13,10 @@ This phase focuses on establishing the foundational data structures and contract
 - [x] **Task:** Define the canonical `Transaction` model and related types. [66a2d94]
     - [ ] In `packages/types/src/financial.ts`, define a Zod schema and TypeScript type for a `Transaction`. This model will be the single source of truth for transaction data throughout the application. It should include fields like `id`, `date`, `description`, `amount`, `currency`, `category`, etc.
 - [x] **Task:** Define the `IDataSourceAdapter` interface. [38ab768]
-    - [ ] In a new file `packages/types/src/ingestion.ts`, define a TypeScript interface named `IDataSourceAdapter` that specifies the contract for all data source adapters. It should include a method like `getTransactions(): Promise<Transaction[]>`.
+- [x] **Task:** Implement a root-level test script. [cd83622]
+    - [ ] **Task:** Install necessary testing libraries (e.g., `jest`, `ts-jest`).
+    - [ ] **Task:** Configure Jest to work with TypeScript and the monorepo structure.
+    - [ ] **Task:** Create a `test` script in the root `package.json` that runs all tests in the monorepo.
 - [ ] **Task:** Conductor - User Manual Verification 'Core Data Models and Interfaces' (Protocol in workflow.md)
 
 ## Phase 2: CSV Adapter Implementation [checkpoint: ]
