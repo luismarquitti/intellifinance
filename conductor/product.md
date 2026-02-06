@@ -1,2 +1,2 @@
 # Initial Concept
-IntelliFinance is a scalable, monorepo-based financial management platform designed to provide intelligent insights and robust data processing.
+IntelliFinance is a scalable, monorepo-based financial management platform designed to provide intelligent insights, robust data processing, and **enhanced transaction data ingestion and validation from diverse financial sources**.

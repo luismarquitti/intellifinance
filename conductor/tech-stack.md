@@ -28,12 +28,17 @@ IntelliFinance is built as a scalable, monorepo-based application, leveraging mo
 -   **PostgreSQL:** A powerful, open-source object-relational database system known for its reliability, feature robustness, and performance.
 -   **Prisma ORM:** A next-generation ORM that simplifies database access and provides type-safe queries.
 
+-   **Zod:** A TypeScript-first schema declaration and validation library, used for defining and validating data structures.
+
 ### 2.5. Asynchronous Processing & Messaging
 
 -   **Redis:** An in-memory data structure store, used as a message broker and cache.
+
 -   **BullMQ:** A robust, Redis-backed queueing system for Node.js, enabling reliable background job processing and asynchronous task handling.
 
 ## 3. Architecture & Project Structure
+-   **Data Adapters:** Implementation of `IDataSourceAdapter` and `CsvDataSourceAdapter` for flexible data ingestion.
+-   **PapaParse:** A powerful in-browser and Node.js CSV parser, used by `CsvDataSourceAdapter`.
 
 -   **Monorepo (Yarn Workspaces):** The project is structured as a monorepo using Yarn Workspaces, facilitating code sharing, dependency management, and atomic deployments across different application components (backend, frontend, worker, shared packages).
 -   **Microservices-Ready:** The application design supports a microservices-oriented architecture, with clear separation of concerns between the backend API and dedicated worker services.
