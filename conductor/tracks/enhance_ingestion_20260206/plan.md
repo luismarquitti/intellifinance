@@ -28,7 +28,7 @@ This phase focuses on implementing the logic to parse and validate data from CSV
     - [x] **Task:** Implement `CsvDataSourceAdapter`.
 - [x] **Task:** Conductor - User Manual Verification 'CSV Adapter Implementation' (Protocol in workflow.md)
 
-## Phase 3: Asynchronous Ingestion Processor [checkpoint: 2329312]
+## Phase 3: Asynchronous Ingestion Processor [checkpoint: 098a239]
 
 This phase integrates the new adapter with the existing BullMQ worker to process ingestions asynchronously.
 
