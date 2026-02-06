@@ -27,181 +27,178 @@ async function main() {
   });
   console.log(`Created user: ${user.id}`);
 
-  // 2. Create Demo Account
-  const account = await prisma.account.create({
-    data: {
-      userId: user.id,
-      name: "Conta Principal",
-      type: AccountType.CHECKING,
-      balance: 0, // Will be updated by transactions? Or just set initial?
-    },
-  });
-  console.log(`Created account: ${account.id}`);
+  // Base Data Structure for Lookups
+  const accountMap = new Map<string, string>();
+  const categoryMap = new Map<string, string>();
 
-  // 3. Create Categories
-  const categoriesData = [
-    {
-      name: "Salário",
-      type: CategoryType.INCOME,
-      icon: "attach_money",
-      color: "#4CAF50",
-    },
-    {
-      name: "Mercado",
-      type: CategoryType.EXPENSE,
-      icon: "shopping_cart",
-      color: "#FF9800",
-    },
-    {
-      name: "Alimentação",
-      type: CategoryType.EXPENSE,
-      icon: "restaurant",
-      color: "#F44336",
-    },
-    {
-      name: "Transporte",
-      type: CategoryType.EXPENSE,
-      icon: "directions_car",
-      color: "#2196F3",
-    },
-    {
-      name: "Moradia",
-      type: CategoryType.EXPENSE,
-      icon: "home",
-      color: "#9C27B0",
-    },
-    {
-      name: "Lazer",
-      type: CategoryType.EXPENSE,
-      icon: "movie",
-      color: "#E91E63",
-    },
-    {
-      name: "Educação",
-      type: CategoryType.EXPENSE,
-      icon: "school",
-      color: "#3F51B5",
-    },
-    {
-      name: "Saúde",
-      type: CategoryType.EXPENSE,
-      icon: "local_hospital",
-      color: "#00BCD4",
-    },
-    {
+  // Ensure "Outros" category exists first as fallback
+  const outrosCategory = await prisma.category.create({
+    data: {
       name: "Outros",
       type: CategoryType.EXPENSE,
       icon: "category",
       color: "#9E9E9E",
+      userId: user.id,
     },
-    {
-      name: "Dívidas e empréstimos",
-      type: CategoryType.EXPENSE,
-      icon: "money_off",
-      color: "#795548",
-    },
-    {
-      name: "Condomínio ",
-      type: CategoryType.EXPENSE,
-      icon: "apartment",
-      color: "#607D8B",
-    },
-    {
-      name: "Impostos e Taxas",
-      type: CategoryType.EXPENSE,
-      icon: "account_balance",
-      color: "#FF5722",
-    },
-    {
-      name: "Gás ",
-      type: CategoryType.EXPENSE,
-      icon: "local_fire_department",
-      color: "#FFC107",
-    },
-    {
-      name: "Empréstimos",
-      type: CategoryType.INCOME,
-      icon: "account_balance_wallet",
-      color: "#8BC34A",
-    }, // Based on sample data having positive value
-    {
-      name: "Telefone e Internet",
-      type: CategoryType.EXPENSE,
-      icon: "wifi",
-      color: "#03A9F4",
-    },
-    {
-      name: "Compras",
-      type: CategoryType.EXPENSE,
-      icon: "shopping_bag",
-      color: "#673AB7",
-    },
-    {
-      name: "IPTU",
-      type: CategoryType.EXPENSE,
-      icon: "domain",
-      color: "#FF5722",
-    },
-  ];
-
-  const categoryMap = new Map<string, string>();
-
-  for (const cat of categoriesData) {
-    const createdCat = await prisma.category.create({
-      data: {
-        ...cat,
-        userId: user.id,
-      },
-    });
-    categoryMap.set(cat.name, createdCat.id);
-  }
-  console.log(`Created ${categoriesData.length} categories`);
+  });
+  categoryMap.set("Outros", outrosCategory.id);
 
   // 4. Load and Parse Transactions
-  const seedDataPath = path.join(__dirname, "seed-data.json");
+  const seedDataPath = path.join(__dirname, "../../../data-sources/transactions-0126.csv");
+
+  if (!fs.existsSync(seedDataPath)) {
+    console.error(`CSV file not found at: ${seedDataPath}`);
+    return;
+  }
+
   const rawData = fs.readFileSync(seedDataPath, "utf-8");
-  const transactions = JSON.parse(rawData);
+  const lines = rawData.split(/\r?\n/);
 
-  console.log(`Processing ${transactions.length} transactions...`);
+  // Skip header (line 0)
+  const dataLines = lines.slice(1).filter(line => line.trim() !== "");
 
-  for (const t of transactions) {
-    // Parse Date: "30.10.2025" -> ISO
-    const [day, month, year] = t.Data.split(".");
-    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+  console.log(`Processing ${dataLines.length} transactions from CSV...`);
 
-    // Map Category
-    let categoryId = categoryMap.get(t.Categoria);
-    if (!categoryId) {
-      // Fallback to 'Outros' if not found
-      categoryId = categoryMap.get("Outros");
-      if (!categoryId) throw new Error(`Category 'Outros' not found`);
-      console.warn(`Category '${t.Categoria}' not found, using 'Outros'`);
+  let processedCount = 0;
+
+  for (const line of dataLines) {
+    // Basic CSV split - assuming simplistic CSV without commas in quoted fields for now based on visual inspection
+    // But looking at the file, it has "R$ 3.000,00" which contains commas. 
+    // We need a smarter regex execution or simple parser.
+    // The format seems to be: 
+    // Tipo de Conta,Conta/Cartão,Data,Descrição,Categoria,Valor,Situação,Recorrência,Data Primeira Parcela,Data Última Parcela,Parcela,Informações adicionais
+    // Value is quoted like "R$ 0,03"
+
+    // Regex to split by comma, ignoring commas inside quotes
+    const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+    // Actually a better regex for CSV split:
+    // /,(?=(?:(?:[^"]*"){2})*[^"]*$)/
+
+    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.trim().replace(/^"|"$/g, ''));
+
+    if (columns.length < 6) continue;
+
+    const [
+      tipoConta,      // 0: Tipo de Conta
+      contaCartao,    // 1: Conta/Cartão
+      dataStr,        // 2: Data (01.01.2026 or 18/02/2025)
+      descricao,      // 3: Descrição
+      categoria,      // 4: Categoria
+      valorStr,       // 5: Valor ("R$ 0,03" or "-R$ 3.660,00")
+      situacao,       // 6: Situação
+      recorrencia,    // 7: Recorrência
+      // ... others
+    ] = columns;
+
+    // --- 1. Handle Account ---
+    let accountId = accountMap.get(contaCartao);
+    if (!accountId) {
+      // Check if exists in DB
+      const existingAccount = await prisma.account.findFirst({
+        where: { name: contaCartao, userId: user.id }
+      });
+
+      if (existingAccount) {
+        accountId = existingAccount.id;
+      } else {
+        // Create Account
+        const type = tipoConta === 'Cartão de Crédito' ? AccountType.CREDIT_CARD : AccountType.CHECKING;
+        const newAccount = await prisma.account.create({
+          data: {
+            name: contaCartao,
+            type: type,
+            userId: user.id,
+          }
+        });
+        accountId = newAccount.id;
+        console.log(`Created new account: ${contaCartao}`);
+      }
+      accountMap.set(contaCartao, accountId);
     }
 
-    // Map Status
-    const status =
-      t["Situação"] === "Pago"
-        ? TransactionStatus.COMPLETED
-        : TransactionStatus.PENDING;
+    // --- 2. Handle Category ---
+    let categoryId = categoryMap.get(categoria);
+    if (!categoryId) {
+      // Check if exists in DB
+      const existingCategory = await prisma.category.findFirst({
+        where: { name: categoria, userId: user.id }
+      });
 
-    // Determine Type based on Value
-    const amount = parseFloat(t.Valor);
+      if (existingCategory) {
+        categoryId = existingCategory.id;
+      } else {
+        // Create Category (Guessing details)
+        const newCategory = await prisma.category.create({
+          data: {
+            name: categoria,
+            // Defaulting to EXPENSE, logic could be refined but fine for MVP import
+            type: CategoryType.EXPENSE,
+            icon: "category", // default
+            color: "#607D8B", // default
+            userId: user.id
+          }
+        });
+        categoryId = newCategory.id;
+        console.log(`Created new category: ${categoria}`);
+      }
+      categoryMap.set(categoria, categoryId);
+    }
+
+    // --- 3. Parse Date ---
+    let date: Date;
+    if (dataStr.includes(".")) {
+      // Format: 01.01.2026
+      const [day, month, year] = dataStr.split(".");
+      date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+    } else if (dataStr.includes("/")) {
+      // Format: 18/02/2025
+      const [day, month, year] = dataStr.split("/");
+      date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+    } else {
+      console.warn(`Invalid date format for: ${dataStr}, skipping transaction.`);
+      continue;
+    }
+
+    // --- 4. Parse Amount ---
+    // Remove "R$ ", remove dots (thousands), replace comma with dot
+    // "R$ 3.000,00" -> 3000.00
+    // "-R$ 3.660,00" -> -3660.00
+    const cleanedValue = valorStr
+      .replace("R$", "")
+      .replace(/\./g, "")
+      .replace(",", ".")
+      .trim();
+
+    const amount = parseFloat(cleanedValue);
+    if (isNaN(amount)) {
+      console.warn(`Invalid amount format for: ${valorStr}, skipping transaction.`);
+      continue;
+    }
+
+    // Determine Type (Simpler logic: if > 0 INCOME, else EXPENSE)
+    // CSV has negative values for expenses
     const type = amount >= 0 ? TransactionType.INCOME : TransactionType.EXPENSE;
 
+    // Status
+    const status = situacao === "Pago" ? TransactionStatus.COMPLETED : TransactionStatus.PENDING;
+
+    // --- 5. Create Transaction ---
     await prisma.transaction.create({
       data: {
-        accountId: account.id,
+        accountId: accountId,
         categoryId: categoryId,
         date: date,
-        amount: amount, // Prisma handles Decimal from number/string
-        description: t["Descrição"],
+        amount: amount,
+        description: descricao || "Sem descrição",
         type: type,
         status: status,
       },
     });
+
+    processedCount++;
   }
 
-  console.log("Seeding finished.");
+  console.log(`Seeding finished. Processed ${processedCount} transactions.`);
 }
 
 main()

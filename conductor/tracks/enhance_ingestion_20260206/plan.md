@@ -23,7 +23,7 @@ This phase focuses on establishing the foundational data structures and contract
 
 This phase focuses on implementing the logic to parse and validate data from CSV files.
 
-- [ ] **Task:** Implement the `CsvDataSourceAdapter`.
+- [~] **Task:** Implement the `CsvDataSourceAdapter`.
     - [ ] **Task:** Write Tests for `CsvDataSourceAdapter`.
         - [ ] Create a new test file in the `worker` app (`apps/worker/tests/unit/csv-adapter.test.ts`).
         - [ ] Write unit tests that cover parsing valid CSV data, handling malformed data, and mapping columns correctly.

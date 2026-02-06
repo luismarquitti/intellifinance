@@ -1,7 +1,8 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
 RUN yarn install --frozen-lockfile
+RUN yarn workspace @intellifinance/types build
 RUN yarn workspace @intellifinance/frontend build
 
 FROM nginx:alpine

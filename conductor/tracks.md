@@ -4,5 +4,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Implement robust transaction data ingestion and validation for diverse financial sources.**
+- [~] **Track: Implement robust transaction data ingestion and validation for diverse financial sources.**
       *Link: [./tracks/enhance_ingestion_20260206/](./tracks/enhance_ingestion_20260206/)*
+
+---
+
+- [ ] **Track: MVP Initial Setup and Transactions Feature**
+*Link: [./tracks/mvp_transactions_20260206/](./tracks/mvp_transactions_20260206/)*

@@ -59,9 +59,9 @@ The project follows strict architectural principles defined in [`AGENTS.md`](fil
 
 ### Runtime & Languages
 
-- **Runtime**: Node.js v18+
+- **Runtime**: Node.js v20+
 - **Language**: TypeScript 5.x (Strict Mode)
-- **Package Manager**: NPM Workspaces
+- **Package Manager**: Yarn Workspaces
 
 ### Backend
 
@@ -208,7 +208,7 @@ flowchart LR
 - **Status**: ✅ Complete (100%)
 - **Branch**: Merged to `main`
 - **What it delivers**:
-  - NPM workspaces configuration
+  - Yarn workspaces configuration
   - Docker Compose setup (PostgreSQL, Redis, Backend, Frontend, Worker)
   - TypeScript strict mode enforcement
   - Git hooks (Husky + lint-staged)
@@ -382,9 +382,9 @@ Based on the project architecture and goals, potential future features include:
 
 #### Prerequisites
 
-- Node.js v18+
+- Node.js v20+
 - Docker & Docker Compose
-- NPM
+- Yarn
 
 #### Initial Setup
 
@@ -394,7 +394,7 @@ git clone <repository-url>
 cd intellifinance
 
 # Install dependencies
-npm install
+yarn install
 
 # Start the full stack
 docker-compose up --build
@@ -410,18 +410,23 @@ This will start:
 
 > [!IMPORTANT]
 > Ensure ports 3000, 5173, 5432, and 6379 are free on your machine.
+>
+> **Windows/WSL Users**:
+> If you encounter issues with "process not found" or line endings, ensure your git config is set to handle CRLF correctly:
+> `git config --global core.autocrlf input`
+> Also, always run `yarn install` from inside your WSL terminal, not from Windows PowerShell.
 
 ### 2. Development Commands
 
 ```bash
 # Run linting
-npm run lint
+yarn lint
 
 # Format code
-npm run format
+yarn format
 
 # Build TypeScript
-cd apps/backend && npm run build
+cd apps/backend && yarn build
 ```
 
 ### 3. Database Migrations
@@ -695,7 +700,7 @@ Here's a structured **5-day onboarding plan** to ramp up as a new developer:
 docker-compose up --build
 
 # Start backend only (for debugging)
-cd apps/backend && npm run dev
+cd apps/backend && yarn dev
 
 # Database commands
 cd packages/database
@@ -704,8 +709,8 @@ npx prisma generate           # Generate client
 npx prisma studio            # Open DB GUI
 
 # Linting
-npm run lint                 # Check
-npm run format               # Fix
+yarn lint                 # Check
+yarn format               # Fix
 
 # Git
 git branch -a                # View all branches

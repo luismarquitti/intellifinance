@@ -71,12 +71,27 @@ Do not hallucinate libraries. Use only what is defined here.
 * `/apps/worker`: AI Consumers.
 * `/packages/database`: Prisma Schema (`schema.prisma`) & Client.
 * `/packages/types`: Zod Schemas & TS Interfaces (Shared).
+* `/packages/jobs`: BullMQ Job Definitions and Queues.
 * `/specs/`: Documentation Source of Truth.
 
 ---
 
 ## 5. 🚨 CRITICAL RULES FOR AI AGENTS
 1.  **Never invent imports:** Check `package.json` in the current workspace before importing.
-2.  **Schema First:** If changing data structures, modify `packages/database/prisma/schema.prisma` first, then run `yarn db:generate`.
+2.  **Schema First:** If changing data structures, modify `packages/database/prisma/schema.prisma` first, then run `yarn generate` from the `packages/database` directory.
 3.  **Dry Code:** Logic shared between API and Worker belongs in `packages/`.
 4.  **Security:** Always use parameterized queries (via Prisma) and validate inputs (via Zod).
+
+---
+
+## 6. 🚦 CONDUCTOR EXTENSION: PROJECT MANAGEMENT & PLANNING
+The `conductor` extension is central to project management, tracking, and ensuring adherence to our Spec-Driven Development (SDD) methodology. It provides a structured way to define, plan, and execute work tracks.
+
+*   **Tracks Registry:** `conductor/tracks.md` lists all active development tracks.
+*   **Track Folder Structure:** Each track resides in its own directory, e.g., `conductor/tracks/<track_id>/`.
+*   **Track Specifics:**
+    *   `plan.md`: Details the implementation plan for a specific track, often broken down into sub-tasks.
+    *   `spec.md`: Contains the detailed specification for the feature or task being developed within the track.
+    *   `metadata.json`: Stores additional metadata about the track.
+
+The `conductor` extension helps agents locate relevant files and understand the current project context for specific tasks.
