@@ -15,6 +15,10 @@ module.exports = {
       displayName: 'worker',
       testMatch: ['<rootDir>/apps/worker/**/*.test.ts'],
     },
+    {
+      displayName: 'integration',
+      testMatch: ['<rootDir>/tests/integration/**/*.test.ts'],
+    },
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
