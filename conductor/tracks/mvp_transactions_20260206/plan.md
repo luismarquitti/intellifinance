@@ -2,11 +2,11 @@
 
 ## Phase 1: Local Development Environment Setup
 
-- [ ] Task: Document and Implement Docker Compose Setup for Windows/WSL2
+- [x] Task: Document and Implement Docker Compose Setup for Windows/WSL2
     - [ ] Write Failing Test: Create an integration test that attempts to bring up the Docker Compose environment and verifies services are running.
     - [ ] Implement: Create/update `docker-compose.yml` and associated Dockerfiles for `backend`, `frontend`, and `worker` services to run on Windows/WSL2.
     - [ ] Implement: Document comprehensive setup instructions in a new `README.md` or dedicated `docs/` section for local development.
-- [ ] Task: Conductor - User Manual Verification 'Local Development Environment Setup' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Local Development Environment Setup' (Protocol in workflow.md)
 
 ## Phase 2: Core Data Model & Backend Services
 
