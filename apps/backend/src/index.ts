@@ -57,6 +57,8 @@ async function start() {
   // Configured for max 5MB file size as per spec
   app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
 
+  app.get('/health', (req, res) => res.status(200).send('OK'));
+
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(),
