@@ -20,7 +20,11 @@ export const ingestionResolvers = {
         include: {
           account: {
             include: {
-              transactions: true
+              transactions: {
+                include: {
+                  category: true
+                }
+              }
             }
           }
         }

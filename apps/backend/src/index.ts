@@ -12,7 +12,8 @@ import { join } from 'path';
 
 import { context } from './graphql/context';
 import { resolvers as authResolvers } from './graphql/resolvers/auth.resolver';
-import { ingestionResolvers } from './graphql/resolvers/ingestion';
+import { ingestionResolvers } from './graphql/resolvers/ingestion.resolver'; // Fixed import path if needed, usually index exports it but let's be safe
+import { transactionsResolvers } from './graphql/resolvers/transactions.resolver';
 
 // Helper to load schemas
 const loadSchema = (name: string) => {
@@ -26,17 +27,26 @@ const loadSchema = (name: string) => {
 
 const typeDefs = [
   loadSchema('auth.graphql'),
-  loadSchema('ingestion.graphql')
+  loadSchema('ingestion.graphql'),
+  loadSchema('transactions.graphql')
 ];
 
 const resolvers = {
   Query: {
     ...authResolvers.Query,
+    ...ingestionResolvers.Query,
+    ...transactionsResolvers.Query,
   },
   Mutation: {
     ...authResolvers.Mutation,
     ...ingestionResolvers.Mutation,
   },
+  Transaction: {
+    ...transactionsResolvers.Transaction
+  },
+  Account: {
+    ...transactionsResolvers.Account
+  }
 };
 
 const PORT = process.env.PORT || 3000;
