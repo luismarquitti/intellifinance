@@ -29,6 +29,14 @@ export const TransactionFilterSchema = z.object({
   type: TransactionTypeSchema.optional(),
 });
 
+export const ExtractedTransactionSchema = z.object({
+  date: z.coerce.date(),
+  amount: z.coerce.number(),
+  description: z.string(),
+  category: z.string().optional()
+});
+
+export type ExtractedTransaction = z.infer<typeof ExtractedTransactionSchema>;
 export type CreateTransactionInput = z.infer<typeof CreateTransactionSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
 export type TransactionFilter = z.infer<typeof TransactionFilterSchema>;

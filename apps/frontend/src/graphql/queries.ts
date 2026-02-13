@@ -45,3 +45,13 @@ export const GET_TRANSACTIONS = gql`
     }
   }
 `;
+
+export const GET_SUMMARY = gql`
+  query GetSummary($filter: TransactionFilter) {
+    financialSummary(filter: $filter) {
+      balance
+      income
+      expense
+    }
+  }
+`;

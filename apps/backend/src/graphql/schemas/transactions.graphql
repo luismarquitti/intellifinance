@@ -1,0 +1,81 @@
+scalar DateTime
+scalar Decimal
+
+type Account {
+  id: ID!
+  userId: String!
+  name: String!
+  type: AccountType!
+  balance: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactions: [Transaction!]
+}
+
+enum AccountType {
+  CHECKING
+  CREDIT_CARD
+  CASH
+}
+
+type Category {
+  id: ID!
+  name: String!
+  icon: String!
+  color: String!
+  type: CategoryType!
+  userId: String!
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+type Transaction {
+  id: ID!
+  accountId: String!
+  categoryId: String!
+  date: DateTime!
+  amount: Float!
+  description: String!
+  type: TransactionType!
+  status: TransactionStatus!
+  sourceFileUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  account: Account!
+  category: Category!
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+}
+
+input TransactionFilter {
+  accountId: String
+  startDate: DateTime
+  endDate: DateTime
+  type: TransactionType
+  categoryId: String
+}
+
+type FinancialSummary {
+  balance: Float!
+  income: Float!
+  expense: Float!
+}
+
+type Query {
+  accounts: [Account!]!
+  categories: [Category!]!
+  transactions(filter: TransactionFilter, limit: Int, offset: Int): [Transaction!]!
+  financialSummary(filter: TransactionFilter): FinancialSummary!
+}
