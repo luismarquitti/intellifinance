@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, Fab, CircularProgress, Alert, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client/react';
 import SummaryCards from '../components/financial/SummaryCards';
 import FilterSection from '../components/financial/FilterSection';
 import TransactionTable from '../components/financial/TransactionTable';
@@ -47,23 +47,23 @@ const TransactionsPage: React.FC = () => {
 
     const targetAccountId = filters.accountId;
     if (!targetAccountId) {
-        alert("Please select an account in the filter to upload a statement.");
-        // Reset input value to allow selecting same file again if needed
-        event.target.value = '';
-        return;
+      alert("Please select an account in the filter to upload a statement.");
+      // Reset input value to allow selecting same file again if needed
+      event.target.value = '';
+      return;
     }
 
     try {
       await uploadStatement({
         variables: {
-            file,
-            accountId: targetAccountId
+          file,
+          accountId: targetAccountId
         }
       });
       alert('Upload successful! Processing in background.');
     } catch (e: any) {
-        console.error(e);
-        alert(`Upload failed: ${e.message}`);
+      console.error(e);
+      alert(`Upload failed: ${e.message}`);
     }
     // Reset input
     event.target.value = '';
@@ -84,28 +84,28 @@ const TransactionsPage: React.FC = () => {
           Transactions
         </Typography>
         <Box>
-            <input
-                accept=".csv,.pdf"
-                style={{ display: 'none' }}
-                id="raised-button-file"
-                type="file"
-                onChange={handleFileUpload}
-            />
-            <label htmlFor="raised-button-file">
-                <Button variant="outlined" component="span" startIcon={<UploadFileIcon />} disabled={uploading}>
-                    {uploading ? 'Uploading...' : 'Import Statement'}
-                </Button>
-            </label>
+          <input
+            accept=".csv,.pdf"
+            style={{ display: 'none' }}
+            id="raised-button-file"
+            type="file"
+            onChange={handleFileUpload}
+          />
+          <label htmlFor="raised-button-file">
+            <Button variant="outlined" component="span" startIcon={<UploadFileIcon />} disabled={uploading}>
+              {uploading ? 'Uploading...' : 'Import Statement'}
+            </Button>
+          </label>
         </Box>
       </Box>
 
       {loadingSummary ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}><CircularProgress /></Box>
       ) : (
-        <SummaryCards 
-          balance={summaryData?.financialSummary?.balance || 0} 
-          income={summaryData?.financialSummary?.income || 0} 
-          expense={summaryData?.financialSummary?.expense || 0} 
+        <SummaryCards
+          balance={summaryData?.financialSummary?.balance || 0}
+          income={summaryData?.financialSummary?.income || 0}
+          expense={summaryData?.financialSummary?.expense || 0}
         />
       )}
 
@@ -114,7 +114,7 @@ const TransactionsPage: React.FC = () => {
         endDate={filters.endDate}
         accountId={filters.accountId}
         onFilterChange={handleFilterChange}
-        // TODO: Pass accounts list to FilterSection if we enhance it to be dynamic
+      // TODO: Pass accounts list to FilterSection if we enhance it to be dynamic
       />
 
       {loadingTransactions ? (

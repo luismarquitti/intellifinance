@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginInputSchema, LoginInput } from '@intellifinance/types';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { LOGIN_MUTATION } from '../../graphql/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,12 +17,14 @@ export const LoginForm: React.FC = () => {
   const onSubmit = async (data: LoginInput) => {
     try {
       const response = await login({ variables: { input: data } });
-      const { token, refreshToken } = response.data.login;
+      if (response.data?.login) {
+        const { token, refreshToken } = response.data.login;
 
-      localStorage.setItem('accessToken', token);
-      localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('refreshToken', refreshToken);
 
-      navigate('/dashboard');
+        navigate('/dashboard');
+      }
     } catch (e) {
       console.error(e);
     }

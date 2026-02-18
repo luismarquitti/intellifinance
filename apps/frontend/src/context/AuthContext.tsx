@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { ME_QUERY } from '../graphql/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  logout: () => {},
+  logout: () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   useEffect(() => {
-    if (data && data.me) {
+    if (data?.me) {
       setUser(data.me);
     } else if (error) {
       localStorage.removeItem('accessToken');
