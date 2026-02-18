@@ -80,6 +80,10 @@ model Transaction {
   updatedAt     DateTime          @updatedAt
   account       Account           @relation(fields: [accountId], references: [id])
   category      Category          @relation(fields: [categoryId], references: [id])
+
+  @@index([accountId, date])
+  @@index([categoryId, date])
+  @@index([date])
 }
 
 enum IngestionStatus {
