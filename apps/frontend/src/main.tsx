@@ -4,7 +4,7 @@ import App from './App';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { client } from './lib/apolloClient';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

@@ -1,97 +1,145 @@
-# INTELLIFINANCE AI AGENTS & DEVSQUAD GUIDELINES
+# INTELLIFINANCE - AI CONTEXT & GUIDELINES
 
-> **SYSTEM NOTICE:** You are acting as a member of the **DevSquad**, an elite autonomous development team. This document is your **Source of Truth** for behavior, architecture, and workflow.
+Este arquivo define a "personalidade", o contexto e os protocolos operacionais para agentes de IA (Gemini, Copilot, etc.) atuando neste repositório.
 
----
+## 🧠 Cérebro do Projeto: O Conductor
 
-## 1. 🏛️ THE CONSTITUTION (NON-NEGOTIABLE)
-All output must adhere strictly to the project constitution defined in `.specify/memory/constitution.md`.
+A fonte da verdade absoluta para este projeto **NÃO** é o código, mas sim o diretório `conductor/`.
+Você deve seguir estritamente o fluxo de **Spec-Driven Development (SDD)**.
 
-1.  **Spec-Driven Development (SDD):** No code is written without a validated Markdown Spec (`.spec.md`). If a user asks for code, ask for the Spec ID first.
-2.  **Strong Typing & Contracts:** TypeScript Strict Mode is mandatory. `any` is forbidden. All I/O must be validated via **Zod**.
-3.  **Asynchronous Decoupling:** Heavy tasks (AI inference, PDF parsing) utilize **BullMQ**. API never blocks; it returns a `jobId`.
-4.  **Monorepo Boundaries:**
-    * `apps/`: Deployable units (Backend, Frontend, Workers). Minimal logic.
-    * `packages/`: Shared logic, Schemas, UI Kits.
-5.  **Probabilistic Containment:** AI outputs are treated as "untrusted user input" and must be sanitized/coerced into structured JSON before use.
+### Estrutura de Governança
 
----
+- **`conductor/tracks/`**: Cada subpasta aqui representa uma Feature ou Iniciativa ativa.
+  - **`spec.md`**: O "O Quê". Regras de negócio, requisitos e contratos de interface.
+  - **`plan.md`**: O "Como". O plano de implementação tático, quebrado em tarefas.
+- **`conductor/product.md`**: Visão macro do produto.
+- **`conductor/tech-stack.md`**: Definições de arquitetura e tecnologia permitida.
 
-## 2. 🎭 THE SQUAD (YOUR PERSONAS)
-Adopt the appropriate persona based on the user's request or the active task context.
+### 🚫 Regra de Ouro (Zero Hallucination Development)
 
-### 🧠 **The Architect (Lead)**
-* **Trigger:** System design, folder structure, code review, refactoring.
-* **Focus:** Monorepo strictness, Design Patterns, Security.
-* **Key Behavior:** Refuses to implement features without a defined schema in `packages/database`. Enforces "Service Pattern".
-
-### 📝 **The Product Owner (PO)**
-* **Trigger:** Requirements gathering, writing specs, user stories.
-* **Focus:** "What" and "Why", not "How".
-* **Key Behavior:** Generates `.spec.md` files using Mermaid diagrams for flows and Checkboxes for Acceptance Criteria.
-
-### 🛡️ **The QA Strategist**
-* **Trigger:** Writing tests, finding bugs, validating specs.
-* **Focus:** Edge cases, Security (IDOR, Injection), Performance.
-* **Key Behavior:** Assumes "Happy Path" is rare. Writes "Mock Agents" to test AI workers without spending tokens.
-
-### ⏱️ **The Scrum Master**
-* **Trigger:** Breaking down tasks, planning, GitHub Issues.
-* **Focus:** Dependencies, Atomic Tasks (<1 day), Blockers.
-* **Key Behavior:** Converts `.spec.md` sections into GitHub Issues with labels (`backend`, `frontend`, `ai-agent`).
+1. **Nunca inicie código sem um Track**: Se o usuário pedir uma feature nova, verifique se existe uma pasta em `conductor/tracks/`. Se não, crie-a (com `spec.md` e `plan.md`) antes de codar.
+2. **Leia antes de Escrever**: Antes de alterar qualquer arquivo em `apps/` ou `packages/`, leia o `spec.md` do track relevante para entender as restrições.
 
 ---
 
-## 3. 🛠️ WORKFLOW & COMMANDS
-Translate generic user intents into specific Spec-Kit actions.
+## 📋 Gestão de Tarefas (GitHub Projects)
 
-| User Intent | Standard Command | Description |
+Nós usamos o GitHub Projects para rastreabilidade. Sua função é manter o `conductor` e o `GitHub Projects` sincronizados.
+
+- **Sync de Mão Dupla**:
+  - Cada item de tarefa (`- [ ]`) no arquivo `plan.md` deve corresponder a uma Issue no GitHub.
+  - Ao completar uma tarefa no código, marque-a como `[x]` no `plan.md` e sugira o fechamento da Issue.
+- **Criação de Issues**:
+  - Ao criar issues via CLI/MCP, use o formato: `[Nome-do-Track] Título da Tarefa`.
+  - Corpo da issue deve conter um link para o `spec.md` correspondente.
+
+---
+
+## 🏗️ Arquitetura & Estrutura (Monorepo)
+
+Este é um monorepo gerenciado via **Yarn Workspaces**.
+
+### Mapeamento de Workspaces
+
+| Diretório | Workspace Name (provável) | Descrição |
 | :--- | :--- | :--- |
-| **New Idea** | `/specify` | Act as **PO**. Interview the user -> Generate `specs/domain/feature.spec.md`. |
-| **Plan Dev** | `/plan` | Act as **Scrum Master**. Read `.spec.md` -> Generate Implementation Plan & Issues. |
-| **Code It** | `/implement` | Act as **Architect**. Read Plan -> Generate Code following Monorepo structure. |
-| **Review** | `/analyze` | Act as **QA/Architect**. Review code against the Spec and Constitution. |
-| **Context** | `/context` | Summarize the current project state, tech stack, and active rules. |
+| `apps/backend` | `@intellifinance/backend` | API GraphQL, Node.js, Serviços |
+| `apps/frontend` | `@intellifinance/frontend` | React, Vite, UI Components |
+| `apps/worker` | `@intellifinance/worker` | Processamento de filas, Ingestão de dados |
+| `packages/database` | `@intellifinance/database` | Prisma Schema, Migrations, Seeds |
+| `packages/types` | `@intellifinance/types` | Definições de Tipos compartilhadas (Zod/TS) |
+| `packages/jobs` | `@intellifinance/jobs` | Definições de Jobs e Filas (BullMQ) |
 
 ---
 
-## 4. 🏗️ TECH STACK & STRUCTURE
-Do not hallucinate libraries. Use only what is defined here.
+## 🛠️ Manual de Execução de Comandos
 
-* **Monorepo:** Yarn Workspaces.
-* **Backend:** Node.js (Express/Apollo Server), GraphQL.
-* **Frontend:** React (Vite), TailwindCSS, Apollo Client.
-* **Database:** PostgreSQL (Prisma ORM), PGVector.
-* **Async/AI:** Redis, BullMQ, LangChain.js.
-* **Testing:** Vitest (Unit), Playwright (E2E).
+Para evitar erros de permissão ou "command not found", utilize sempre os scripts via **Yarn** na raiz ou escopados via workspaces. **Nunca tente usar `npm` ou `docker` diretamente se houver um script yarn equivalente.**
 
-**Directory Map:**
-* `/apps/backend`: GraphQL API.
-* `/apps/frontend`: React App.
-* `/apps/worker`: AI Consumers.
-* `/packages/database`: Prisma Schema (`schema.prisma`) & Client.
-* `/packages/types`: Zod Schemas & TS Interfaces (Shared).
-* `/packages/jobs`: BullMQ Job Definitions and Queues.
-* `/specs/`: Documentation Source of Truth.
+### 1. Comandos Globais (Executar na Raiz)
+
+- **Instalar dependências**:
+
+```bash
+yarn install
+```
+
+- **Build Geral (Todos os apps/packages)**:
+
+```bash
+yarn build
+```
+
+- **Testes (Unitários e Integração)**:
+
+```bash
+yarn test
+```
+
+- **Lint & Formatação**:
+
+```bash
+yarn lint
+yarn format
+```
+
+### 2. Comandos Específicos de Workspace
+
+Para rodar comandos em um projeto específico sem entrar na pasta:
+
+**Backend:**
+
+```bash
+yarn workspace @intellifinance/backend dev    # Iniciar servidor dev
+yarn workspace @intellifinance/backend build  # Buildar apenas backend
+yarn workspace @intellifinance/backend test   # Testar apenas backend
+```
+
+**Frontend:**
+
+```bash
+yarn workspace @intellifinance/frontend dev
+yarn workspace @intellifinance/frontend build
+
+```
+
+**Database (Prisma):**
+*Atenção: Comandos de banco devem ser rodados via scripts do workspace database.*
+
+```bash
+yarn workspace @intellifinance/database db:migrate # Rodar migrações
+yarn workspace @intellifinance/database db:generate # Gerar cliente Prisma
+yarn workspace @intellifinance/database db:seed    # Popular banco
+
+```
+
+### 3. Docker & Infraestrutura
+
+- **Subir Infra (Postgres, Redis, etc)**:
+
+```bash
+docker-compose up -d
+
+```
+
+*Verifique se o container do banco está saudável antes de rodar `db:migrate`.*
 
 ---
 
-## 5. 🚨 CRITICAL RULES FOR AI AGENTS
-1.  **Never invent imports:** Check `package.json` in the current workspace before importing.
-2.  **Schema First:** If changing data structures, modify `packages/database/prisma/schema.prisma` first, then run `yarn generate` from the `packages/database` directory.
-3.  **Dry Code:** Logic shared between API and Worker belongs in `packages/`.
-4.  **Security:** Always use parameterized queries (via Prisma) and validate inputs (via Zod).
+## 🧪 Padrões de Teste
 
----
+- **Backend/Worker**: Testes de integração são preferidos sobre unitários para regras de negócio.
+- **Frontend**: Testes de componentes críticos apenas.
+- **Execução**: Se o usuário pedir "Valide se funcionou", rode:
 
-## 6. 🚦 CONDUCTOR EXTENSION: PROJECT MANAGEMENT & PLANNING
-The `conductor` extension is central to project management, tracking, and ensuring adherence to our Spec-Driven Development (SDD) methodology. It provides a structured way to define, plan, and execute work tracks.
+1. `yarn typecheck` (Garante integridade do TS)
+2. `yarn workspace <app> test` (Valida lógica)
 
-*   **Tracks Registry:** `conductor/tracks.md` lists all active development tracks.
-*   **Track Folder Structure:** Each track resides in its own directory, e.g., `conductor/tracks/<track_id>/`.
-*   **Track Specifics:**
-    *   `plan.md`: Details the implementation plan for a specific track, often broken down into sub-tasks.
-    *   `spec.md`: Contains the detailed specification for the feature or task being developed within the track.
-    *   `metadata.json`: Stores additional metadata about the track.
+### Análise das Mudanças Realizadas
 
-The `conductor` extension helps agents locate relevant files and understand the current project context for specific tasks.
+1. **Foco no Conductor**: Removi instruções genéricas de IA e coloquei o `conductor` como o "chefe". Isso impede que o agente saia criando código solto ("vibe coding").
+2. **Mapeamento de Workspaces**: Adicionei a tabela de workspaces. Isso é crucial para que o agente saiba que `packages/database` não é apenas uma pasta, mas um pacote npm privado que deve ser referenciado corretamente.
+3. **Segurança nos Comandos**:
+    - Instruções explícitas para usar `yarn workspace ...`. Isso evita que o agente tente fazer `cd apps/backend && npm install`, o que quebraria o `yarn.lock` da raiz e duplicaria `node_modules`.
+    - Comandos de Prisma (`db:migrate`) isolados no workspace do database, prevenindo erros de schema não encontrado.
+4. **Integração com GitHub Projects**: Instruções claras sobre como nomear as issues (`[Track Name]`) para facilitar a triagem automática no board do projeto depois.

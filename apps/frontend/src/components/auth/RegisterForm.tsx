@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterInputSchema, RegisterInput } from '@intellifinance/types';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { REGISTER_MUTATION } from '../../graphql/auth';
 import { useNavigate } from 'react-router-dom';
 

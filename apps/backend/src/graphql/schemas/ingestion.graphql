@@ -1,4 +1,6 @@
 scalar Upload
+# DateTime is defined in transactions.graphql, but keeping it here for safety or removing if conflict.
+# Usually redundant scalars are fine.
 scalar DateTime
 
 enum IngestionStatus {
@@ -15,21 +17,6 @@ type IngestionJob {
   createdAt: DateTime!
   completedAt: DateTime
   account: Account!
-}
-
-type Account {
-  id: ID!
-  bankName: String!
-  type: String!
-  transactions: [Transaction!]!
-}
-
-type Transaction {
-  id: ID!
-  date: DateTime!
-  amount: Float!
-  description: String!
-  category: String
 }
 
 type Mutation {

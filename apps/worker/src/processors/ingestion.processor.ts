@@ -4,6 +4,7 @@ import { pdfService } from '../services/pdf.service';
 import { llmService } from '../services/llm.service';
 import { prisma, IngestionStatus } from '@intellifinance/database';
 import { IDataSourceAdapter } from '../../../../packages/types/src/ingestion';
+import { csvImportProcessor } from './csv-import.processor';
 
 const logger = {
   info: (msg: string, meta?: any) => console.log(JSON.stringify({ level: 'info', msg, timestamp: new Date().toISOString(), ...meta })),
@@ -13,6 +14,12 @@ const logger = {
 
 export const ingestionProcessor = async (job: Job<IngestionJobData & { adapter?: IDataSourceAdapter }>) => {
   const { jobId, fileUrl, accountId, adapter } = job.data;
+
+  // Delegate to CSV Processor if extension is .csv
+  if (fileUrl.toLowerCase().endsWith('.csv')) {
+    logger.info('Delegating to CSV Import Processor', { jobId, fileUrl });
+    return csvImportProcessor(job);
+  }
 
   logger.info('Starting ingestion job', { jobId, fileUrl });
 

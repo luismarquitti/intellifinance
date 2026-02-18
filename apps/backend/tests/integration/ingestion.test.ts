@@ -3,7 +3,12 @@ import { readFileSync } from 'fs';
 import { gql } from 'graphql-tag';
 import { IngestionQueue } from '@intellifinance/jobs';
 
-const typeDefs = gql(readFileSync('apps/backend/src/graphql/schemas/ingestion.graphql', 'utf8'));
+const ingestionTypeDefs = readFileSync('apps/backend/src/graphql/schemas/ingestion.graphql', 'utf8');
+const transactionsTypeDefs = readFileSync('apps/backend/src/graphql/schemas/transactions.graphql', 'utf8');
+const typeDefs = gql`
+    ${ingestionTypeDefs}
+    ${transactionsTypeDefs}
+`;
 
 // Mock the IngestionQueue
 jest.mock('@intellifinance/jobs', () => ({
@@ -30,7 +35,7 @@ describe('Ingestion Integration', () => {
               fileUrl: 'test-file-url',
               createdAt: new Date(),
               account: {
-                  id: accountId,
+                id: accountId,
               }
             };
           },
@@ -41,10 +46,10 @@ describe('Ingestion Integration', () => {
 
   it('should have uploadStatement mutation and add a job to the queue', async () => {
     const { createReadStream, filename, mimetype, encoding } = {
-        createReadStream: () => "stream",
-        filename: "test.csv",
-        mimetype: "text/csv",
-        encoding: "7bit"
+      createReadStream: () => "stream",
+      filename: "test.csv",
+      mimetype: "text/csv",
+      encoding: "7bit"
     }
 
     const response = await server.executeOperation({
@@ -64,8 +69,8 @@ describe('Ingestion Integration', () => {
 
     expect(response.body.singleResult.data.uploadStatement.id).toBe('test-job-id');
     expect(IngestionQueue.add).toHaveBeenCalledWith('ingestion', {
-        file: { createReadStream, filename, mimetype, encoding },
-        accountId: 'test-account-id'
+      file: { createReadStream, filename, mimetype, encoding },
+      accountId: 'test-account-id'
     });
   });
 });
